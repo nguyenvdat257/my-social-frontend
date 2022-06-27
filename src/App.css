@@ -1,38 +1,103 @@
-.App {
-  text-align: center;
+.row-header {
+  margin: 0px auto;
+  padding: 0px auto;
+  border-bottom: 1px ridge;
+  font-size: 30px;
+  flex: 1;
+  background-color: white;
+  min-height: 60px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header-app-name {
+  font-family: Brush Script MT;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.header-item {
+  margin-left: 5px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.header-avatar {
+  display: inline-block;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
 }
 
-.App-link {
-  color: #61dafb;
+.header-menu {
+  min-width: 150px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.header-menu-item {
+  padding: 10px 0px 10px 20px;
+}
+
+.header-menu-last-item {
+  border-bottom: 1px ridge;
+}
+
+.border-around {
+  outline: 1px black;
+  outline-style: solid;
+  outline-offset: 1px;
+}
+
+.header-btn-login {
+  margin-bottom: 5px;
+}
+
+.header-btn-signup {
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.row-content {
+  margin: 0px auto;
+  padding: 50px 0px 50px 0px;
+  border-bottom: 1px ridge;
+  min-height: 400px;
+}
+
+.footer {
+  background-color: #D1C4E9;
+  margin: 0px auto;
+  padding: 20px 0px 20px 0px;
+}
+
+.jumbotron {
+  padding: 10px 30px 10px 30px;
+  margin: 0px auto;
+  background: white;
+  /* color: floralwhite; */
+}
+
+address {
+  font-size: 80%;
+  margin: 0px;
+  color: #0f0f0f;
+}
+
+.navbar-dark {
+  background-color: #512DA8;
+}
+
+.page-enter {
+  opacity: 0.01;
+  transform: translateX(-100%);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateX(0%);
+  transition: all 300ms ease-in;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateX(0%);
+}
+
+.page-exit-active {
+  opacity: 0.01;
+  transform: translateX(100%);
+  transition: all 300ms ease-out;
 }
