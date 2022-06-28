@@ -10,6 +10,7 @@ import { FiBookmark } from 'react-icons/fi'
 import { Popover, Overlay } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../store/page-slice";
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -46,29 +47,35 @@ const Header = () => {
             <div className='row'>
               {/* home */}
               <div className='col-2' onClick={() => switchPage('home')} >
-                {page === 'home' && !showMenu && !showAdd && !showNoti ?
-                  (<RiHomeFill size={24} className='header-item' />) :
-                  (<RiHomeLine size={24} className='header-item' />)
-                }
+                <Link to='/' className='link'>
+                  {page === 'home' && !showMenu && !showAdd && !showNoti ?
+                    (<RiHomeFill size={24} className='header-item' />) :
+                    (<RiHomeLine size={24} className='header-item' />)
+                  }
+                </Link>
               </div>
               {/* chat */}
               <div className='col-2' onClick={() => switchPage('chat')} >
-                {page === 'chat' && !showMenu && !showAdd && !showNoti ?
-                  (<RiMessengerFill size={26} className='header-item' />) :
-                  (<RiMessengerLine size={26} className='header-item' />)
-                }
+                <Link to='/direct/inbox' className='link'>
+                  {page === 'chat' && !showMenu && !showAdd && !showNoti ?
+                    (<RiMessengerFill size={26} className='header-item' />) :
+                    (<RiMessengerLine size={26} className='header-item' />)
+                  }
+                </Link>
               </div>
               {/* add */}
               <div className='col-2' ref={targetAdd} onClick={() => setShowAdd(!showAdd)} >
                 {showAdd && <BsPlusSquareFill size={24} className='header-item' />}
                 {!showAdd && <BsPlusSquare size={24} className='header-item' />}
               </div>
-              {/* suggest */}
-              <div className='col-2' onClick={() => switchPage('suggest')} >
-                {page === 'suggest' && !showMenu && !showAdd && !showNoti ?
-                  (<AiFillCompass size={26} className='header-item' />) :
-                  (<AiOutlineCompass size={26} className='header-item' />)
-                }
+              {/* explore */}
+              <div className='col-2' onClick={() => switchPage('explore')} >
+                <Link to='/explore' className='link'>
+                  {page === 'explore' && !showMenu && !showAdd && !showNoti ?
+                    (<AiFillCompass size={26} className='header-item' />) :
+                    (<AiOutlineCompass size={26} className='header-item' />)
+                  }
+                </Link>
               </div>
               {/* noti */}
               <div className='col-2' ref={targetNoti} onClick={() => setShowNoti(!showNoti)} >
@@ -93,9 +100,13 @@ const Header = () => {
               </Overlay>
               <Overlay target={targetMenu.current} show={showMenu} placement='bottom' rootClose onHide={() => setShowMenu(false)}>
                 <Popover className='header-menu'>
-                  <div className='header-menu-item'><CgProfile /> Profile </div>
+                  <Link to='/' style={{color:'inherit', textDecoration: 'none' }}>
+                    <div className='header-menu-item'><CgProfile /> Profile </div>
+                  </Link>
                   <div className='header-menu-item'><FiBookmark /> Saved </div>
-                  <div className='header-menu-item header-menu-last-item'><AiOutlineSetting /> Settings </div>
+                  <Link to='/accounts/edit' style={{color:'inherit', textDecoration: 'none' }}>
+                    <div className='header-menu-item header-menu-last-item'><AiOutlineSetting /> Settings </div>
+                  </Link>
                   <div className='header-menu-item'>Logout</div>
                 </Popover>
               </Overlay>
@@ -108,7 +119,7 @@ const Header = () => {
             <Button className='header-btn-signup' variant='light'>Sign Up</Button>
           </div>
         }
-    </div>
+      </div>
     </div >
   )
 }

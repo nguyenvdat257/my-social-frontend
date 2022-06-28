@@ -43,12 +43,23 @@
 
 .header-btn-login {
   margin-bottom: 5px;
+  box-shadow: none;
 }
 
 .header-btn-signup {
   margin-bottom: 5px;
   margin-left: 5px;
 }
+
+.link:hover {
+  color: black;
+  text-decoration: 'none'
+}
+.link {
+  color: black;
+  text-decoration: 'none'
+}
+
 
 .row-content {
   margin: 0px auto;
