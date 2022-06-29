@@ -1,8 +1,7 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { InputGroup, FormControl, Button } from 'react-bootstrap'
-import { GrHomeRounded, G } from 'react-icons/gr'
 import { RiMessengerLine, RiMessengerFill, RiHomeLine, RiHomeFill } from 'react-icons/ri'
-import { BsFillPlusSquareFill, BsSearch } from 'react-icons/bs'
+import { BsSearch } from 'react-icons/bs'
 import { BsPlusSquare, BsPlusSquareFill } from 'react-icons/bs'
 import { AiOutlineCompass, AiFillCompass, AiOutlineHeart, AiFillHeart, AiOutlineSetting } from 'react-icons/ai'
 import { CgProfile } from 'react-icons/cg'
@@ -10,7 +9,8 @@ import { FiBookmark } from 'react-icons/fi'
 import { Popover, Overlay } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../store/page-slice";
-import { Link } from 'react-router-dom'
+import { updateToken, logoutUser } from '../store/auth-slice'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -22,9 +22,17 @@ const Header = () => {
   const page = useSelector(state => state.page.page);
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const switchPage = (page) => {
     dispatch(pageActions.switchPage({ page }));
   };
+  useEffect(() => {
+    let fourMinutes = 1000 * 60 * 4
+    let interval = setInterval(() => {
+      if (isLoggedIn) dispatch(updateToken())
+    }, fourMinutes)
+    return () => clearInterval(interval)
+  });
   return (
     <div>
       <div className="row row-header align-items-center">
@@ -100,14 +108,18 @@ const Header = () => {
               </Overlay>
               <Overlay target={targetMenu.current} show={showMenu} placement='bottom' rootClose onHide={() => setShowMenu(false)}>
                 <Popover className='header-menu'>
-                  <Link to='/' style={{color:'inherit', textDecoration: 'none' }}>
-                    <div className='header-menu-item'><CgProfile /> Profile </div>
+                  <Link to='/' style={{ color: 'inherit', textDecoration: 'none' }}>
+                    <div className='header-menu-item'><CgProfile /><span> Profile</span> </div>
                   </Link>
-                  <div className='header-menu-item'><FiBookmark /> Saved </div>
-                  <Link to='/accounts/edit' style={{color:'inherit', textDecoration: 'none' }}>
-                    <div className='header-menu-item header-menu-last-item'><AiOutlineSetting /> Settings </div>
+                  <div className='header-menu-item'><FiBookmark /><span> Saved</span> </div>
+                  <Link to='/accounts/edit' style={{ color: 'inherit', textDecoration: 'none' }}>
+                    <div className='header-menu-item header-menu-last-item'><AiOutlineSetting />
+                      <span> Settings</span>
+                    </div>
                   </Link>
-                  <div className='header-menu-item'>Logout</div>
+                  <div className='header-menu-item' onClick={() => dispatch(logoutUser(navigate))}>
+                    <span> Logout</span>
+                  </div>
                 </Popover>
               </Overlay>
             </div>
@@ -115,7 +127,9 @@ const Header = () => {
         }
         {!isLoggedIn &&
           <div className='col-2 offset-2'>
-            <Button className='header-btn-login' variant='primary'>Log In</Button>
+            <Link to='/login' style={{ color: 'inherit', textDecoration: 'none' }}>
+              <Button className='header-btn-login' variant='primary'>Log In</Button>
+            </Link>
             <Button className='header-btn-signup' variant='light'>Sign Up</Button>
           </div>
         }
