@@ -130,7 +130,9 @@ const Header = () => {
             <Link to='/login' style={{ color: 'inherit', textDecoration: 'none' }}>
               <Button className='header-btn-login' variant='primary'>Log In</Button>
             </Link>
-            <Button className='header-btn-signup' variant='light'>Sign Up</Button>
+            <Link to='/signup' style={{ color: 'inherit', textDecoration: 'none' }}>
+              <Button className='header-btn-signup' variant='light'>Sign Up</Button>
+            </Link>
           </div>
         }
       </div>

@@ -60,6 +60,7 @@ html {
   margin-left: 5px;
 }
 
+
 .link:hover {
   color: black;
   text-decoration: 'none'
@@ -70,55 +71,20 @@ html {
   text-decoration: 'none'
 }
 
-
-.row-content {
-  margin: 0px auto;
-  padding: 50px 0px 50px 0px;
-  border-bottom: 1px ridge;
-  min-height: 400px;
+.signup-formgroup {
+  position: relative
 }
 
-.footer {
-  background-color: #D1C4E9;
-  margin: 0px auto;
-  padding: 20px 0px 20px 0px;
+.signup-formgroup-icon {
+  position: absolute;
+  top: 20%;
+  right: 5%;
 }
 
-.jumbotron {
-  padding: 10px 30px 10px 30px;
-  margin: 0px auto;
-  background: white;
-  /* color: floralwhite; */
+.icon-red {
+  color: red;
 }
 
-address {
-  font-size: 80%;
-  margin: 0px;
-  color: #0f0f0f;
-}
-
-.navbar-dark {
-  background-color: #512DA8;
-}
-
-.page-enter {
-  opacity: 0.01;
-  transform: translateX(-100%);
-}
-
-.page-enter-active {
-  opacity: 1;
-  transform: translateX(0%);
-  transition: all 300ms ease-in;
-}
-
-.page-exit {
-  opacity: 1;
-  transform: translateX(0%);
-}
-
-.page-exit-active {
-  opacity: 0.01;
-  transform: translateX(100%);
-  transition: all 300ms ease-out;
+.icon-green {
+  color: green;
 }

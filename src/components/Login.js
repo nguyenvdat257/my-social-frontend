@@ -36,7 +36,7 @@ const Login = () => {
               <h1 style={{ "fontFamily": "Brush Script MT" }} className='mb-5'>My Social Net</h1>
               <Form onSubmit={onFormSubmit}>
                 <Form.Group className="mb-2 ml-2">
-                  <Form.Control type="text" value={username} onChange={handleChangeUsername} placeholder="Phone number, username or email" />
+                  <Form.Control type="text" value={username} onChange={handleChangeUsername} placeholder="Username" />
                 </Form.Group>
 
                 <Form.Group className="mb-2">
