@@ -41,7 +41,7 @@ export const authActions = authSlice.actions;
 export const loginUser = (username, password, navigate) => async (dispatch) => {
     dispatch(authActions.setSendingForm(true))
     const fetchHandler = async () => {
-        const res = await fetch(myConfig.host_name + 'token/', {
+        const res = await fetch(myConfig.host_name + '/token/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -58,10 +58,10 @@ export const loginUser = (username, password, navigate) => async (dispatch) => {
             dispatch(authActions.login({ 'user': jwt_decode(token.access), 'token': token }))
             navigate('/')
         } else {
-            dispatch(authActions.setLoginError({ 'error': true, 'message': 'Sorry, please double check your username and password' }))
+            dispatch(authActions.setLoginError({ 'error': true, 'message': 'Sorry, please double check your username and password.' }))
         }
     } catch (err) {
-        dispatch(authActions.setLoginError({ 'error': true, 'message': 'Sorry, please double check your username and password' }))
+        dispatch(authActions.setLoginError({ 'error': true, 'message': 'Sorry, please check your internet connection.' }))
     }
     dispatch(authActions.setSendingForm(false))
 }
@@ -76,7 +76,7 @@ export const updateToken = () => async (dispatch, getState) => {
     const refresh_token = getState().auth.token ? getState().auth.token.refresh :
         JSON.parse(localStorage.getItem('token')).refresh
     const fetchHandler = async () => {
-        const res = await fetch(myConfig.host_name + 'token/refresh/', {
+        const res = await fetch(myConfig.host_name + '/token/refresh/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

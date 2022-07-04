@@ -9,20 +9,20 @@ import { AiOutlineCloseCircle, AiOutlineCheckCircle } from 'react-icons/ai'
 
 const Signup = () => {
   const dispatch = useDispatch();
-  let navigate = useNavigate();
-  let [email, setEmail] = useState('');
-  let [name, setName] = useState('');
-  let [username, setUsername] = useState('');
-  let [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const errorField = useSelector(state => state.signup.errorField);
   const validField = useSelector(state => state.signup.validField);
   const error = useSelector(state => state.signup.error);
   const sendingForm = useSelector(state => state.signup.sendingForm);
-  let [formValid, setFormValid] = useState(false)
-  let handleChangeEmail = e => setEmail(e.target.value);
-  let handleChangeName = e => setName(e.target.value);
-  let handleChangeUsername = e => setUsername(e.target.value);
-  let handleChangePassword = e => setPassword(e.target.value);
+  const [formValid, setFormValid] = useState(false)
+  const handleChangeEmail = e => setEmail(e.target.value);
+  const handleChangeName = e => setName(e.target.value);
+  const handleChangeUsername = e => setUsername(e.target.value);
+  const handleChangePassword = e => setPassword(e.target.value);
   useEffect(() => {
     if (email.length > 0 && name.length > 0 && username.length > 0 && password.length > 4)
       setFormValid(true)

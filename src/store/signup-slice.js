@@ -59,7 +59,7 @@ export const signupActions = signupSlice.actions;
 export const signUp = (signupInfo, navigate) => async (dispatch) => {
     dispatch(signupActions.setSendingForm(true))
     const fetchHandler = async () => {
-        const res = await fetch(myConfig.host_name + 'signup/', {
+        const res = await fetch(myConfig.host_name + '/signup/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -89,7 +89,7 @@ export const signUp = (signupInfo, navigate) => async (dispatch) => {
 
 export const validate = (signupInfo, type) => async (dispatch) => {
     const fetchHandler = async () => {
-        const res = await fetch(myConfig.host_name + 'signup/validate/', {
+        const res = await fetch(myConfig.host_name + '/signup/validate/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

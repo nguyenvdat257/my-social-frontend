@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../store/page-slice";
 import { updateToken, logoutUser } from '../store/auth-slice'
 import { Link, useNavigate } from 'react-router-dom'
+import { myConfig } from '../config';
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -34,12 +35,12 @@ const Header = () => {
     return () => clearInterval(interval)
   });
   return (
-    <div>
+    <div className='sticky-header'>
       <div className="row row-header align-items-center">
-        <div className="col-3 offset-1 header-app-name">
+        <div className="col-2 offset-2 header-app-name">
           My Social Net
         </div>
-        <div className="col-3 header-search">
+        <div className="col-2 offset-1 header-search">
           <InputGroup>
             <InputGroup.Text id="basic-addon1"><BsSearch /></InputGroup.Text>
             <FormControl
@@ -92,11 +93,11 @@ const Header = () => {
               </div>
               {/* avatar */}
               <div className='col-2'>
-                <img ref={targetMenu} src="avatar.jpg" alt="Avatar"
+                <img ref={targetMenu} src={myConfig.default_avatar} alt="Avatar"
                   className={`header-item header-avatar ${showMenu ? 'border-around' : ''}`}
                   onClick={() => setShowMenu(!showMenu)}></img>
               </div>
-              <Overlay target={targetAdd.current} show={showAdd} placement='bottom' rootClose onHide={() => setShowAdd(false)}>
+              <Overlay target={targetAdd.current} show={showAdd} placement='bottom' rootClose  onHide={() => setShowAdd(false)}>
                 <Popover className='header-menu'>
                   <div className='header-menu-item'> Add </div>
                 </Popover>
@@ -107,7 +108,7 @@ const Header = () => {
                 </Popover>
               </Overlay>
               <Overlay target={targetMenu.current} show={showMenu} placement='bottom' rootClose onHide={() => setShowMenu(false)}>
-                <Popover className='header-menu'>
+                <Popover className='header-menu' onClick={() => setShowMenu(false)} >
                   <Link to='/' style={{ color: 'inherit', textDecoration: 'none' }}>
                     <div className='header-menu-item'><CgProfile /><span> Profile</span> </div>
                   </Link>
