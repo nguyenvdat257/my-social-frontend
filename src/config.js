@@ -1,5 +1,9 @@
 export const myConfig = { 
-    // host_name:'https://social-net-216.herokuapp.com/'
-    host_name:'http://127.0.0.1:8000',
-    default_avatar: 'http://localhost:3000/avatar.jpg'
+    // hostName:'https://social-net-216.herokuapp.com/'
+    hostName:'http://127.0.0.1:8000',
+    defaultAvatar: 'http://localhost:3000/avatar.jpg',
+    getError: 'Cannot get data from server.',
+    sendError: 'Cannot send data to server.',
+    serverError: 'Cannot connect to server.',
+    settingSaved: 'Setting saved.'
 };

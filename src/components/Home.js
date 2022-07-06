@@ -1,9 +1,12 @@
 import React from 'react'
+import StoryBoard from './StoryBoard'
 
 const Home = () => {
   return (
     <>
-      <div>Home</div>
+      <div className="row mb-0" style={{ 'paddingTop': '5.5rem', 'height': '100%' }}>
+        <StoryBoard />
+      </div>
     </>
   )
 }

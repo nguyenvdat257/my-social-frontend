@@ -41,7 +41,7 @@ export const authActions = authSlice.actions;
 export const loginUser = (username, password, navigate) => async (dispatch) => {
     dispatch(authActions.setSendingForm(true))
     const fetchHandler = async () => {
-        const res = await fetch(myConfig.host_name + '/token/', {
+        const res = await fetch(myConfig.hostName + '/token/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -76,7 +76,7 @@ export const updateToken = () => async (dispatch, getState) => {
     const refresh_token = getState().auth.token ? getState().auth.token.refresh :
         JSON.parse(localStorage.getItem('token')).refresh
     const fetchHandler = async () => {
-        const res = await fetch(myConfig.host_name + '/token/refresh/', {
+        const res = await fetch(myConfig.hostName + '/token/refresh/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -97,7 +97,8 @@ export const updateToken = () => async (dispatch, getState) => {
         }
 
     } catch (err) {
-        dispatch(authActions.logout())
+        // dispatch(authActions.logout())
+        console.log('server error')
     }
 }
 

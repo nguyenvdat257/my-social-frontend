@@ -1,6 +1,7 @@
 html {
   /* this makes sure the padding and the border is included in the box sizing */
   overflow-x: hidden;
+  font-family: 'Neue Helvetica';
 }
 
 .row-header {
@@ -140,4 +141,59 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.toasts {
+  position: fixed;
+  min-width: 100vw;
+  height: 3rem;
+  background: black;
+  color: white;
+  opacity: 0.8;
+  z-index: 9999;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  margin: 0px;
+  padding: 0px;
+  pointer-events: none;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.toasts-text {
+  margin-left: 2rem;
+  font-size: medium;
+}
+
+.spinner {
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  border: solid black;
+  position: absolute;
+  left: 48%;
+  top: 48%;
+  display: block;
+}
+
+.privacy-check {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.privacy-note {
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+.privacy-disabled {
+  opacity: 0.5;
+}
+
+
+.privacy-title {
+  font-size: 1.5rem;
+  font-weight: 400;
 }

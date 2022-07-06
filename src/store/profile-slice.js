@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { myConfig } from '../config';
+import { callApi } from './actions';
+import { toastActions } from './toast-slice';
 
 const profileSlice = createSlice({
     name: 'profile',
@@ -36,13 +38,26 @@ const profileSlice = createSlice({
             state.gender = action.payload
         },
         setData(state, action) {
-            state.avatarUrl = myConfig.host_name + action.payload.avatar;
+            state.avatarUrl = myConfig.hostName + action.payload.avatar.thumbnail_larger;
             state.displayUsername = action.payload.username;
             state.username = action.payload.username;
             state.name = action.payload.name ? action.payload.name : '';
             state.website = action.payload.website ? action.payload.website : '';
             state.bio = action.payload.bio ? action.payload.bio : '';
             state.gender = action.payload.gender ? action.payload.gender : 'N';
+        },
+        resetData(state, action) {
+            state.avatarUrl = '';
+            state.displayUsername = '';
+            state.username = '';
+            state.name = '';
+            state.website = '';
+            state.bio = '';
+            state.gender = '';
+            state.gettingData = true;
+            state.sendingData = false;
+            state.editError = { 'isError': false, 'message': '' };
+            state.editSuccess = { 'isSuccess': false, 'message': '' };
         },
         editedSuccess(state, action) {
             state.editSuccess = { 'isSuccess': true, 'message': 'You successfully updated your profile!' };
@@ -73,71 +88,34 @@ const profileSlice = createSlice({
 
 export const profileActions = profileSlice.actions;
 
-export const getData = () => async (dispatch, getState) => {
-    const fetchHandler = async () => {
-        const res = await fetch(myConfig.host_name + '/profiles/', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + String(getState().auth.token.access)
-            },
-        })
-        const data = await res.json();
-        const status = res.status
-        return [data, status];
-    }
-    try {
-        const [data, status] = await fetchHandler();
-        if (status === 200) {
-            dispatch(profileActions.setData({
-                avatar: data['avatar']['thumbnail_larger'],
-                username: data['username'],
-                name: data['name'],
-                website: data['website'],
-                bio: data['bio'],
-                gender: data['gender']
-            }))
-        } else {
-            alert('Please try again in a moment.')
-        }
-    } catch (err) {
-        alert('Please try again in a moment.')
-    }
-    dispatch(profileActions.setGettingData(false))
+export const getData = () => {
+    const url = myConfig.hostName + '/profiles/';
+    const method = 'GET';
+    const sendData = null;
+    const successHandler = (data) => profileActions.setData(data);
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+
+    const before = () => profileActions.setGettingData(true);
+    const afterConnected = () => profileActions.setGettingData(false);
+    const afterUnconnected = () => profileActions.setGettingData(false);
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
-export const submitData = (formData) => async (dispatch, getState) => {
-    dispatch(profileActions.setSendingData(true))
-    const fetchHandler = async () => {
-        const res = await fetch(myConfig.host_name + '/profiles/', {
-            method: 'PUT',
-            headers: {
-                'Authorization': 'Bearer ' + String(getState().auth.token.access),
-            },
-            body: formData
-        })
-        const data = await res.json();
-        const status = res.status
-        return [data, status];
+export const submitData = (formData) => {
+    const url = myConfig.hostName + '/profiles/';
+    const method = 'PUT';
+    // const sendData = formData;
+    const successHandler = (data) => (dispatch) => {
+        dispatch(profileActions.setData(data));
+        dispatch(profileActions.editedSuccess());
     }
-    try {
-        const [data, status] = await fetchHandler();
-        if (status === 200) {
-            dispatch(profileActions.setData({
-                avatar: data['avatar']['thumbnail_larger'],
-                username: data['username'],
-                name: data['name'],
-                website: data['website'],
-                bio: data['bio'],
-                gender: data['gender']
-            }))
-            dispatch(profileActions.editedSuccess());
-        } else {
-            dispatch(profileActions.editedError(data))
-        }
-    } catch (err) {
-        alert('Please try again in a moment.')
-    }
-    dispatch(profileActions.setSendingData(false))
+    const failHandler = (data) => profileActions.editedError(data);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+    const before = () => profileActions.setSendingData(true);
+    const afterConnected = () => profileActions.setSendingData(false);
+    const afterUnconnected = () => profileActions.setSendingData(false);
+    return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
+
 export default profileSlice;

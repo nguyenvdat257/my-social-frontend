@@ -14,15 +14,17 @@ const Main = () => {
   return (
     <div>
       <Header />
-      <Routes>
-        <Route path="/" element={<PrivateRoute isLoggedIn={isLoggedIn}/>}>
-          <Route path="" element={<Home />} />
-          <Route path='direct/inbox' element={<Chat />} />
-          <Route path="/explore" element={<Explore />} />
-          {/* <Route path="/:username" element={<Profile />} />  */}
-          <Route path="/accounts/edit" element={<Settings />} />
-        </Route>
-      </Routes>
+      <div className='contain'>
+        <Routes>
+          <Route path="/" element={<PrivateRoute isLoggedIn={isLoggedIn} />}>
+            <Route path="" element={<Home />} />
+            <Route path='direct/inbox' element={<Chat />} />
+            <Route path="explore" element={<Explore />} />
+            {/* <Route path="/:username" element={<Profile />} />  */}
+            <Route path="accounts/*" element={<Settings />} />
+          </Route>
+        </Routes>
+      </div>
     </div>
   )
 }

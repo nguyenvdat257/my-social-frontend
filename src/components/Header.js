@@ -8,7 +8,6 @@ import { CgProfile } from 'react-icons/cg'
 import { FiBookmark } from 'react-icons/fi'
 import { Popover, Overlay } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux";
-import { pageActions } from "../store/page-slice";
 import { updateToken, logoutUser } from '../store/auth-slice'
 import { Link, useNavigate } from 'react-router-dom'
 import { myConfig } from '../config';
@@ -20,13 +19,13 @@ const Header = () => {
   const targetMenu = useRef(null);
   const targetNoti = useRef(null);
   const targetAdd = useRef(null);
-  const page = useSelector(state => state.page.page);
+  const [page, setPage] = useState('home')
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const switchPage = (page) => {
-    dispatch(pageActions.switchPage({ page }));
-  };
+  // const setPage = (page) => {
+  //   dispatch(pageActions.setPage({ page }));
+  // };
   useEffect(() => {
     let fourMinutes = 1000 * 60 * 4
     let interval = setInterval(() => {
@@ -55,7 +54,7 @@ const Header = () => {
           <div className='col-2 offset-1'>
             <div className='row'>
               {/* home */}
-              <div className='col-2' onClick={() => switchPage('home')} >
+              <div className='col-2' onClick={() => setPage('home')} >
                 <Link to='/' className='link'>
                   {page === 'home' && !showMenu && !showAdd && !showNoti ?
                     (<RiHomeFill size={24} className='header-item' />) :
@@ -64,7 +63,7 @@ const Header = () => {
                 </Link>
               </div>
               {/* chat */}
-              <div className='col-2' onClick={() => switchPage('chat')} >
+              <div className='col-2' onClick={() => setPage('chat')} >
                 <Link to='/direct/inbox' className='link'>
                   {page === 'chat' && !showMenu && !showAdd && !showNoti ?
                     (<RiMessengerFill size={26} className='header-item' />) :
@@ -78,7 +77,7 @@ const Header = () => {
                 {!showAdd && <BsPlusSquare size={24} className='header-item' />}
               </div>
               {/* explore */}
-              <div className='col-2' onClick={() => switchPage('explore')} >
+              <div className='col-2' onClick={() => setPage('explore')} >
                 <Link to='/explore' className='link'>
                   {page === 'explore' && !showMenu && !showAdd && !showNoti ?
                     (<AiFillCompass size={26} className='header-item' />) :
@@ -93,7 +92,7 @@ const Header = () => {
               </div>
               {/* avatar */}
               <div className='col-2'>
-                <img ref={targetMenu} src={myConfig.default_avatar} alt="Avatar"
+                <img ref={targetMenu} src={myConfig.defaultAvatar} alt="Avatar"
                   className={`header-item header-avatar ${showMenu ? 'border-around' : ''}`}
                   onClick={() => setShowMenu(!showMenu)}></img>
               </div>
