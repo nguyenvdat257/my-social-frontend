@@ -5,7 +5,9 @@ const Home = () => {
   return (
     <>
       <div className="row mb-0" style={{ 'paddingTop': '5.5rem', 'height': '100%' }}>
-        <StoryBoard />
+        <div className="col-4 offset-2" style={{ height: '100%', padding: 0 }} >
+          <StoryBoard />
+        </div>
       </div>
     </>
   )

@@ -93,7 +93,7 @@ const Header = () => {
               {/* avatar */}
               <div className='col-2'>
                 <img ref={targetMenu} src={myConfig.defaultAvatar} alt="Avatar"
-                  className={`header-item header-avatar ${showMenu ? 'border-around' : ''}`}
+                  className={`header-item avatar header-avatar ${showMenu ? 'border-around' : ''}`}
                   onClick={() => setShowMenu(!showMenu)}></img>
               </div>
               <Overlay target={targetAdd.current} show={showAdd} placement='bottom' rootClose  onHide={() => setShowAdd(false)}>

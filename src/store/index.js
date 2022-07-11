@@ -4,6 +4,7 @@ import signupSlice from "./signup-slice";
 import profileSlice from "./profile-slice"
 import privacySlice from "./privacy-slice"; 
 import toastSlice from "./toast-slice";
+import storyBoardSlice from "./story-board-slice";
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from "redux";
@@ -19,7 +20,8 @@ const reducers = combineReducers({
     signup: signupSlice.reducer,
     profile: profileSlice.reducer,
     privacy: privacySlice.reducer,
-    toast: toastSlice.reducer
+    toast: toastSlice.reducer,
+    storyBoard: storyBoardSlice.reducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);
