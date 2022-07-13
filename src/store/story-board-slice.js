@@ -14,6 +14,7 @@ const storyBoardSlice = createSlice({
         story: {},
         stories: [],
         progress: 0,
+        isPause: false,
         profileIdx: 0,
         storyIdx: 0,
         isViewAll: false,
@@ -71,6 +72,7 @@ const storyBoardSlice = createSlice({
             state.profile = state.profilesStoriesList.length > 0 ? state.profilesStoriesList[state.profileIdx][0] : {};
             state.story = state.profilesStoriesList.length > 0 ? state.profilesStoriesList[state.profileIdx][1][state.storyIdx] : {};
             state.stories = state.profilesStoriesList.length > 0 ? state.profilesStoriesList[state.profileIdx][1] : {};
+            state.progress = 0
             if (state.profileIdx === 0 && state.storyIdx === 0)
                 state.isFirstStory = true;
             else
@@ -81,14 +83,30 @@ const storyBoardSlice = createSlice({
             state.isViewAll = false;
         },
         incrementProgress(state, action) {
-            state.progress += 1;
+            if (!state.isPause)
+                state.progress += 1;
         },
         resetProgress(state, action) {
             state.progress = 0;
         },
+        setProgress(state, action) {
+            state.progress -= 4;
+        },
         setGettingData(state, action) {
             state.gettingData = action.payload;
         },
+        setIsPause(state, action) {
+            state.isPause = action.payload;
+        },
+        setLike(state, action) {
+            state.story['is_like'] = action.payload
+            state.profilesStoriesList[state.profileIdx][1][state.storyIdx]['is_like'] = action.payload
+
+        },
+        updateSeen(state, action) {
+            state.story['is_seen'] = true;
+            state.profilesStoriesList[state.profileIdx][1][state.storyIdx]['is_seen'] = true;
+        }
     }
 })
 
@@ -111,4 +129,38 @@ export const getData = () => {
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
+export const storySeen = (storyId) => {
+    const url = myConfig.hostName + '/stories/view/';
+    const method = 'PUT';
+    const sendData = JSON.stringify({ 'id': storyId });
+    const successHandler = (data) => storyBoardActions.updateSeen(data);
+
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+
+    const before = null;
+    const afterConnected = null;
+    const afterUnconnected = null;
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
+export const storyLike = (storyId) => {
+    const url = myConfig.hostName + '/stories/like-unlike/';
+    const method = 'PUT';
+    const sendData = JSON.stringify({ 'id': storyId });
+    const successHandler = (data) => {
+        const is_like = data['type'] === 'like' ? true : false;
+        storyBoardActions.updateLike(is_like);
+    };
+
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+
+    const before = null;
+    const afterConnected = null;
+    const afterUnconnected = null;
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
 export default storyBoardSlice;

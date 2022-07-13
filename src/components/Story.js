@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Card, ProgressBar, Form } from 'react-bootstrap'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
@@ -7,18 +7,17 @@ import { BsFillPlayFill } from 'react-icons/bs'
 import { myConfig } from '../config'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getData } from '../store/story-board-slice'
+import { getData, storyLike, storySeen } from '../store/story-board-slice'
 import MySpinner from './Spinner'
 import { storyBoardActions } from '../store/story-board-slice'
 
 const Story = () => {
     const dispatch = useDispatch()
-    const [isPause, setIsPause] = useState(false);
-    const [isLike, setIsLike] = useState(true);
     const [isFocusInput, setIsFocusInput] = useState(false);
     const { reply, setReply } = useState('');
     const { idx } = useParams();
     const progress = useSelector(state => state.storyBoard.progress);
+    const isPause = useSelector(state => state.storyBoard.isPause);
     const isDataFetched = useSelector(state => state.storyBoard.isDataFetched);
     const isDataReady = useSelector(state => state.storyBoard.isDataReady);
     const isViewAll = useSelector(state => state.storyBoard.isViewAll);
@@ -30,16 +29,22 @@ const Story = () => {
     let interval = null;
     const navigate = useNavigate();
 
-    const handleChangeReply = e => setReply(e.target.value);
-    const handleChangePause = e => setIsPause(!isPause);
+    const handleChangeReply = e => {
+        setReply(e.target.value);
+    };
+    const handleChangePause = e => {
+        dispatch(storyBoardActions.setIsPause(!isPause));
+    }
     const onFormSubmit = e => {
         e.preventDefault();
     };
     const handleOnFocusInput = e => {
         setIsFocusInput(true);
+        dispatch(storyBoardActions.setIsPause(true))
     };
     const handleOnBlurInput = e => {
         setIsFocusInput(false);
+        dispatch(storyBoardActions.setIsPause(false))
     };
     const handleGoBack = e => {
         dispatch(storyBoardActions.decrementStoryIdx())
@@ -49,9 +54,18 @@ const Story = () => {
         dispatch(storyBoardActions.incrementStoryIdx())
         dispatch(storyBoardActions.resetProgress())
     };
+    const handleLike = e => {
+        dispatch(storyLike(story['id']));
+        dispatch(storyBoardActions.setLike(!story['is_like']))
+    }
+    const handleClickOutside = e => {
+        if (e.target === e.currentTarget) {
+            navigate('/')
+        }
+    }
     useEffect(() => {
         if (isViewAll) {
-            dispatch(storyBoardActions.resetViewAll())
+            dispatch(storyBoardActions.resetViewAll());
             navigate('/');
         }
     }, [isViewAll]);
@@ -64,22 +78,29 @@ const Story = () => {
     useEffect(() => {
         if (isDataFetched)
             dispatch(storyBoardActions.setIdx(parseInt(idx)));
-    }, [isDataFetched])
+    }, [isDataFetched]);
+    useEffect(() => {
+        if (story['is_seen'] === false) {
+            dispatch(storySeen(story['id']));
+        }
+    }, [story]);
     useEffect(() => {
         interval = setInterval(() => {
             dispatch(storyBoardActions.incrementProgress())
         }, 100);
+        return () => clearInterval(interval);
     }, [isDataReady]);
     useEffect(() => {
-        if (progress === 110) {
-            if (isViewAll)
-                navigate('/')
-            else {
-                dispatch(storyBoardActions.incrementStoryIdx())
-                dispatch(storyBoardActions.resetProgress())
-            }
+        if (progress === 105) {
+            dispatch(storyBoardActions.incrementStoryIdx())
+            dispatch(storyBoardActions.resetProgress())
         }
-    }, [progress])
+    }, [progress]);
+    useEffect(() => {
+        if (isPause) {
+            dispatch(storyBoardActions.setProgress())
+        }
+    }, [isPause]);
     if (!isDataReady)
         return (
             <div className='story-contain' style={{ opacity: isFocusInput ? 0.8 : 0.9 }}>
@@ -92,15 +113,15 @@ const Story = () => {
         navigate('/')
     else
         return (
-            <div className='story-contain' style={{ opacity: isFocusInput ? 0.8 : 0.9 }}>
+            <div className='story-contain' style={{ opacity: isFocusInput ? 0.8 : 0.9 }} onClick={handleClickOutside}>
                 <IoIosArrowBack className='story-control-button' onClick={handleGoBack} style={{ visibility: !isFirstStory ? 'visible' : 'hidden' }} />
-                <Card className='story-slide'>
+                <Card className='story-slide' style={{backgroundColor: 'white', borderRadius: '1rem'}}>
                     <div className='story-progress'>
                         <div className='' style={{ display: 'flex' }}>
                             {stories.map((item, index) => {
                                 let currentProgress = 0;
                                 if (index < storyIdx)
-                                    currentProgress = 110;
+                                    currentProgress = 105;
                                 if (index === storyIdx)
                                     currentProgress = progress;
                                 return (<ProgressBar key={index} min="0" max="100" className='' now={currentProgress} style={{ width: `${100 / stories.length}%`, height: '3px', marginLeft: '3px' }} />)
@@ -126,8 +147,8 @@ const Story = () => {
                             </Form>
                             {isFocusInput && <div class='story-send'>Send</div>}
                         </div>
-                        {isLike && <AiFillHeart size='1.6rem' style={{ color: 'red' }} />}
-                        {!isLike && <AiOutlineHeart size='1.6rem' />}
+                        {story['is_like'] && <AiFillHeart size='1.6rem' style={{ color: 'red' }} onClick={handleLike} />}
+                        {!story['is_like'] && <AiOutlineHeart size='1.6rem' onClick={handleLike} />}
                     </div>
                 </Card>
                 <IoIosArrowForward className='story-control-button' onClick={handleGoForward} />

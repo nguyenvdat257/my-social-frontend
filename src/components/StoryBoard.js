@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import MyToast from './MyToast'
 import MySpinner from './Spinner'
 import { myConfig } from '../config'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const StoryBoard = () => {
   const dispatch = useDispatch();
@@ -31,13 +31,22 @@ const StoryBoard = () => {
           {
             unSeenProfiles.concat(seenProfiles).map((profile, index) => (
               <div className='d-flex flex-column story-board-item' key={profile.username}>
-                <Link to={'/stories/profiles/' + index} state={{profileIdx: index}}>
-                  <img className='avatar story-board-avatar story-board-outline-unseen' src={profile.avatar.thumbnail_larger ? myConfig.hostName + profile.avatar.thumbnail_larger : myConfig.defaultAvatar} />
+                <Link to={'/stories/profiles/' + index} state={{ profileIdx: index }}>
+                  <img className={`avatar story-board-avatar${index < unSeenProfiles.length ? ' story-board-outline-unseen': ''} `} src={profile.avatar.thumbnail_larger ? myConfig.hostName + profile.avatar.thumbnail_larger : myConfig.defaultAvatar} />
                 </Link>
                 <div className='story-board-text'>{profile.username}</div>
               </div>
-            )
-            )}
+            ))
+
+            // seenProfiles.map((profile, index) => (
+            //   <div className='d-flex flex-column story-board-item' key={profile.username}>
+            //     <Link to={'/stories/profiles/' + index} state={{ profileIdx: index }}>
+            //       <img className='avatar story-board-avatar' src={profile.avatar.thumbnail_larger ? myConfig.hostName + profile.avatar.thumbnail_larger : myConfig.defaultAvatar} />
+            //     </Link>
+            //     <div className='story-board-text'>{profile.username}</div>
+            //   </div>
+            // ))
+          }
         </div>
       </Card>
     );

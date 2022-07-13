@@ -23,6 +23,9 @@ const Header = () => {
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const handleClickHome = e => {
+    navigate('/');
+  }
   // const setPage = (page) => {
   //   dispatch(pageActions.setPage({ page }));
   // };
@@ -36,7 +39,7 @@ const Header = () => {
   return (
     <div className='sticky-header'>
       <div className="row row-header align-items-center">
-        <div className="col-2 offset-2 header-app-name">
+        <div className="col-2 offset-2 header-app-name" onClick={handleClickHome}>
           My Social Net
         </div>
         <div className="col-2 offset-1 header-search">
