@@ -10,9 +10,6 @@ const storyBoardSlice = createSlice({
         seenProfiles: [],
         profilesStoriesList: [],
         selfStories: [],
-        profile: {},
-        story: {},
-        stories: [],
         progress: 0,
         isPause: false,
         profileIdx: 0,
@@ -48,9 +45,6 @@ const storyBoardSlice = createSlice({
             } else {
                 state.isViewAll = true;
             }
-            state.profile = state.profilesStoriesList[state.profileIdx][0]
-            state.story = state.profilesStoriesList[state.profileIdx][1][state.storyIdx]
-            state.stories = state.profilesStoriesList[state.profileIdx][1]
             state.isFirstStory = false;
         },
         decrementStoryIdx(state, action) {
@@ -62,16 +56,10 @@ const storyBoardSlice = createSlice({
             }
             if (state.profileIdx === 0 && state.storyIdx === 0)
                 state.isFirstStory = true;
-            state.profile = state.profilesStoriesList[state.profileIdx][0]
-            state.story = state.profilesStoriesList[state.profileIdx][1][state.storyIdx]
-            state.stories = state.profilesStoriesList[state.profileIdx][1]
         },
         setIdx(state, action) {
             state.profileIdx = action.payload;
             state.storyIdx = 0;
-            state.profile = state.profilesStoriesList.length > 0 ? state.profilesStoriesList[state.profileIdx][0] : {};
-            state.story = state.profilesStoriesList.length > 0 ? state.profilesStoriesList[state.profileIdx][1][state.storyIdx] : {};
-            state.stories = state.profilesStoriesList.length > 0 ? state.profilesStoriesList[state.profileIdx][1] : {};
             state.progress = 0
             if (state.profileIdx === 0 && state.storyIdx === 0)
                 state.isFirstStory = true;
@@ -99,12 +87,9 @@ const storyBoardSlice = createSlice({
             state.isPause = action.payload;
         },
         setLike(state, action) {
-            state.story['is_like'] = action.payload
             state.profilesStoriesList[state.profileIdx][1][state.storyIdx]['is_like'] = action.payload
-
         },
         updateSeen(state, action) {
-            state.story['is_seen'] = true;
             state.profilesStoriesList[state.profileIdx][1][state.storyIdx]['is_seen'] = true;
         }
     }
@@ -149,9 +134,9 @@ export const storyLike = (storyId) => {
     const url = myConfig.hostName + '/stories/like-unlike/';
     const method = 'PUT';
     const sendData = JSON.stringify({ 'id': storyId });
-    const successHandler = (data) => {
+    const successHandler = (data) => (dispatch) => {
         const is_like = data['type'] === 'like' ? true : false;
-        storyBoardActions.updateLike(is_like);
+        dispatch(storyBoardActions.setLike(is_like));
     };
 
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);

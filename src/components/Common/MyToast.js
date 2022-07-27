@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { toastActions } from '../store/toast-slice';
+import { toastActions } from '../../store/toast-slice';
 
 const MyToast = () => {
   const dispatch = useDispatch()

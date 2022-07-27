@@ -3,7 +3,7 @@ import { Form, Button, Card, Spinner, FormGroup, InputGroup } from 'react-bootst
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from 'react';
-import { signUp, validate } from "../store/signup-slice";
+import { signUp, validate } from "../../store/signup-slice";
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from 'react-icons/ai'
 

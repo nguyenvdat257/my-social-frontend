@@ -5,9 +5,13 @@ import profileSlice from "./profile-slice"
 import privacySlice from "./privacy-slice"; 
 import toastSlice from "./toast-slice";
 import storyBoardSlice from "./story-board-slice";
+import postTimeLineSlice from "./post-timeline-slice";
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from "redux";
+import profileModalSlice from "./profile-modal-slice";
+import postAddSlice from "./post-add-slice";
+
 
 const persistConfig = {
     key: 'root',
@@ -22,6 +26,9 @@ const reducers = combineReducers({
     privacy: privacySlice.reducer,
     toast: toastSlice.reducer,
     storyBoard: storyBoardSlice.reducer,
+    postTimeline: postTimeLineSlice.reducer,
+    profileModal: profileModalSlice.reducer,
+    postAdd: postAddSlice.reducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);

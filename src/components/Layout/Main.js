@@ -1,13 +1,15 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import Header from './Header'
+
 import Home from './Home'
-import Chat from './Chat'
-import Settings from './Settings'
-import Explore from './Explore'
-import Profile from './Profile'
-import PrivateRoute from '../utils/PrivateRoute'
+import Chat from '../Chat/Chat'
+import Header from './Header'
+import Settings from '../Settings/Settings'
+import Explore from '../Explore/Explore'
+import Profile from '../Profile/Profile'
+import PrivateRoute from '../../utils/PrivateRoute'
 import { useSelector } from 'react-redux'
+import PostAdd from '../PostAdd/PostAdd'
 
 const Main = () => {
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);

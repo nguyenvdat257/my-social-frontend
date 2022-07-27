@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 // import { loginUser } from '../store/auth-actions';
 import { useState, useEffect } from 'react';
-import { authActions, loginUser } from "../store/auth-slice";
+import { authActions, loginUser } from "../../store/auth-slice";
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Form, Card } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
-import { privacyActions } from '../store/privacy-slice'
-import { getData, submitData } from '../store/privacy-slice'
-import MyToast from './MyToast'
-import MySpinner from './Spinner'
+import { privacyActions } from '../../store/privacy-slice'
+import { getData, submitData } from '../../store/privacy-slice'
+import MySpinner from '../Common/Spinner'
 
 const Privacy = () => {
   const dispatch = useDispatch()
@@ -36,7 +35,6 @@ const Privacy = () => {
         <div className="col-6" style={{ height: '90%', padding: 0, position: 'relative' }} >
           <MySpinner />
         </div>
-        <MyToast />
       </>
     )
   else
@@ -67,7 +65,6 @@ const Privacy = () => {
             </Card.Body>
           </Card>
         </div>
-        <MyToast />
       </>
     )
 }

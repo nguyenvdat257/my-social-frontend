@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, ProgressBar, Form } from 'react-bootstrap'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { GiPauseButton } from 'react-icons/gi'
 import { BsFillPlayFill } from 'react-icons/bs'
-import { myConfig } from '../config'
+import { myConfig } from '../../config'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getData, storyLike, storySeen } from '../store/story-board-slice'
-import MySpinner from './Spinner'
-import { storyBoardActions } from '../store/story-board-slice'
+import { getData, storyLike, storySeen } from '../../store/story-board-slice'
+import MySpinner from '../Common/Spinner'
+import { storyBoardActions } from '../../store/story-board-slice'
 
 const Story = () => {
     const dispatch = useDispatch()
@@ -23,10 +23,9 @@ const Story = () => {
     const isViewAll = useSelector(state => state.storyBoard.isViewAll);
     const isFirstStory = useSelector(state => state.storyBoard.isFirstStory);
     const storyIdx = useSelector(state => state.storyBoard.storyIdx);
-    const profile = useSelector(state => state.storyBoard.profile);
-    const story = useSelector(state => state.storyBoard.story);
-    const stories = useSelector(state => state.storyBoard.stories);
-    let interval = null;
+    const profile = useSelector(state => state.storyBoard.profilesStoriesList?.length > 0 ? state.storyBoard.profilesStoriesList[state.storyBoard.profileIdx][0] : null);
+    const story = useSelector(state => state.storyBoard.profilesStoriesList?.length > 0 ? state.storyBoard.profilesStoriesList[state.storyBoard.profileIdx][1][state.storyBoard.storyIdx] : null);
+    const stories = useSelector(state => state.storyBoard.profilesStoriesList?.length > 0 ? state.storyBoard.profilesStoriesList[state.storyBoard.profileIdx][1] : null);
     const navigate = useNavigate();
 
     const handleChangeReply = e => {
@@ -80,12 +79,12 @@ const Story = () => {
             dispatch(storyBoardActions.setIdx(parseInt(idx)));
     }, [isDataFetched]);
     useEffect(() => {
-        if (story['is_seen'] === false) {
+        if (!(story === null) && story['is_seen'] === false) {
             dispatch(storySeen(story['id']));
         }
     }, [story]);
     useEffect(() => {
-        interval = setInterval(() => {
+        const interval = setInterval(() => {
             dispatch(storyBoardActions.incrementProgress())
         }, 100);
         return () => clearInterval(interval);
@@ -101,7 +100,7 @@ const Story = () => {
             dispatch(storyBoardActions.setProgress())
         }
     }, [isPause]);
-    if (!isDataReady)
+    if (!isDataReady || profile === null)
         return (
             <div className='story-contain' style={{ opacity: isFocusInput ? 0.8 : 0.9 }}>
                 <Card className='story-slide'>
@@ -109,13 +108,11 @@ const Story = () => {
                 </Card>
             </div>
         )
-    else if (profile === {}) // data ready but empty
-        navigate('/')
     else
         return (
             <div className='story-contain' style={{ opacity: isFocusInput ? 0.8 : 0.9 }} onClick={handleClickOutside}>
                 <IoIosArrowBack className='story-control-button' onClick={handleGoBack} style={{ visibility: !isFirstStory ? 'visible' : 'hidden' }} />
-                <Card className='story-slide' style={{backgroundColor: 'white', borderRadius: '1rem'}}>
+                <Card className='story-slide' style={{ backgroundColor: 'white', borderRadius: '1rem' }}>
                     <div className='story-progress'>
                         <div className='' style={{ display: 'flex' }}>
                             {stories.map((item, index) => {
@@ -131,7 +128,7 @@ const Story = () => {
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <img className='avatar story-avatar' src={profile.avatar.thumbnail_larger ? myConfig.hostName + profile.avatar.thumbnail_larger : myConfig.defaultAvatar} />
                                 <div className='story-info-name'>{profile.username}</div>
-                                <div className='story-info-ago'>{story['hour_ago']}h</div>
+                                <div className='story-info-ago fade-text'>{story['hour_ago']}h</div>
                             </div>
                             <div>
                                 {!isPause && <GiPauseButton size='1.4rem' onClick={handleChangePause} />}
@@ -143,7 +140,7 @@ const Story = () => {
                     <div className='story-reaction'>
                         <div className='story-form'>
                             <Form onSubmit={onFormSubmit} >
-                                <Form.Control as="textarea" rows='1' name='reply' style={{ borderRadius: '1.5rem' }} onChange={handleChangeReply} onFocus={handleOnFocusInput} onBlur={handleOnBlurInput} placeholder="Reply to " />
+                                <Form.Control as="textarea" className='shadow-none' rows='1' name='reply' style={{ borderRadius: '1.5rem', resize: 'none' }} onChange={handleChangeReply} onFocus={handleOnFocusInput} onBlur={handleOnBlurInput} placeholder="Reply to " />
                             </Form>
                             {isFocusInput && <div class='story-send'>Send</div>}
                         </div>

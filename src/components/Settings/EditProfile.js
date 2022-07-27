@@ -2,9 +2,8 @@ import React, { useEffect } from 'react'
 import { Form, Row, Col, Card, Modal, Button, Spinner } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { useState, useRef } from 'react'
-import { profileActions, getData, submitData } from '../store/profile-slice'
-import MySpinner from './Spinner'
-import MyToast from './MyToast'
+import { profileActions, getData, submitData } from '../../store/profile-slice'
+import MySpinner from '../Common/Spinner'
 
 const EditProfile = () => {
   const dispatch = useDispatch()
@@ -79,7 +78,6 @@ const EditProfile = () => {
         <div className="col-6" style={{ height: '90%', padding: 0, position: 'relative' }} >
           <MySpinner />
         </div>
-        <MyToast />
       </>
     )
   else
@@ -192,7 +190,6 @@ const EditProfile = () => {
             </Card.Body>
           </Card>
         </div >
-        <MyToast />
       </>
     )
 }
