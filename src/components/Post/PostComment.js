@@ -133,7 +133,7 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef}) 
             }
             {
                 isOriginalComment &&
-                <div className='post-row-comment' style={{ display: 'flex' }}>
+                <div className='post-row-comment' style={{ display: 'flex', marginTop: '1rem' }}>
                     <img className='avatar post-header-avatar' style={{ marginRight: '1.0rem' }}
                         src={post.profile_info.avatar.thumbnail ? myConfig.hostName + post.profile_info.avatar.thumbnail : myConfig.defaultAvatar} />
                     <div style={{ width: '85%' }}>

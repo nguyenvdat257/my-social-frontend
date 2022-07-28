@@ -9,7 +9,6 @@ import Explore from '../Explore/Explore'
 import Profile from '../Profile/Profile'
 import PrivateRoute from '../../utils/PrivateRoute'
 import { useSelector } from 'react-redux'
-import PostAdd from '../PostAdd/PostAdd'
 
 const Main = () => {
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);

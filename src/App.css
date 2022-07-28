@@ -23,20 +23,24 @@ html, body, #root, #root>div {
   align-items: center;
 }
 
-.modal-custom-header {
-  display: flex;
-  position: relative;
-  align-items: center;
-  justify-content: center !important;
-  height: 3rem;
+.border-bottom {
   border-bottom: 1px ridge;
-  font-weight: bold;
 }
 
-.modal-close-button {
-  position: absolute;
-  right: 3%;
-  top: 35%
+.modal-custom-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3rem;
+  border-bottom: 1px ridge;
+}
+
+.modal-header-discard-post {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 6rem;
+  border-bottom: 1px ridge;
 }
 
 
@@ -97,6 +101,15 @@ html, body, #root, #root>div {
 .modal-custom-post-add {
   height: fit-content !important;
   max-width: fit-content !important;
+}
+
+.modal-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.9rem;
+  width: 25rem;
+  padding: 0.2rem;
 }
 
 .pointer-cursor {
@@ -253,8 +266,8 @@ html, body, #root, #root>div {
   height: 20px;
   border: solid black;
   position: absolute;
-  left: 48%;
-  top: 48%;
+  left: 45%;
+  top: 45%;
   display: block;
 }
 
@@ -619,6 +632,18 @@ html, body, #root, #root>div {
   opacity: 0.7;
 }
 
+.bold-text {
+  font-weight: 600;
+}
+
+.smaller-text {
+  font-size: 0.8rem;
+}
+
+.larger-text {
+  font-size: 1.5rem;
+}
+
 .story-reaction {
   position: absolute;
   display: flex;
@@ -803,9 +828,9 @@ html, body, #root, #root>div {
 
 .post-main-slide {
   display: flex;
-  background-color: black;
   align-items: center;
-
+  width: 40rem;
+  height: 40rem;
 }
 
 .post-add-select-file {
@@ -815,4 +840,31 @@ html, body, #root, #root>div {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.post-add-next-button {
+  background-color: gray; 
+  color: white;
+  border-radius:50%;
+}
+
+.post-add-next-button-position {
+  position: absolute;
+  top: -2.5%;
+  left: 42.5%;
+  z-index: 99; 
+}
+
+.post-add-locator-position {
+  position: absolute;
+  bottom: 5%;
+  left: 0;
+  z-index: 99; 
+}
+
+.post-add-locator {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius:50%;
+  margin: 0.1rem;
 }

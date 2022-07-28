@@ -131,8 +131,8 @@ const Story = () => {
                                 <div className='story-info-ago fade-text'>{story['hour_ago']}h</div>
                             </div>
                             <div>
-                                {!isPause && <GiPauseButton size='1.4rem' onClick={handleChangePause} />}
-                                {isPause && <BsFillPlayFill size='1.6rem' onClick={handleChangePause} />}
+                                {!isPause && <GiPauseButton className='pointer-cursor' size='1.4rem' onClick={handleChangePause} />}
+                                {isPause && <BsFillPlayFill className='pointer-cursor' size='1.6rem' onClick={handleChangePause} />}
                             </div>
                         </div>
                     </div>

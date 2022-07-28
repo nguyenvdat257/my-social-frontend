@@ -7,6 +7,7 @@ import { postTimelineActions } from '../../store/post-timeline-slice'
 const PostComments = ({ post, isTimeline, inputRef}) => {
   const dispatch = useDispatch();
   const gettingComment = useSelector(state => state.postTimeline.gettingComment);
+  const commentLoaded = useSelector(state => state.postTimeline.commentLoaded);
   const handleClickViewComment = e => {
     dispatch(postTimelineActions.setShowPostMain({postCode: post.code, value: true}));
   };
@@ -29,9 +30,9 @@ const PostComments = ({ post, isTimeline, inputRef}) => {
         </div>
       }
       {// Display comments main
-        !isTimeline &&
+        !isTimeline && commentLoaded &&
         <div className='post-row-main post-content' >
-          <PostComment post={post} isTimeline={isTimeline} isOriginalComment={true}/>
+          <PostComment key={'body'} post={post} isTimeline={isTimeline} isOriginalComment={true}/>
           {
             post.comments.map((comment, index) => (
               <PostComment key={index} post={post} comment={comment} isTimeline={isTimeline} inputRef={inputRef} />

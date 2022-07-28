@@ -3,19 +3,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import PostHeader from './PostHeader';
 import PostDetail from './PostDetail';
 import PostComments from './PostComments';
-import { callGetComments, callGetNextComment } from '../../store/post-timeline-slice';
+import PostTimelineList from './PostTimelineList';
+import { postTimelineActions, callGetComments, callGetNextComment } from '../../store/post-timeline-slice';
 
 const PostMainInfo = ({ post }) => {
   const dispatch = useDispatch()
   const commentLoaded = useSelector(state => state.postTimeline.commentLoaded);
   const nextUrl = useSelector(state => state.postTimeline.nextCommentUrl)
+  const usedNextUrl = useSelector(state => state.postTimeline.usedNextCommentUrl)
   const commentListRef = useRef(null);
   const inputRef = useRef(null);
   const onScroll = () => {
     if (commentListRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = commentListRef.current;
       if (scrollTop + clientHeight > scrollHeight - 1.5 && scrollTop + clientHeight < scrollHeight + 1.5) {
-        if (nextUrl) {
+        if (nextUrl && !usedNextUrl.includes(nextUrl)) {
+          dispatch(postTimelineActions.appendUsedNextCommentUrl(nextUrl));
           dispatch(callGetNextComment(post.code, nextUrl));
         }
       }
@@ -38,7 +41,7 @@ const PostMainInfo = ({ post }) => {
     }
   }, [commentLoaded]);
   return (
-    <div style={{ height: '100%', width: '30rem', position: 'relative' }}>
+    <div style={{ height: '100%', width: '30rem', position: 'relative', backgroundColor: 'white' }}>
       <PostHeader post={post} isTimeline={false} />
       <div className='post-comments' ref={commentListRef} onScroll={onScroll}>
         <PostComments post={post} isTimeline={false} inputRef={inputRef} />

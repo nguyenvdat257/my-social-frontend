@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Modal, CloseButton } from 'react-bootstrap'
 import ProfileListItem from './ProfileListItem'
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { profileModalActions } from '../../store/profile-modal-slice';
 import MySpinner from '../Common/Spinner';
 import { callNextProfile } from '../../store/profile-actions';
@@ -28,7 +28,11 @@ const ProfileListModal = ({ showModal, setShowModal, getData, profiles }) => {
     }, []);
     return (
         <Modal centered show={showModal} onHide={handleCloseModal} dialogClassName='modal-custom-like' >
-            <div className='modal-custom-header'><div>Likes</div><CloseButton className='modal-close-button' onClick={handleCloseModal} /></div>
+            <div className='modal-custom-header'>
+                <div></div>
+                <div style={{fontWeight: 'bold'}}>Likes</div>
+                <CloseButton style={{paddingRight: '1rem'}} onClick={handleCloseModal} />
+            </div>
             <div className='modal-custom-body' onScroll={() => onScroll()} ref={listInnerRef}>
                 {!gettingData &&
                     profiles.map((profile, index) => (

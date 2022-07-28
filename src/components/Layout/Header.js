@@ -33,8 +33,20 @@ const Header = () => {
   // };
   const handleClickAdd = e => {
     setShowAdd(!showAdd);
+  };
+
+  const handleClickAddPost = e => {
+    setShowAdd(false);
+    dispatch(postAddActions.setType('post'));
     dispatch(postAddActions.setShowMainModal(true));
-  }
+  };
+
+  const handleClickAddStory = e => {
+    setShowAdd(false);
+    dispatch(postAddActions.setType('story'));
+    dispatch(postAddActions.setShowMainModal(true));
+  };
+
   useEffect(() => {
     let fourMinutes = 1000 * 60 * 4
     let interval = setInterval(() => {
@@ -108,8 +120,8 @@ const Header = () => {
                 </div>
                 <Overlay target={targetAdd.current} show={showAdd} placement='bottom' rootClose onHide={() => setShowAdd(false)}>
                   <Popover className='header-menu'>
-                    <div className='header-menu-item'> Add Post </div>
-                    <div className='header-menu-item'> Add Story </div>
+                    <div className='header-menu-item pointer-cursor' onClick={handleClickAddPost}> Add Post </div>
+                    <div className='header-menu-item pointer-cursor' onClick={handleClickAddStory}> Add Story </div>
                   </Popover>
                 </Overlay>
                 <Overlay target={targetNoti.current} show={showNoti} placement='bottom' rootClose onHide={() => setShowNoti(false)}>

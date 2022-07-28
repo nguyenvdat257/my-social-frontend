@@ -8,7 +8,9 @@ const postTimeLineSlice = createSlice({
     initialState: {
         posts: [],
         nextUrl: null,
+        usedNextUrl: [],
         nextCommentUrl: null,
+        usedNextCommentUrl: [],
         gettingData: false,
         gettingComment: false,
         commentLoaded: false,
@@ -17,6 +19,19 @@ const postTimeLineSlice = createSlice({
         commentProps: {},
     },
     reducers: {
+        resetState(state, action) {
+            state.posts = [];
+            state.nextUrl = null;
+            state.usedNextUrl = [];
+            state.nextCommentUrl = null;
+            state.usedNextCommentUrl = [];
+            state.gettingData = false;
+            state.gettingComment = false;
+            state.commentLoaded = false;
+            state.replyTo = null;
+            state.postProps = {};
+            state.commentProps = {};
+        },
         setReplyTo(state, action) {
             state.replyTo = action.payload
         },
@@ -39,9 +54,18 @@ const postTimeLineSlice = createSlice({
             for (const post of action.payload.results)
                 state.postProps[post.code] = { showPostMain: false, message: '' };
         },
+        appendUsedNextUrl(state, action) {
+            state.usedNextUrl.push(action.payload);
+        },
+        appendUsedNextCommentUrl(state, action) {
+            state.usedNextCommentUrl.push(action.payload);
+        },
         setNextData(state, action) {
-            state.posts = state.posts.concat(action.payload.results)
-            state.nextUrl = action.payload.next
+            state.posts = state.posts.concat(action.payload.results);
+            // state.posts.push(action.payload.results[0])
+            // state.posts.push(action.payload.results[1])
+            state.nextUrl = action.payload.next;
+            // state.usedNextUrl.push(action.payload.next);
             state.gettingData = false;
             for (const post of action.payload.results)
                 state.postProps[post.code] = { showPostMain: false, message: '' };
@@ -61,6 +85,7 @@ const postTimeLineSlice = createSlice({
             const post = state.posts[postIndex];
             post.comments = post.comments.concat(action.payload.data.results);
             state.nextCommentUrl = action.payload.data.next;
+            // state.usedNextCommentUrl.push(action.payload.data.next);
             state.gettingComment = false;
             for (const comment of action.payload.data.results)
                 state.commentProps[comment.id] = { gettingReplyComment: false, showReply: false };

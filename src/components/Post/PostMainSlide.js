@@ -7,7 +7,7 @@ const PostMainSlide = ({ post }) => {
     <>
       {
         post.images.length === 1 &&
-        <img style={{ maxWidth: '90%', maxHeight: '100%' }} src={myConfig.hostName + post.images[0].image} />
+        <img style={{ width: '40rem', height: '40rem'}} src={myConfig.hostName + post.images[0].image} />
       }
       {
         post.images.length > 1 &&
@@ -16,7 +16,7 @@ const PostMainSlide = ({ post }) => {
             post.images.map((image, index) => (
               <Carousel.Item key={index}>
                 <img className='post-image' src={myConfig.hostName + image.image}
-                  style={{ minWidth: '25rem' }} />
+                  style={{ width: '40rem', height: '40rem' }} />
               </Carousel.Item>
             ))
           }

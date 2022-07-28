@@ -7,7 +7,7 @@ import PostDetail from './PostDetail';
 import PostMain from './PostMain';
 import { useSelector } from 'react-redux';
 
-const PostTimeline = (params) => {
+const PostTimeline = React.memo((params) => {
   const post = params.post;
   const showPostMain = useSelector(state => state.postTimeline.postProps[post.code].showPostMain);
   const inputRef = useRef(null);
@@ -16,7 +16,8 @@ const PostTimeline = (params) => {
       <PostHeader post={post} isTimeline={true} />
       {
         post.images.length === 1 &&
-        <img className='post-image' src={myConfig.hostName + post.images[0].image} />
+        <img className='post-image' src={myConfig.hostName + post.images[0].image}
+          style={{ width: '30rem', height: '30rem' }} />
       }
       {
         post.images.length > 1 &&
@@ -24,17 +25,18 @@ const PostTimeline = (params) => {
           {
             post.images.map((image, index) => (
               <Carousel.Item key={index}>
-                <img className='post-image' src={myConfig.hostName + image.image} />
+                <img className='post-image' src={myConfig.hostName + image.image}
+                  style={{ width: '30rem', height: '30rem' }} />
               </Carousel.Item>
             ))
           }
         </Carousel>
       }
-      <PostDetail post={post} isTimeline={true} inputRef={inputRef}/>
+      <PostDetail post={post} isTimeline={true} inputRef={inputRef} />
       {showPostMain &&
         < PostMain post={post} />}
     </Card>
   )
-}
+})
 
 export default PostTimeline
