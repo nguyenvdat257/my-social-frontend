@@ -5,5 +5,7 @@ export const myConfig = {
     getError: 'Cannot get data from server.',
     sendError: 'Cannot send data to server.',
     serverError: 'Cannot connect to server.',
-    settingSaved: 'Setting saved.'
+    settingSaved: 'Setting saved.',
+    deletedPost: 'Post deleted.',
+    editedPost: 'Post edited.',
 };

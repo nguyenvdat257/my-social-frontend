@@ -4,8 +4,9 @@ import SelectFile from './SelectFile';
 import ImageCrop from './ImageCrop';
 import { useSelector, useDispatch } from 'react-redux';
 import { postAddActions } from '../../store/post-add-slice';
-import DiscardModal from './DiscardModal';
 import PostPreview from './PostPreview';
+import ConfirmModal from '../Common/ConfirmModal';
+import { confirmActions } from '../../store/confirm-modal-slice';
 
 const PostAddModal = () => {
     const dispatch = useDispatch();
@@ -16,8 +17,14 @@ const PostAddModal = () => {
     const handleCloseModal = () => {
         if (page === 0 || submittedData)
             dispatch(postAddActions.closeMainModal());
-        else
-            dispatch(postAddActions.setShowDiscardModal(true));
+        else {
+            dispatch(confirmActions.setName('post-add-discard'));
+            dispatch(confirmActions.setProps({
+                titleMain: `Discard ${type === 'post' ? 'post' : 'story'}?`,
+                titleDesc: "If you leave, your edits won't be saved",
+                text: "Discard"
+            }));
+        }
     }
     useEffect(() => {
         dispatch(postAddActions.setType(type));
@@ -29,7 +36,9 @@ const PostAddModal = () => {
                 {page === 1 && <ImageCrop />}
                 {page === 2 && <PostPreview />}
             </Modal>
-            <DiscardModal />
+            <ConfirmModal
+                handleFn={props => dispatch(postAddActions.closeMainModal())}
+                currentName='post-add-discard' />
         </>
     )
 }

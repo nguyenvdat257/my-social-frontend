@@ -13,7 +13,7 @@ const ProfileListItem = ({ profile }) => {
     const user = useSelector(state => state.auth.user)
     const [gettingData, setGettingData] = useState(false);
     const handleClickFollow = e => {
-        dispatch(callFollow(profile.username, setGettingData, profileModalActions.setFollowData))
+        dispatch(callFollow(profile.username, setGettingData))
     };
     return (
         <div className='modal-item'>

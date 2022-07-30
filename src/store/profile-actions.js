@@ -2,9 +2,24 @@ import { toastActions } from './toast-slice';
 import { callApi } from './actions';
 import { myConfig } from '../config';
 import { profileModalActions } from './profile-modal-slice';
+import { authActions } from './auth-slice';
 import store from '.';
 
-export const callFollow = (username, setGettingData, setFollowData) => {
+export const callGetCurrentProfile = () => {
+    const url = myConfig.hostName + `/profiles/`;
+    const method = 'GET';
+    const sendData = null;
+    const successHandler = (data) => authActions.setUser(data);
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+
+    const before = null;
+    const afterConnected = null;
+    const afterUnconnected = null;
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
+export const callFollow = (username, setGettingData) => {
     const url = myConfig.hostName + '/follows/follow-unfollow/';
     const method = 'PUT';
     const sendData = JSON.stringify({ username: username });

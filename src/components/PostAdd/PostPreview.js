@@ -5,12 +5,12 @@ import PostForm from './PostForm';
 import MySpinner from '../Common/Spinner';
 import { AiOutlineCheck } from 'react-icons/ai'
 import { postAddActions, callPostAdd, callStoryAdd } from '../../store/post-add-slice';
-import PostImage from './PostImage';
+import PostImage from '../Common/PostImage';
 
 const PostPreview = () => {
     const dispatch = useDispatch();
     const type = useSelector(state => state.postAdd.type);
-    const message = useSelector(state => state.postAdd.message);
+    const [message, setMessage] = useState('');
     const croppedImages = useSelector(state => state.postAdd.croppedImages);
     const sendingData = useSelector(state => state.postAdd.sendingData);
     const submittedData = useSelector(state => state.postAdd.submittedData);
@@ -45,8 +45,10 @@ const PostPreview = () => {
             {
                 !sendingData && !submittedData &&
                 <div style={{ display: 'flex' }}>
-                    <PostImage isCrop={false} />
-                    <PostForm />
+                    <PostImage
+                        images={croppedImages.map((croppedImage, index) => URL.createObjectURL(croppedImage))}
+                        type='blob' />
+                    <PostForm message={message} setMessage={setMessage} />
                 </div>
             }
             {sendingData &&
@@ -57,7 +59,7 @@ const PostPreview = () => {
             {submittedData &&
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '30rem', width: '30rem' }}>
                     <AiOutlineCheck size={40} style={{ marginBottom: '1rem' }} />
-                    <div className='fade-text larger-text'>Your {type === 'post'? 'post' : 'story'} has been shared.</div>
+                    <div className='fade-text larger-text'>Your {type === 'post' ? 'post' : 'story'} has been shared.</div>
                 </div>
             }
         </>

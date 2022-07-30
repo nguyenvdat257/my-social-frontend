@@ -13,11 +13,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import { myConfig } from '../../config';
 import PostAddModal from '../PostAdd/PostAddModal'
 import { postAddActions } from '../../store/post-add-slice'
+import MyAvatar from '../Common/MyAvatar'
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showNoti, setShowNoti] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
+  const avatarSrc = useSelector(state => state.auth.user.avatar ?
+    myConfig.hostName + state.auth.user.avatar.thumbnail : myConfig.defaultAvatar);
   const targetMenu = useRef(null);
   const targetNoti = useRef(null);
   const targetAdd = useRef(null);
@@ -114,7 +117,7 @@ const Header = () => {
                 </div>
                 {/* avatar */}
                 <div className='col-2'>
-                  <img ref={targetMenu} src={myConfig.defaultAvatar} alt="Avatar"
+                  <img ref={targetMenu} src={avatarSrc} alt="Avatar"
                     className={`header-item avatar header-avatar ${showMenu ? 'border-around' : ''} pointer-cursor`}
                     onClick={() => setShowMenu(!showMenu)}></img>
                 </div>

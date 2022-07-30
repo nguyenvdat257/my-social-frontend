@@ -14,7 +14,6 @@ const authSlice = createSlice({
     reducers: {
         login(state, action) {
             state.isLoggedIn = true;
-            state.user = action.payload.user;
             state.token = action.payload.token;
             state.loginError = { 'error': false, 'message': '' };
             localStorage.setItem('token', JSON.stringify(action.payload.token));
@@ -32,6 +31,9 @@ const authSlice = createSlice({
         },
         setSendingForm(state, action) {
             state.sendingForm = action.payload;
+        },
+        setUser(state, action) {
+            state.user = action.payload;
         }
     }
 })
@@ -55,7 +57,7 @@ export const loginUser = (username, password, navigate) => async (dispatch) => {
     try {
         const [token, status] = await fetchHandler();
         if (status === 200) {
-            dispatch(authActions.login({ 'user': jwt_decode(token.access), 'token': token }))
+            dispatch(authActions.login({ 'token': token }))
             navigate('/')
         } else {
             dispatch(authActions.setLoginError({ 'error': true, 'message': 'Sorry, please double check your username and password.' }))
@@ -90,7 +92,7 @@ export const updateToken = () => async (dispatch, getState) => {
     try {
         const [token, status] = await fetchHandler();
         if (status === 200) {
-            dispatch(authActions.login({ 'user': jwt_decode(token.access), 'token': token }))
+            dispatch(authActions.login({ 'token': token }))
             localStorage.setItem('token', JSON.stringify(token))
         } else {
             dispatch(authActions.logout())

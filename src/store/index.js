@@ -11,6 +11,9 @@ import storage from 'redux-persist/lib/storage';
 import { combineReducers } from "redux";
 import profileModalSlice from "./profile-modal-slice";
 import postAddSlice from "./post-add-slice";
+import confirmSlice from "./confirm-modal-slice";
+import optionSlice from "./option-modal-slice";
+import postEditSlice from "./post-edit-slice";
 
 
 const persistConfig = {
@@ -29,6 +32,9 @@ const reducers = combineReducers({
     postTimeline: postTimeLineSlice.reducer,
     profileModal: profileModalSlice.reducer,
     postAdd: postAddSlice.reducer,
+    confirm: confirmSlice.reducer,
+    option: optionSlice.reducer,
+    postEdit: postEditSlice.reducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);

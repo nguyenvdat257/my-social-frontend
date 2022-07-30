@@ -44,14 +44,13 @@ export const getCroppedImg = async (img, crop) => {
     })
 }
 
-const PostImage = ({ isCrop }) => {
+
+const CropBody = () => {
     const dispatch = useDispatch();
     const images = useSelector(state => state.postAdd.images);
     const currentImgIndex = useSelector(state => state.postAdd.currentImgIndex);
     const currentImg = useSelector(state => state.postAdd.images.length > 0 ?
         state.postAdd.images[state.postAdd.currentImgIndex] : null);
-    const currentCroppedImg = useSelector(state => state.postAdd.croppedImages.length > 0 ?
-        state.postAdd.croppedImages[state.postAdd.currentImgIndex] : null);
     const crop = useSelector(state => state.postAdd.crops.length > 0 ?
         state.postAdd.crops[state.postAdd.currentImgIndex] : null);
     const zoom = useSelector(state => state.postAdd.zooms.length > 0 ?
@@ -90,24 +89,18 @@ const PostImage = ({ isCrop }) => {
                     </div>
                 </>
             }
-            {isCrop &&
-                <Cropper
-                    image={currentImg.src}
-                    crop={crop}
-                    zoom={zoom}
-                    aspect={1}
-                    onCropChange={setCrop}
-                    onCropComplete={onCropComplete}
-                    objectFit={`${currentImg.width > currentImg.height ? 'vertical-cover' : 'horizontal-cover'}`}
-                    onZoomChange={setZoom}
-                />}
-            {!isCrop &&
-                <div style={{ position: 'relative', height: '30rem', width: '30rem' }}>
-                    <img src={URL.createObjectURL(currentCroppedImg)} style={{ width: '30rem', height: '30rem' }}></img>
-                </div>
-            }
+            <Cropper
+                image={currentImg.src}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                onCropChange={setCrop}
+                onCropComplete={onCropComplete}
+                objectFit={`${currentImg.width > currentImg.height ? 'vertical-cover' : 'horizontal-cover'}`}
+                onZoomChange={setZoom}
+            />
         </div>
     )
 }
 
-export default PostImage
+export default CropBody

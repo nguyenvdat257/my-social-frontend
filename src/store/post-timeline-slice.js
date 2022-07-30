@@ -125,6 +125,9 @@ const postTimeLineSlice = createSlice({
             state.posts[objIndex].is_like = likeType;
             state.posts[objIndex].likes_count = action.payload.data.likes_count;
         },
+        updateDeletePost(state, action) {
+            state.posts = state.posts.filter(post => post.code != action.payload.postCode)
+        },
         updateLikeComment(state, action) {
             const postIndex = state.posts.findIndex((post => post.code === action.payload.postCode));
             const post = state.posts[postIndex];
@@ -147,7 +150,7 @@ const postTimeLineSlice = createSlice({
                 username: action.payload.user.username,
                 body: action.payload.message,
                 is_like: false,
-                avatar: { thumbnail: myConfig.defaultAvatar }
+                avatar: action.payload.user.avatar
             }
             post.comments.unshift(newComment);
             post.comments_count += 1;
@@ -174,7 +177,7 @@ const postTimeLineSlice = createSlice({
                 username: action.payload.user.username,
                 body: action.payload.message,
                 is_like: false,
-                avatar: { thumbnail: myConfig.defaultAvatar }
+                avatar: action.payload.user.avatar
             }
             if (comment.reply_comments === undefined)
                 comment.reply_comments = [newComment];
@@ -224,9 +227,33 @@ const postTimeLineSlice = createSlice({
                 comment.is_like = !comment.is_like;
             }
         },
+        updateDeleteComment(state, action) {
+            const postIndex = state.posts.findIndex((post => post.code === action.payload.postCode));
+            const post = state.posts[postIndex];
+            if (action.payload.replyId) {
+                const commentIndex = post.comments.findIndex((comment => comment.id === action.payload.commentId));
+                const comment = post.comments[commentIndex];
+                comment.reply_comments = comment.reply_comments.filter(cm => cm.id != action.payload.replyId)
+                comment.reply_count -= 1;
+            }
+            else {
+                post.comments = post.comments.filter(cm => cm.id != action.payload.commentId);
+                post.comments_count -= 1;
+            }
+        },
         flipSave(state, action) {
             const objIndex = state.posts.findIndex((post => post.code === action.payload.code));
             state.posts[objIndex]['is_saved'] = !state.posts[objIndex]['is_saved'];
+        },
+        setFollowData(state, action) {
+            const postIndex = state.posts.findIndex((post => post.code === action.payload.postCode));
+            const post = state.posts[postIndex];
+            const isFollow = action.payload.data.type === 'follow' ? true : false;
+            post.profile_info.is_follow = isFollow;
+        },
+        setEditPost(state, action) {
+            const postIndex = state.posts.findIndex((post => post.code === action.payload.postCode));
+            state.posts[postIndex] = action.payload.data;
         }
     }
 })
@@ -303,6 +330,43 @@ export const callPostLike = (postCode) => {
         dispatch(toastActions.setIsShow(myConfig.serverError));
         dispatch(postTimelineActions.flipLike({ code: postCode }));
     }
+
+    const before = null;
+    const afterConnected = null;
+    const afterUnconnected = null;
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
+export const callDeletePost = (postCode) => {
+    const url = myConfig.hostName + `/posts/code/${postCode}/`;
+    const method = 'DELETE';
+    const sendData = null;
+    const successHandler = (data) => dispatch => {
+        dispatch(postTimelineActions.updateDeletePost({ postCode: postCode }));
+        dispatch(toastActions.setIsShow(myConfig.deletedPost));
+    }
+
+    const failHandler = (data) => (dispatch) => {
+        dispatch(toastActions.setIsShow(myConfig.getError));
+    };
+
+    const exceptHandler = (data) => (dispatch) => {
+        dispatch(toastActions.setIsShow(myConfig.serverError));
+    }
+
+    const before = null;
+    const afterConnected = null;
+    const afterUnconnected = null;
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+export const callDeleteComment = (postCode, commentId, replyId) => {
+    const url = myConfig.hostName + `/comments/${commentId}/`;
+    const method = 'DELETE';
+    const sendData = null;
+    const successHandler = (data) => postTimelineActions.updateDeleteComment({ commentId: commentId, replyId: replyId, postCode: postCode });
+
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = (data) => toastActions.setIsShow(myConfig.serverError);
 
     const before = null;
     const afterConnected = null;
@@ -419,6 +483,37 @@ export const callSendReply = (message, postCode, replyTo) => {
         dispatch(toastActions.setIsShow(myConfig.serverError));
         dispatch(postTimelineActions.undoNewReply({ code: postCode, commentId: replyTo }));
     }
+
+    const before = null;
+    const afterConnected = null;
+    const afterUnconnected = null;
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
+export const callFollow = (username, postCode) => {
+    const url = myConfig.hostName + '/follows/follow-unfollow/';
+    const method = 'PUT';
+    const sendData = JSON.stringify({ username: username });
+    const successHandler = (data) => postTimelineActions.setFollowData({ data: data, postCode: postCode });
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+
+    const before = null;
+    const afterConnected = null;
+    const afterUnconnected = null;
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
+export const callEditPost = (formData, postCode) => {
+    const url = myConfig.hostName + `/posts/code/${postCode}/`;
+    const method = 'PUT';
+    const sendData = formData;
+    const successHandler = (data) => dispatch => {
+        dispatch(postTimelineActions.setEditPost({ data: data, postCode: postCode }));
+        dispatch(toastActions.setIsShow(myConfig.editedPost));
+    };
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
 
     const before = null;
     const afterConnected = null;

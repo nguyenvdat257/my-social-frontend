@@ -1,18 +1,24 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { BiArrowBack } from 'react-icons/bi'
-import { postAddActions } from '../../store/post-add-slice';
-import PostImage from './PostImage';
+import { postAddActions, cropRemaining } from '../../store/post-add-slice';
+import PostImage from './CropBody';
+import { confirmActions } from '../../store/confirm-modal-slice';
+import CropBody from './CropBody';
 
 const ImageCrop = () => {
     const dispatch = useDispatch();
     const imageLoaded = useSelector(state => state.postAdd.imageLoaded);
+    const images = useSelector(state => state.postAdd.images);
+    const croppedImages = useSelector(state => state.postAdd.croppedImages);
     const handleClickBack = e => {
-        dispatch(postAddActions.setShowDiscardModal(true));
+        dispatch(confirmActions.setIsShow(true));
     };
     const handleClickNext = e => {
-        dispatch(postAddActions.setPage(2));
-        dispatch(postAddActions.setCurrentImgIndex(0));
+        dispatch(cropRemaining(croppedImages, images)).then(() => {
+            dispatch(postAddActions.setPage(2));
+            dispatch(postAddActions.setCurrentImgIndex(0));
+        });
     };
     return (
         <>
@@ -25,7 +31,7 @@ const ImageCrop = () => {
                         <div className='bold-text'>Crop</div>
                         <div className='pointer-cursor' style={{ paddingRight: '1rem', color: 'dodgerblue' }} onClick={handleClickNext}>Next</div>
                     </div>
-                    <PostImage isCrop={true} />
+                    <CropBody />
                 </>
             }
         </>

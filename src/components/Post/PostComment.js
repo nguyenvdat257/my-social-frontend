@@ -4,10 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { postTimelineActions, callCommentLike, callGetReplyComments } from '../../store/post-timeline-slice'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Row, Col } from 'react-bootstrap'
-import { myConfig } from '../../config'
 import MySpinner from '../Common/Spinner'
 import { callLikeCommentProfile } from '../../store/profile-actions'
 import ProfileListModal from '../Profile/ProfileListModal'
+import { getAvatarSrc } from '../../utils/CommonFunction'
+import { BsThreeDots } from 'react-icons/bs';
+import { optionActions } from '../../store/option-modal-slice'
 
 const formatDate = (date) => {
     const parts = date.split(' ');
@@ -26,16 +28,18 @@ const formatDate = (date) => {
     }
 };
 
-const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef}) => {
+const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef }) => {
     const dispatch = useDispatch();
+    const user = useSelector(state => state.auth.user);
     const likeCommentProfiles = useSelector(state => state.profileModal.profiles)
     const showReply = useSelector(state => state.postTimeline.commentProps[comment?.id]?.showReply)
     const gettingReplyComment = useSelector(state => state.postTimeline.commentProps[comment?.id]?.gettingReplyComment)
     const [showLikeProfile, setShowLikeProfile] = useState(false);
     const [shownReply, setShownReply] = useState(false);
+    const [isHover, setIsHover] = useState(false);
     const handleClickReply = e => {
         inputRef.current.focus();
-        dispatch(postTimelineActions.setMessage({postCode: post.code, value: '@' + comment.username + ' '}));
+        dispatch(postTimelineActions.setMessage({ postCode: post.code, value: '@' + comment.username + ' ' }));
         if (comment.reply_to === null)
             dispatch(postTimelineActions.setReplyTo(comment.id));
         else
@@ -54,12 +58,26 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef}) 
         setShowLikeProfile(true);
     };
     const handleViewReply = commentId => e => {
-        dispatch(postTimelineActions.setShowReply({id: commentId, value:!showReply}));
+        dispatch(postTimelineActions.setShowReply({ id: commentId, value: !showReply }));
         if (!shownReply) {
             dispatch(callGetReplyComments(post.code, commentId));
             setShownReply(true);
         }
     };
+    const handleMouseEnter = e => {
+        setIsHover(true);
+    };
+    const handleMouseLeave = e => {
+        setIsHover(false);
+    };
+    const handleClickThreeDot = e => {
+        dispatch(optionActions.setName('comment-my'));
+        dispatch(optionActions.setProps({
+            postCode: post.code,
+            commentId: comment.reply_to ? comment.reply_to : comment.id,
+            replyId: comment.reply_to ? comment.id : null,
+        }));
+    }
     return (
         <>
             {
@@ -77,28 +95,37 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef}) 
             }
             {
                 !isTimeline && !isOriginalComment &&
-                <div className='post-row-comment' style={{ display: 'flex' }}>
+                <div className='post-row-comment' style={{ display: 'flex' }} >
                     <img className='avatar post-header-avatar' style={{ marginRight: '1.0rem' }}
-                        src={comment.avatar.thumbnail ? myConfig.hostName + comment.avatar.thumbnail : myConfig.defaultAvatar} />
+                        src={getAvatarSrc(comment, 'small')} />
                     <div style={{ width: '85%' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div style={{ maxWidth: '90%' }}>
-                                <div className='post-row-comment'>
-                                    <span className='post-username'>{comment.username} </span>
-                                    <span>{comment.body}</span>
-                                </div>
-                                <div className={`post-comment-info ${comment.reply_count > 0 ? 'post-row-comment' : ''}`} style={{ display: 'flex' }}>
-                                    <div>
-                                        {formatDate(moment(comment.created).fromNow())}
+                                <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                                    <div className='post-row-comment'>
+                                        <span className='post-username'>{comment.username} </span>
+                                        <span>{comment.body}</span>
                                     </div>
-                                    {comment.likes_count > 0 &&
-                                        <div className='pointer-cursor' style={{ marginLeft: '0.6rem' }} onClick={handleClickViewLike}>
-                                            {`${comment.likes_count} ${comment.likes_count === 1 ? 'like' : 'likes'}`}
+                                    <div className={`post-comment-info ${comment.reply_count > 0 ? 'post-row-comment' : ''}`} style={{ display: 'flex' }}>
+                                        <div>
+                                            {formatDate(moment(comment.created).fromNow())}
                                         </div>
-                                    }
-                                    <div className='pointer-cursor' style={{ marginLeft: '0.6rem' }} onClick={handleClickReply}>
-                                        Reply
+                                        {comment.likes_count > 0 &&
+                                            <div className='pointer-cursor' style={{ marginLeft: '0.6rem' }} onClick={handleClickViewLike}>
+                                                {`${comment.likes_count} ${comment.likes_count === 1 ? 'like' : 'likes'}`}
+                                            </div>
+                                        }
+                                        <div className='pointer-cursor' style={{ marginLeft: '0.6rem' }} onClick={handleClickReply}>
+                                            Reply
+                                        </div>
+                                        {
+                                            isHover && comment.username === user.username &&
+                                            <div style={{ marginLeft: '0.6rem' }}>
+                                                <BsThreeDots className='pointer-cursor' size={15} onClick={handleClickThreeDot} />
+                                            </div>
+                                        }
                                     </div>
+
                                 </div>
                                 {comment.reply_count > 0 &&
                                     <div style={{ display: 'flex' }}>
@@ -120,7 +147,7 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef}) 
                         </div>
                         {showReply &&
                             comment.reply_comments?.map((replyComment, index) => (
-                                <PostComment key={index} post={post} comment={replyComment} isTimeline={isTimeline}/>
+                                <PostComment key={index} post={post} comment={replyComment} isTimeline={isTimeline} />
                             ))
                         }
 
@@ -135,7 +162,7 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef}) 
                 isOriginalComment &&
                 <div className='post-row-comment' style={{ display: 'flex', marginTop: '1rem' }}>
                     <img className='avatar post-header-avatar' style={{ marginRight: '1.0rem' }}
-                        src={post.profile_info.avatar.thumbnail ? myConfig.hostName + post.profile_info.avatar.thumbnail : myConfig.defaultAvatar} />
+                        src={getAvatarSrc(post.profile_info, 'small')} />
                     <div style={{ width: '85%' }}>
                         <div className='post-row-comment'>
                             <span className='post-username'>{post.profile_info.username} </span>

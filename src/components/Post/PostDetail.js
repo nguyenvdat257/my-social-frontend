@@ -111,11 +111,11 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef }) => {
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     {
                         post.is_like &&
-                        <AiFillHeart size='25px' className='post-button' style={{ color: 'red' }} onClick={handleClickLike} />
+                        <AiFillHeart size='25px' className='post-button pointer-cursor' style={{ color: 'red' }} onClick={handleClickLike} />
                     }
                     {
                         !post.is_like &&
-                        <AiOutlineHeart size='25px' className='post-button' onClick={handleClickLike} />
+                        <AiOutlineHeart size='25px' className='post-button pointer-cursor' onClick={handleClickLike} />
                     }
                     <AiOutlineMessage size='24px' className='post-button post-comment-button pointer-cursor' onClick={handleClickMessage} />
                     <FiSend size='22px' className='post-button post-send-button' />

@@ -1,27 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { callPostAdd, postAddActions } from '../../store/post-add-slice';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { BsEmojiSmile } from 'react-icons/bs'
 import Picker from 'emoji-picker-react';
-import { myConfig } from '../../config';
 import { Form } from 'react-bootstrap'
+import MyAvatar from '../Common/MyAvatar';
 
-const PostForm = () => {
-    const dispatch = useDispatch();
+const PostForm = ({message, setMessage}) => {
     const user = useSelector(state => state.auth.user);
-    const message = useSelector(state => state.postAdd.message);
     const inputRef = useRef(null);
     const smileFaceRef = useRef(null);
     const emojiRef = useRef(null);
     const [showEmoji, setShowEmoji] = useState(false);
     const handleChangeMessage = e => {
         if (e.target.value.length <= 2000)
-            dispatch(postAddActions.setMessage(e.target.value));
+            setMessage(e.target.value);
     }
     const handleClickEmoji = (event, emojiObject) => {
         const cursor = inputRef.current.selectionStart;
         const text = message.slice(0, cursor) + emojiObject.emoji + message.slice(cursor);
-        dispatch(postAddActions.setMessage(text));
+        setMessage(text);
         const newCursor = cursor + emojiObject.emoji.length
         setTimeout(() => {
             inputRef.current.setSelectionRange(newCursor, newCursor);
@@ -49,7 +46,7 @@ const PostForm = () => {
         <>
             <div style={{ height: '30rem', width: '20rem', padding: '1rem' }}>
                 <div style={{ display: 'flex', marginBottom: '1rem' }}>
-                    <img className='avatar post-header-avatar' src={user.avatar ? user.avatar : myConfig.defaultAvatar} />
+                    <MyAvatar className='avatar post-header-avatar' />
                     <div className='post-header-username post-username'>
                         {user.username}
                     </div>

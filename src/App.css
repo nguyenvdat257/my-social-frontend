@@ -39,7 +39,6 @@ html, body, #root, #root>div {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 6rem;
   border-bottom: 1px ridge;
 }
 
@@ -637,7 +636,7 @@ html, body, #root, #root>div {
 }
 
 .smaller-text {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .larger-text {
@@ -867,4 +866,10 @@ html, body, #root, #root>div {
   height: 0.4rem;
   border-radius:50%;
   margin: 0.1rem;
+}
+
+.confirm-avatar {
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1rem;
 }

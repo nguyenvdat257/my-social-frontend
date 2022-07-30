@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { myConfig } from '../config';
 import { callApi } from './actions';
 import { toastActions } from './toast-slice';
+import { getCroppedImg } from '../components/PostAdd/CropBody';
 
 const postAddSlice = createSlice({
     name: 'postAdd',
@@ -13,7 +14,6 @@ const postAddSlice = createSlice({
         zooms: [],
         message: '',
         showMainModal: false,
-        showDiscardModal: false,
         sendingData: false,
         submittedData: false,
         currentImgIndex: 0,
@@ -29,9 +29,6 @@ const postAddSlice = createSlice({
         setShowMainModal(state, action) {
             state.showMainModal = action.payload;
         },
-        setShowDiscardModal(state, action) {
-            state.showDiscardModal = action.payload;
-        },
         setMessage(state, action) {
             state.message = action.payload;
         },
@@ -40,6 +37,9 @@ const postAddSlice = createSlice({
         },
         setCroppedImg(state, action) {
             state.croppedImages[state.currentImgIndex] = action.payload;
+        },
+        setCroppedImages(state, action) {
+            state.croppedImages = action.payload;
         },
         setCrop(state, action) {
             state.crops[state.currentImgIndex] = action.payload;
@@ -56,7 +56,6 @@ const postAddSlice = createSlice({
         closeMainModal(state, action) {
             state.type = '';
             state.showMainModal = false;
-            state.showDiscardModal = false;
             state.currentImgIndex = 0;
             state.sendingData = false;
             state.submittedData = false;
@@ -86,7 +85,7 @@ const postAddSlice = createSlice({
         setPanelSize(state, action) {
             state.panelHeight = action.payload.height;
             state.panelWidth = action.payload.width;
-        }
+        },
     }
 })
 
@@ -115,5 +114,32 @@ export const callStoryAdd = (formData) => {
     const afterConnected = () => postAddActions.setSendingData(false);
     const afterUnconnected = () => postAddActions.setSendingData(false);
     return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
+export const cropRemaining = (croppedImages, images) => async (dispatch) => {
+    const fullCroppedImages = await Promise.all(croppedImages.map(async (img, index) => {
+        if (img) return img;
+        const currentImg = images[index];
+        let croppedAreaPixels;
+        if (currentImg.width > currentImg.height) {
+            croppedAreaPixels = {
+                width: currentImg.height,
+                height: currentImg.height,
+                x: Math.floor((currentImg.width - currentImg.height) / 2),
+                y: 0
+            }
+        }
+        else {
+            croppedAreaPixels = {
+                width: currentImg.width,
+                height: currentImg.width,
+                y: Math.floor((currentImg.height - currentImg.width) / 2),
+                x: 0
+            }
+        }
+        const croppedImg = getCroppedImg(currentImg, croppedAreaPixels);
+        return croppedImg;
+    }));
+    dispatch(postAddActions.setCroppedImages(fullCroppedImages));
 }
 export default postAddSlice;
