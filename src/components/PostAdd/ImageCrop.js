@@ -28,7 +28,7 @@ const ImageCrop = () => {
                         <div >
                             <BiArrowBack className='pointer-cursor' onClick={handleClickBack} size={25} style={{ marginLeft: '1rem' }} />
                         </div>
-                        <div className='bold-text'>Crop</div>
+                        <div className='bold-text-medium'>Crop</div>
                         <div className='pointer-cursor' style={{ paddingRight: '1rem', color: 'dodgerblue' }} onClick={handleClickNext}>Next</div>
                     </div>
                     <CropBody />

@@ -38,7 +38,7 @@ const PostEdit = ({ currentName }) => {
                             Cancel
                         </div>
                     </div>
-                    <div className='bold-text'>
+                    <div className='bold-text-medium'>
                         Edit info
                     </div>
                     <div className='pointer-cursor' style={{ marginRight: '1rem', color: 'dodgerblue' }}

@@ -90,7 +90,7 @@ const EditProfile = () => {
                 <Row className="mb-3 form-group">
                   <Col md={2} className='offset-1 text-end'>
                     <img src={avatarUrl} alt="Avatar"
-                      className='avatar form-avatar'
+                      className='avatar avatar-medium'
                       onClick={handleUploadClick}></img>
                   </Col>
                   <Col md={6} className='text-start'>

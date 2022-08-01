@@ -15,7 +15,7 @@ const PostComments = ({ post, isTimeline, inputRef}) => {
     <>
       {// N comment
         isTimeline && post.comments_count > 2 &&
-        <div className='post-row fade-text pointer-cursor' onClick={handleClickViewComment}>
+        <div className='post-row fade-text-medium pointer-cursor' onClick={handleClickViewComment}>
           {`View ${post.comments_count > 1 ? 'all ' : ''} ${post.comments_count} ${post.comments_count > 1 ? 'comments' : 'comment'}`}
         </div>
       }

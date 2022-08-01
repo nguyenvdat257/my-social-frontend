@@ -19,17 +19,26 @@ export const callGetCurrentProfile = () => {
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
-export const callFollow = (username, setGettingData) => {
+export const callFollow = ({ username, props, updateFn, setGettingData }) => {
     const url = myConfig.hostName + '/follows/follow-unfollow/';
     const method = 'PUT';
     const sendData = JSON.stringify({ username: username });
-    const successHandler = (data) => profileModalActions.setFollowData({ data: data, username: username });
+    // const successHandler = (data) => profileModalActions.setFollowData({ data: data, username: username });
+    const successHandler = (data) => updateFn({ data: data, username: username, props: props });
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
 
-    const before = () => () => setGettingData(true);
-    const afterConnected = () => () => setGettingData(false);
-    const afterUnconnected = () => () => setGettingData(false);
+    let before, afterConnected, afterUnconnected;
+    if (setGettingData) {
+        before = () => () => setGettingData(true);
+        afterConnected = () => () => setGettingData(false);
+        afterUnconnected = () => () => setGettingData(false);
+    }
+    else {
+        before = null;
+        afterConnected = null;
+        afterUnconnected = null;
+    }
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 

@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { BsThreeDots } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { optionActions } from '../../store/option-modal-slice';
-import { callFollow } from '../../store/post-timeline-slice';
+import { postTimelineActions } from '../../store/post-timeline-slice';
 import { getAvatarSrc } from '../../utils/CommonFunction';
 import { confirmActions } from '../../store/confirm-modal-slice';
+import { callFollow } from '../../store/profile-actions';
 
 const PostHeader = ({ post, isTimeline }) => {
     const dispatch = useDispatch();
@@ -12,23 +13,33 @@ const PostHeader = ({ post, isTimeline }) => {
     const handleClickThreeDot = e => {
         if (post.profile_info.username === user.username) {
             dispatch(optionActions.setName('post-my'));
-            dispatch(optionActions.setProps({ 
+            dispatch(optionActions.setProps({
                 post: post
             }));
         } else if (post.profile_info.is_follow) {
             dispatch(optionActions.setName('post-other'));
             dispatch(optionActions.setProps({
-                post:post
+                post: post
             }))
         }
     }
-    const handleUnfollow = post => e => {
+    const handleFollow = e => {
+        dispatch(callFollow({
+            username: post.profile_info.username,
+            props: { postCode: post.code },
+            updateFn: postTimelineActions.setFollowData
+        }));
+    };
+
+    const handleUnfollow = e => {
         dispatch(confirmActions.setProps({
             titleAvatar: getAvatarSrc(post.profile_info, 'large'),
             titleDesc: `Unfollow @${post.profile_info.username}?`,
             text: 'Unfollow',
-            username: post.profile_info.username,
-            postCode: post.code
+            handleProps: {
+                username: post.profile_info.username,
+                props: { postCode: post.code }
+            }
         }));
         dispatch(confirmActions.setName('post-unfollow'));
     }
@@ -36,17 +47,17 @@ const PostHeader = ({ post, isTimeline }) => {
         <>
             <div className={`${isTimeline ? 'post-header' : 'post-header-main'}`}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img className='avatar post-header-avatar' src={getAvatarSrc(post.profile_info, 'small')} />
-                    <div className={`${isTimeline ? 'post-header-username' : 'post-header-username-main'} post-username`}>
+                    <img className='avatar avatar-small' src={getAvatarSrc(post.profile_info, 'small')} />
+                    <div className={`${isTimeline ? 'name-avatar-margin-small' : 'name-avatar-margin-medium'} bold-text-small`}>
                         {post.profile_info.username}
                     </div>
                     {
                         !post.profile_info.is_follow && post.profile_info.username != user.username &&
                         <div>
                             <span style={{ marginLeft: '0.5rem' }}>•</span>
-                            <span className='smaller-text bold-text pointer-cursor'
+                            <span className='bold-text-small pointer-cursor'
                                 style={{ marginLeft: '0.5rem', color: 'dodgerblue' }}
-                                onClick={() => dispatch(callFollow(post.profile_info.username, post.code))}
+                                onClick={handleFollow}
                             >Follow</span>
                         </div>
                     }
@@ -54,9 +65,9 @@ const PostHeader = ({ post, isTimeline }) => {
                         !isTimeline && post.profile_info.is_follow && post.profile_info.username != user.username &&
                         <div>
                             <span style={{ marginLeft: '0.5rem' }}>•</span>
-                            <span className='smaller-text bold-text pointer-cursor'
+                            <span className='bold-text-small pointer-cursor'
                                 style={{ marginLeft: '0.5rem' }}
-                                onClick={handleUnfollow(post)}
+                                onClick={handleUnfollow}
                             >Following</span>
                         </div>
                     }

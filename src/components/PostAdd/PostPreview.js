@@ -37,7 +37,7 @@ const PostPreview = () => {
                         <BiArrowBack className='pointer-cursor' onClick={handleClickBack} size={25} style={{ marginLeft: '1rem' }} />
                     }
                 </div>
-                <div className='bold-text'>{`${submittedData ? `${type === 'post' ? 'Post' : 'Story'} shared` :
+                <div className='bold-text-medium'>{`${submittedData ? `${type === 'post' ? 'Post' : 'Story'} shared` :
                     `Create new ${type === 'post' ? 'post' : 'story'}`}`}</div>
                 <div className='pointer-cursor' style={{ marginRight: '1rem', color: 'dodgerblue' }}
                     onClick={handleClickShare}>{`${submittedData ? '' : 'Share'}`}</div>
@@ -59,7 +59,7 @@ const PostPreview = () => {
             {submittedData &&
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '30rem', width: '30rem' }}>
                     <AiOutlineCheck size={40} style={{ marginBottom: '1rem' }} />
-                    <div className='fade-text larger-text'>Your {type === 'post' ? 'post' : 'story'} has been shared.</div>
+                    <div className='fade-text-larger'>Your {type === 'post' ? 'post' : 'story'} has been shared.</div>
                 </div>
             }
         </>

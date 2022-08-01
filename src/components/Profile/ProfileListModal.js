@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Modal, CloseButton } from 'react-bootstrap'
 import ProfileListItem from './ProfileListItem'
-import { useDispatch } from "react-redux";
+import {useSelector, useDispatch } from "react-redux";
 import { profileModalActions } from '../../store/profile-modal-slice';
 import MySpinner from '../Common/Spinner';
 import { callNextProfile } from '../../store/profile-actions';
 
-const ProfileListModal = ({ showModal, setShowModal, getData, profiles }) => {
+const ProfileListModal = ({title, showModal, setShowModal, getData }) => {
     const dispatch = useDispatch()
+    const profiles = useSelector(state => state.profileModal.profiles);
     const listInnerRef = useRef();
     const [gettingData, setGettingData] = useState(false);
     const handleCloseModal = e => {
@@ -30,13 +31,13 @@ const ProfileListModal = ({ showModal, setShowModal, getData, profiles }) => {
         <Modal centered show={showModal} onHide={handleCloseModal} dialogClassName='modal-custom-like' >
             <div className='modal-custom-header'>
                 <div></div>
-                <div style={{fontWeight: 'bold'}}>Likes</div>
-                <CloseButton style={{paddingRight: '1rem'}} onClick={handleCloseModal} />
+                <div className='bold-text-medium'>{title}</div>
+                <CloseButton style={{ paddingRight: '1rem' }} onClick={handleCloseModal} />
             </div>
             <div className='modal-custom-body' onScroll={() => onScroll()} ref={listInnerRef}>
                 {!gettingData &&
                     profiles.map((profile, index) => (
-                        <ProfileListItem profile={profile} />
+                        <ProfileListItem key={index} profile={profile} />
                     ))
                 }
                 {gettingData && <MySpinner />}

@@ -46,8 +46,8 @@ const PostForm = ({message, setMessage}) => {
         <>
             <div style={{ height: '30rem', width: '20rem', padding: '1rem' }}>
                 <div style={{ display: 'flex', marginBottom: '1rem' }}>
-                    <MyAvatar className='avatar post-header-avatar' />
-                    <div className='post-header-username post-username'>
+                    <MyAvatar className='avatar avatar-small' />
+                    <div className='name-avatar-margin-small bold-text-small'>
                         {user.username}
                     </div>
                 </div>
@@ -68,7 +68,7 @@ const PostForm = ({message, setMessage}) => {
                             </div>
                         }
                     </div>
-                    <div className='fade-text smaller-text'>
+                    <div className='fade-text-small'>
                         {`${message.length}/2000`}
                     </div>
 

@@ -31,7 +31,6 @@ const formatDate = (date) => {
 const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef }) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user);
-    const likeCommentProfiles = useSelector(state => state.profileModal.profiles)
     const showReply = useSelector(state => state.postTimeline.commentProps[comment?.id]?.showReply)
     const gettingReplyComment = useSelector(state => state.postTimeline.commentProps[comment?.id]?.gettingReplyComment)
     const [showLikeProfile, setShowLikeProfile] = useState(false);
@@ -84,7 +83,7 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef })
                 isTimeline &&
                 <Row>
                     <Col xs={11}>
-                        <span className='post-username'>{comment.username} </span>
+                        <span className='bold-text-small'>{comment.username} </span>
                         <span>{comment.body}</span>
                     </Col>
                     <Col xs={{ span: 1, offset: 0 }} >
@@ -96,14 +95,13 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef })
             {
                 !isTimeline && !isOriginalComment &&
                 <div className='post-row-comment' style={{ display: 'flex' }} >
-                    <img className='avatar post-header-avatar' style={{ marginRight: '1.0rem' }}
-                        src={getAvatarSrc(comment, 'small')} />
-                    <div style={{ width: '85%' }}>
+                    <img className='avatar avatar-small' src={getAvatarSrc(comment, 'small')} />
+                    <div className='name-avatar-margin-medium' style={{ width: '85%' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div style={{ maxWidth: '90%' }}>
                                 <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                                     <div className='post-row-comment'>
-                                        <span className='post-username'>{comment.username} </span>
+                                        <span className='bold-text-small'>{comment.username} </span>
                                         <span>{comment.body}</span>
                                     </div>
                                     <div className={`post-comment-info ${comment.reply_count > 0 ? 'post-row-comment' : ''}`} style={{ display: 'flex' }}>
@@ -153,19 +151,19 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef })
 
                     </div>
                     {showLikeProfile &&
-                        <ProfileListModal showModal={showLikeProfile} setShowModal={setShowLikeProfile}
-                            getData={callLikeCommentProfile(comment.id)} profiles={likeCommentProfiles} />}
+                        <ProfileListModal title='Likes' showModal={showLikeProfile} setShowModal={setShowLikeProfile}
+                            getData={callLikeCommentProfile(comment.id)} />}
                 </div>
 
             }
             {
                 isOriginalComment &&
                 <div className='post-row-comment' style={{ display: 'flex', marginTop: '1rem' }}>
-                    <img className='avatar post-header-avatar' style={{ marginRight: '1.0rem' }}
+                    <img className='avatar avatar-small' style={{ marginRight: '1.0rem' }}
                         src={getAvatarSrc(post.profile_info, 'small')} />
                     <div style={{ width: '85%' }}>
                         <div className='post-row-comment'>
-                            <span className='post-username'>{post.profile_info.username} </span>
+                            <span className='bold-text-small'>{post.profile_info.username} </span>
                             <span>{post.body}</span>
                         </div>
                         <div className='post-comment-info post-row-comment' style={{ display: 'flex' }}>

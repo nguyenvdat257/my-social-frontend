@@ -8,7 +8,7 @@ const ConfirmModal = ({ handleFn, currentName }) => {
     const name = useSelector(state => state.confirm.name);
     const props = useSelector(state => state.confirm.props);
     const handleActionClick = e => {
-        handleFn(props);
+        handleFn(props.handleProps);
         dispatch(confirmActions.setName(''));
     };
     const handleCloseModal = e => {

@@ -14,6 +14,8 @@ import postAddSlice from "./post-add-slice";
 import confirmSlice from "./confirm-modal-slice";
 import optionSlice from "./option-modal-slice";
 import postEditSlice from "./post-edit-slice";
+import profileSuggestSlice from "./profile-suggest-slice";
+import storySlice from "./story-slice";
 
 
 const persistConfig = {
@@ -29,12 +31,14 @@ const reducers = combineReducers({
     privacy: privacySlice.reducer,
     toast: toastSlice.reducer,
     storyBoard: storyBoardSlice.reducer,
+    story: storySlice.reducer,
     postTimeline: postTimeLineSlice.reducer,
     profileModal: profileModalSlice.reducer,
     postAdd: postAddSlice.reducer,
     confirm: confirmSlice.reducer,
     option: optionSlice.reducer,
     postEdit: postEditSlice.reducer,
+    profileSuggest: profileSuggestSlice.reducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);

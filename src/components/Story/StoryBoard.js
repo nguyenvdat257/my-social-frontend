@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import MySpinner from '../Common/Spinner'
 import { myConfig } from '../../config'
 import { Link } from 'react-router-dom'
+import { getAvatarSrc } from '../../utils/CommonFunction'
 
 const StoryBoard = () => {
   const dispatch = useDispatch();
@@ -24,15 +25,16 @@ const StoryBoard = () => {
     );
   else
     return (
-      <Card className='story-board' style={{borderRadius: '0.5rem'}}>
+      <Card className='story-board' style={{ borderRadius: '0.5rem' }}>
         <div className='d-flex flex-row' style={{ overflowX: 'auto' }}>
           {
             unSeenProfiles.concat(seenProfiles).map((profile, index) => (
               <div className='d-flex flex-column story-board-item' key={profile.username}>
                 <Link to={'/stories/profiles/' + index} state={{ profileIdx: index }}>
-                  <img className={`avatar story-board-avatar${index < unSeenProfiles.length ? ' story-board-outline-unseen': ''} `} src={profile.avatar.thumbnail_larger ? myConfig.hostName + profile.avatar.thumbnail_larger : myConfig.defaultAvatar} />
+                  <img className={`avatar avatar-large${index < unSeenProfiles.length ? ' story-board-outline-unseen' : ''} `}
+                    src={getAvatarSrc(profile, 'large')} />
                 </Link>
-                <div className='story-board-text'>{profile.username}</div>
+                <div className='story-board-text fade-text-small'>{profile.username}</div>
               </div>
             ))
           }

@@ -19,7 +19,7 @@ const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showNoti, setShowNoti] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
-  const avatarSrc = useSelector(state => state.auth.user.avatar ?
+  const avatarSrc = useSelector(state => state.auth.user.avatar.thumbnail ?
     myConfig.hostName + state.auth.user.avatar.thumbnail : myConfig.defaultAvatar);
   const targetMenu = useRef(null);
   const targetNoti = useRef(null);
@@ -118,7 +118,7 @@ const Header = () => {
                 {/* avatar */}
                 <div className='col-2'>
                   <img ref={targetMenu} src={avatarSrc} alt="Avatar"
-                    className={`header-item avatar header-avatar ${showMenu ? 'border-around' : ''} pointer-cursor`}
+                    className={`header-item avatar avatar-small ${showMenu ? 'border-around' : ''} pointer-cursor`}
                     onClick={() => setShowMenu(!showMenu)}></img>
                 </div>
                 <Overlay target={targetAdd.current} show={showAdd} placement='bottom' rootClose onHide={() => setShowAdd(false)}>

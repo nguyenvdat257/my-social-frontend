@@ -4,12 +4,14 @@ import ConfirmModal from '../Common/ConfirmModal';
 import { confirmActions } from '../../store/confirm-modal-slice';
 import { optionActions } from '../../store/option-modal-slice';
 import { useSelector, useDispatch } from 'react-redux';
-import { callDeleteComment, callDeletePost, callFollow } from '../../store/post-timeline-slice';
+import postTimeLineSlice, { callDeleteComment, callDeletePost, callFollowInPost, postTimelineActions } from '../../store/post-timeline-slice';
 import PostEdit from './PostEdit';
 import { postEditActions } from '../../store/post-edit-slice';
 import { getAvatarSrc } from '../../utils/CommonFunction';
+import { callFollow } from '../../store/profile-actions';
+import { profileSuggestActions } from '../../store/profile-suggest-slice';
 
-const PostModals = () => {
+const SharedModals = () => {
   const dispatch = useDispatch();
   return (
     <>
@@ -21,11 +23,13 @@ const PostModals = () => {
           handleFn: (props) => {
             dispatch(optionActions.setName(''));
             dispatch(confirmActions.setProps({
-              titleavatar: getAvatarSrc(props.post.profile_info, 'large'),
+              titleAvatar: getAvatarSrc(props.post.profile_info, 'large'),
               titleDesc: `Unfollow @${props.post.profile_info.username}?`,
               text: 'Unfollow',
-              username: props.post.profile_info.username,
-              postCode: props.post.code
+              handleProps: {
+                username: props.post.profile_info.username,
+                props: { postCode: props.post.code }
+              }
             }));
             dispatch(confirmActions.setName('post-unfollow'));
           }
@@ -35,10 +39,16 @@ const PostModals = () => {
       {/* Confirm unfollow */}
       <ConfirmModal
         handleFn={(props) => {
-          dispatch(callFollow(props.username, props.postCode))
+          dispatch(callFollow({...props, updateFn: postTimelineActions.setFollowData }))
           dispatch(optionActions.setName(''));
         }}
         currentName='post-unfollow' />
+      <ConfirmModal
+        handleFn={(props) => {
+          dispatch(callFollow({...props, updateFn: profileSuggestActions.setFollowData }))
+          dispatch(optionActions.setName(''));
+        }}
+        currentName='unfollow' />
       {/* My post option */}
       <OptionModal options={[
         {
@@ -50,7 +60,7 @@ const PostModals = () => {
               titleMain: 'Delete post?',
               titleDesc: 'Are you sure you want to delete this post?',
               text: 'Delete',
-              postCode: props.post.code
+              handleProps: {postCode: props.post.code}
             }));
             dispatch(confirmActions.setName('post-delete'));
           }
@@ -90,4 +100,4 @@ const PostModals = () => {
   )
 }
 
-export default PostModals
+export default SharedModals

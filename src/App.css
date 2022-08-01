@@ -57,13 +57,10 @@ html, body, #root, #root>div {
 
 .modal-username {
   margin-left: 0.5rem;
-  font-weight: 600;
-  font-size: 0.9rem;
 }
 
 .modal-name {
   margin-left: 0.5rem;
-  font-size: 0.9rem;
 }
 
 /* .modal-title {
@@ -129,14 +126,24 @@ html, body, #root, #root>div {
   border-radius: 50%;
 }
 
-.header-avatar {
-  width: 26px;
-  height: 26px;
+.avatar-small {
+  width: 1.9rem;
+  height: 1.9rem;
 }
 
-.form-avatar {
-  width: 40px;
-  height: 40px;
+.avatar-medium {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.avatar-large {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.avatar-larger {
+  width: 4.5rem;
+  height: 4.5rem;
 }
 
 .header-menu {
@@ -304,8 +311,6 @@ html, body, #root, #root>div {
 
 .story-board-text {
   padding-top: 0.5rem;
-  font-size: 0.9rem;
-  opacity: 0.7;
 }
 
 .story-board-avatar {
@@ -341,6 +346,12 @@ html, body, #root, #root>div {
   cursor: pointer;
 }
 
+.story-view-count {
+  position: absolute;
+  bottom: 2rem;
+  left: 1rem;
+}
+
 .header-item {
   margin-left: 5px;
 }
@@ -348,16 +359,6 @@ html, body, #root, #root>div {
 .avatar {
   display: inline-block;
   border-radius: 50%;
-}
-
-.header-avatar {
-  width: 26px;
-  height: 26px;
-}
-
-.form-avatar {
-  width: 40px;
-  height: 40px;
 }
 
 .header-menu {
@@ -589,8 +590,8 @@ html, body, #root, #root>div {
 }
 
 .story-image {
-  max-width: 90%;
-  max-height: 90%;
+  width: 100%;
+  aspect-ratio: 1;
 }
 
 .story-progress {
@@ -604,10 +605,6 @@ html, body, #root, #root>div {
   display: flex;
 }
 
-.story-avatar {
-  width: 2.2rem;
-  height: 2.2rem;
-}
 
 .story-info {
   margin-top: 0.5rem;
@@ -627,12 +624,44 @@ html, body, #root, #root>div {
   font-size: 1rem;
 }
 
-.fade-text {
+.fade-text-extra-small {
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.fade-text-small {
+  font-size: 0.8rem;
   opacity: 0.7;
+}
+
+.fade-text-medium {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.fade-text-large {
+  font-size: 1.2rem;
+  opacity: 0.7;
+}
+
+.fade-text-larger {
+  font-size: 1.5rem;
+  opacity: 0.7;
+}
+
+.bold-text-small {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.bold-text-medium {
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .bold-text {
   font-weight: 600;
+
 }
 
 .smaller-text {
@@ -720,27 +749,22 @@ html, body, #root, #root>div {
 }
 
 
-.post-ago {
-  font-size: 0.7rem;
-}
-
-.post-header-username {
+.name-avatar-margin-small {
   margin-left: 0.5rem;
 }
 
-.post-header-username-main {
+.name-avatar-margin-medium {
   margin-left: 1rem;
 }
 
-.post-username {
-  font-weight: 600;
-  font-size: 0.9rem;
+.name-avatar-margin-small {
+  margin-left: 0.5rem;
 }
 
-.post-header-avatar {
-  width: 2rem;
-  height: 2rem;
+.name-avatar-margin-small-main {
+  margin-left: 1rem;
 }
+
 
 .post-image {
   width: 100%;
@@ -756,15 +780,6 @@ html, body, #root, #root>div {
 
 .post-button:hover {
   opacity: 0.5;
-}
-
-.post-like {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.post-like-zero {
-  font-size: 0.9rem;
 }
 
 .post-content {
@@ -842,29 +857,29 @@ html, body, #root, #root>div {
 }
 
 .post-add-next-button {
-  background-color: gray; 
+  background-color: gray;
   color: white;
-  border-radius:50%;
+  border-radius: 50%;
 }
 
 .post-add-next-button-position {
   position: absolute;
   top: -2.5%;
   left: 42.5%;
-  z-index: 99; 
+  z-index: 99;
 }
 
 .post-add-locator-position {
   position: absolute;
   bottom: 5%;
   left: 0;
-  z-index: 99; 
+  z-index: 99;
 }
 
 .post-add-locator {
   width: 0.4rem;
   height: 0.4rem;
-  border-radius:50%;
+  border-radius: 50%;
   margin: 0.1rem;
 }
 

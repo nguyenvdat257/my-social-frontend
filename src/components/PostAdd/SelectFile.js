@@ -53,13 +53,13 @@ const SelectFile = () => {
     <>
       <div className='modal-custom-header'>
         <div></div>
-        <div className='bold-text'>Create new {type === 'post' ? 'post' : 'story'}</div>
+        <div className='bold-text-medium'>Create new {type === 'post' ? 'post' : 'story'}</div>
         <div></div>
       </div>
       <div ref={ref} className='post-add-select-file'>
         <div style={{ marginBottom: '1rem' }}><AiOutlinePicture size={50} /></div>
         <FileUploader handleChange={handleChangeDropFiles} name="file" multiple types={fileTypes} >
-          <div className={'fade-text'} style={{width: '100%', paddingBottom: '1rem', fontSize: '1.5rem' }}>Drag photos and videos here</div>
+          <div className={'fade-text-larger'} style={{width: '100%', paddingBottom: '1rem' }}>Drag photos and videos here</div>
         </FileUploader>
         <div><Button onClick={handleSelectFileClick}>Select from computer</Button></div>
         <Form.Control ref={selectFileRef} onChange={handleFileChangeChoose} type="file"

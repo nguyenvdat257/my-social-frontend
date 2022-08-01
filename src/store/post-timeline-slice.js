@@ -246,7 +246,7 @@ const postTimeLineSlice = createSlice({
             state.posts[objIndex]['is_saved'] = !state.posts[objIndex]['is_saved'];
         },
         setFollowData(state, action) {
-            const postIndex = state.posts.findIndex((post => post.code === action.payload.postCode));
+            const postIndex = state.posts.findIndex((post => post.code === action.payload.props.postCode));
             const post = state.posts[postIndex];
             const isFollow = action.payload.data.type === 'follow' ? true : false;
             post.profile_info.is_follow = isFollow;
@@ -483,20 +483,6 @@ export const callSendReply = (message, postCode, replyTo) => {
         dispatch(toastActions.setIsShow(myConfig.serverError));
         dispatch(postTimelineActions.undoNewReply({ code: postCode, commentId: replyTo }));
     }
-
-    const before = null;
-    const afterConnected = null;
-    const afterUnconnected = null;
-    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
-}
-
-export const callFollow = (username, postCode) => {
-    const url = myConfig.hostName + '/follows/follow-unfollow/';
-    const method = 'PUT';
-    const sendData = JSON.stringify({ username: username });
-    const successHandler = (data) => postTimelineActions.setFollowData({ data: data, postCode: postCode });
-    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
-    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
 
     const before = null;
     const afterConnected = null;

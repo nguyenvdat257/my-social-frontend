@@ -15,7 +15,6 @@ import PostComments from './PostComments'
 const PostDetail = ({ post, isTimeline, inputRef, commentListRef }) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user)
-    const likePostProfiles = useSelector(state => state.profileModal.profiles)
     const replyTo = useSelector(state => state.postTimeline.replyTo)
     const message = useSelector(state => state.postTimeline.postProps[post.code].message)
     const [showBody, setShowBody] = useState(false);
@@ -124,12 +123,12 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef }) => {
                 {!post.is_saved && <BsBookmark size='22px' className='post-button pointer-cursor' onClick={handleClickSave} />}
             </div>
             {post.likes_count > 0 && // Like count
-                <div className='post-row post-like'>
+                <div className='post-row bold-text-small'>
                     <span className='pointer-cursor' onClick={handleClickLikeProfile}>{`${post.likes_count} ${post.likes_count > 1 ? 'likes' : 'like'}`}</span>
                 </div>}
             {post.likes_count === 0 &&
-                <div className='post-row post-like-zero'>
-                    <span>Be the first to </span><span className='pointer-cursor' onClick={handleClickLike}><b>like this</b></span>
+                <div className='post-row '>
+                    <span>Be the first to </span><span className='bold-text-small pointer-cursor' onClick={handleClickLike}>like this</span>
                 </div>
             }
             <div className='post-row'>
@@ -139,14 +138,14 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef }) => {
                         {
                             (!isLongText(post.body) || showBody) &&
                             <>
-                                <span className='post-username' >{post.profile_info.username} </span>
+                                <span className='bold-text-small' >{post.profile_info.username} </span>
                                 <span>{post.body}</span>
                             </>
                         }
                         {
                             (isLongText(post.body) && !showBody) &&
                             <>
-                                <span className='post-username' >{post.profile_info.username} </span>
+                                <span className='bold-text-small' >{post.profile_info.username} </span>
                                 <span>{post.body.slice(0, 20)} ... </span>
                                 <span className='fade-text pointer-cursor' onClick={handleClickMore}> more</span>
                             </>
@@ -158,7 +157,7 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef }) => {
                 <PostComments post={post} isTimeline={isTimeline} />
             }
             {/* ago text */}
-            <div className='post-row post-ago fade-text'>
+            <div className='post-row fade-text-extra-small'>
                 {moment(post.created).fromNow().toUpperCase()}
             </div>
             {/* comment on post */}
@@ -181,8 +180,8 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef }) => {
                     onClick={onInputCommentSubmit}>Post</div>
 
                 {showLikeProfile &&
-                    <ProfileListModal showModal={showLikeProfile} setShowModal={setShowLikeProfile}
-                        getData={callLikePostProfile(post.code)} profiles={likePostProfiles} />}
+                    <ProfileListModal title='Likes' showModal={showLikeProfile} setShowModal={setShowLikeProfile}
+                        getData={callLikePostProfile(post.code)}/>}
             </div>
         </>
     )
