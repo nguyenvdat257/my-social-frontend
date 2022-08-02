@@ -1,11 +1,7 @@
-import { Button, Spinner } from 'react-bootstrap';
 import React from 'react';
-import { myConfig } from '../../config';
-import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { getAvatarSrc } from '../../utils/CommonFunction';
 import { callFollow } from '../../store/profile-actions';
-import { confirmActions } from '../../store/confirm-modal-slice';
 import { unfollowModal } from '../../utils/CommonFunction';
 import { profileSuggestActions } from '../../store/profile-suggest-slice';
 
@@ -14,7 +10,7 @@ import { profileSuggestActions } from '../../store/profile-suggest-slice';
 const ProfileItem = ({ profile }) => {
     const dispatch = useDispatch()
     const handleClickFollow = e => {
-        dispatch(callFollow({ username: profile.username, updateFn: profileSuggestActions.setFollowData}));
+        dispatch(callFollow({ username: profile.username, updateFn: profileSuggestActions.setFollowData }));
     };
     const handleClickUnfollow = e => {
         unfollowModal(profile, dispatch);

@@ -16,6 +16,7 @@ import optionSlice from "./option-modal-slice";
 import postEditSlice from "./post-edit-slice";
 import profileSuggestSlice from "./profile-suggest-slice";
 import storySlice from "./story-slice";
+import searchSlice from "./search-slice";
 
 
 const persistConfig = {
@@ -39,6 +40,7 @@ const reducers = combineReducers({
     option: optionSlice.reducer,
     postEdit: postEditSlice.reducer,
     profileSuggest: profileSuggestSlice.reducer,
+    search: searchSlice.reducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);

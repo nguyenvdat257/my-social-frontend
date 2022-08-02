@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { InputGroup, FormControl, Button } from 'react-bootstrap'
 import { RiMessengerLine, RiMessengerFill, RiHomeLine, RiHomeFill } from 'react-icons/ri'
-import { BsSearch } from 'react-icons/bs'
 import { BsPlusSquare, BsPlusSquareFill } from 'react-icons/bs'
 import { AiOutlineCompass, AiFillCompass, AiOutlineHeart, AiFillHeart, AiOutlineSetting } from 'react-icons/ai'
 import { CgProfile } from 'react-icons/cg'
@@ -14,6 +13,7 @@ import { myConfig } from '../../config';
 import PostAddModal from '../PostAdd/PostAddModal'
 import { postAddActions } from '../../store/post-add-slice'
 import MyAvatar from '../Common/MyAvatar'
+import Search from '../Search/Search'
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -50,6 +50,7 @@ const Header = () => {
     dispatch(postAddActions.setShowMainModal(true));
   };
 
+
   useEffect(() => {
     let fourMinutes = 1000 * 60 * 4
     let interval = setInterval(() => {
@@ -59,20 +60,13 @@ const Header = () => {
   });
   return (
     <>
-      <div className='sticky-header'>
-        <div className="row row-header align-items-center">
-          <div className="col-2 offset-2 header-app-name" onClick={handleClickHome}>
+      <div className='sticky-header' >
+        <div className="row row-header align-items-center" >
+          <div className="col-2 offset-2 header-app-name" onClick={handleClickHome} >
             My Social Net
           </div>
-          <div className="col-2 offset-1 header-search">
-            <InputGroup>
-              <InputGroup.Text id="basic-addon1"><BsSearch /></InputGroup.Text>
-              <FormControl
-                placeholder="Search"
-                type="search"
-                aria-label="Search"
-              />
-            </InputGroup>
+          <div className="col-2 offset-1 header-search" style={{ position: 'relative', width: '20rem', pointerEvents: 'auto' }}>
+            <Search />
           </div>
 
           {isLoggedIn &&

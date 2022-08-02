@@ -17,18 +17,21 @@ function App() {
   }, [])
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/stories/profiles/:idx" element={<Story type='other'/>} />
-          <Route exact path="/stories/my" element={<Story type='my'/>} />
-          <Route path="/*" element={<Main />} />
-        </Routes>
-      </BrowserRouter>
-      <MyToast />
-      <SharedModals />
+      <div style={{ pointerEvents: 'auto' }}>
+        <BrowserRouter>
+          <Routes>
+            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/signup" element={<Signup />} />
+            <Route exact path="/signup" element={<Signup />} />
+            <Route exact path="/stories/profiles/:idx" element={<Story type='other' />} />
+            <Route exact path="/stories/my" element={<Story type='my' />} />
+            <Route path="/*" element={<Main />} />
+          </Routes>
+        </BrowserRouter>
+        <MyToast />
+        <SharedModals />
+
+      </div>
     </>
   );
 }

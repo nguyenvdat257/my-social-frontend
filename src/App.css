@@ -277,6 +277,10 @@ html, body, #root, #root>div {
   display: block;
 }
 
+.popover {
+  max-width: 700px;
+}
+
 .privacy-check {
   font-size: 1rem;
   font-weight: 500;
@@ -887,4 +891,9 @@ html, body, #root, #root>div {
   width: 4rem;
   height: 4rem;
   margin-bottom: 1rem;
+}
+
+.search-item:hover{
+  /* background-color: #fefefe; */
+  background-color: #fafafa;
 }
