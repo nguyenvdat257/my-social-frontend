@@ -7,18 +7,20 @@ import { getAvatarSrc } from '../../utils/CommonFunction';
 import { confirmActions } from '../../store/confirm-modal-slice';
 import { callFollow } from '../../store/profile-actions';
 
-const PostHeader = ({ post, isTimeline }) => {
+const PostHeader = ({ post, isTimeline, type }) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user);
     const handleClickThreeDot = e => {
         if (post.profile_info.username === user.username) {
             dispatch(optionActions.setName('post-my'));
             dispatch(optionActions.setProps({
+                type: type,
                 post: post
             }));
         } else if (post.profile_info.is_follow) {
             dispatch(optionActions.setName('post-other'));
             dispatch(optionActions.setProps({
+                type: type,
                 post: post
             }))
         }

@@ -57,6 +57,34 @@ export const callLikePostProfile = postCode => setGettingData => {
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
+export const callGetFollower = username => setGettingData => {
+    const url = myConfig.hostName + `/profiles/username/${username}/follower/`;
+    const method = 'GET';
+    const sendData = null;
+    const successHandler = (data) => profileModalActions.setData(data);
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+
+    const before = () => () => setGettingData(true);
+    const afterConnected = () => () => setGettingData(false);
+    const afterUnconnected = () => () => setGettingData(false);
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
+export const callGetFollowing = username => setGettingData => {
+    const url = myConfig.hostName + `/profiles/username/${username}/following/`;
+    const method = 'GET';
+    const sendData = null;
+    const successHandler = (data) => profileModalActions.setData(data);
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+
+    const before = () => () => setGettingData(true);
+    const afterConnected = () => () => setGettingData(false);
+    const afterUnconnected = () => () => setGettingData(false);
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
 export const callNextProfile = setGettingData => {
     const state = store.getState();
     const nextUrl = state.profileModal.nextUrl;

@@ -7,17 +7,18 @@ import Story from './components/Story/Story';
 import MyToast from './components/Common/MyToast';
 import { useEffect } from 'react';
 import { callGetCurrentProfile } from './store/profile-actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SharedModals from './components/Post/SharedModals';
 
 function App() {
   const dispatch = useDispatch();
+  const isClickable = useSelector(state => state.click.isClickable);
   useEffect(() => {
     dispatch(callGetCurrentProfile());
   }, [])
   return (
     <>
-      <div style={{ pointerEvents: 'auto' }}>
+      <div style={{ pointerEvents: `${isClickable ? 'auto' : 'none'}` }}>
         <BrowserRouter>
           <Routes>
             <Route exact path="/login" element={<Login />} />

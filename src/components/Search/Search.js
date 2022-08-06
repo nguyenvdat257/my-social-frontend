@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Card, InputGroup, FormControl } from 'react-bootstrap'
 import { BsSearch } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux';
+import { clickActions } from '../../store/click-slice';
 import { callClearAllSearch, callGetSavedSearch, callSearchProfile, callSearchTag, searchActions } from '../../store/search-slice';
 import MySpinner from '../Common/Spinner';
-import SearchProfileItem from './SearchProfileItem';
-import SearchTagItem from './SearchTagItem';
+import SearchItem from './SearchItem';
 
 const Search = () => {
     const dispatch = useDispatch();
@@ -24,6 +24,9 @@ const Search = () => {
     const ref = useRef(null);
     const handleFocusSearch = e => {
         setShowSearch(true);
+        dispatch(clickActions.setIsClickable(false));
+        if (!recentLoaded && keyword.length === 0)
+            dispatch(callGetSavedSearch());
     }
     const handleKeywordChange = e => {
         setKeyword(e.target.value);
@@ -32,6 +35,7 @@ const Search = () => {
         const { target } = event
         if (!ref.current?.contains(target)) {
             setShowSearch(false);
+            dispatch(clickActions.setIsClickable(true));
         }
     }
     const handleClickClearAll = e => {
@@ -47,9 +51,7 @@ const Search = () => {
         else if (keyword.length > 0 && keyword.slice(0, 1) != '#') {
             dispatch(callSearchProfile(keyword));
         }
-        else if (keyword.length === 0 ) {
-            if (!recentLoaded)
-                dispatch(callGetSavedSearch());
+        else if (keyword.length === 0) {
             dispatch(searchActions.setCurrentType('recent'));
         }
     }, [keyword])
@@ -59,7 +61,7 @@ const Search = () => {
         return () => document.removeEventListener('click', handleClick);
     }, []);
     return (
-        <div ref={ref}>
+        <div ref={ref} style={{ pointerEvents: 'auto' }}>
             <InputGroup onFocus={handleFocusSearch}>
                 <InputGroup.Text id="basic-addon1"><BsSearch /></InputGroup.Text>
                 <FormControl
@@ -72,7 +74,7 @@ const Search = () => {
             </InputGroup>
             {showSearch &&
                 <div style={{ position: 'absolute', left: '-2.5rem', top: '3rem' }}>
-                    <Card style={{ position: 'relative', width: '25rem', height: '25rem', padding: '0.5rem' }}>
+                    <Card style={{ position: 'relative', width: '25rem', height: '25rem', padding: '0.5rem', overflowY: 'auto' }}>
                         {gettingData &&
                             <MySpinner />
                         }
@@ -90,17 +92,10 @@ const Search = () => {
                                 {
                                     items.map((item, index) => {
                                         if (currentType === 'recent') {
-                                            if (item.type === 'profile')
-                                                return <SearchProfileItem key={index} searchId={item.searchId} profile={item.data} />
-                                            else
-                                                return <SearchTagItem key={index} searchId={item.searchId} tag={item.data} />
+                                            return <SearchItem key={index} searchId={item.searchId} item={item.data} type={item.type} setShowSearch={setShowSearch} />
                                         }
-                                        else if (currentType === 'profile') {
-                                            return <SearchProfileItem key={index} profile={item} />
-                                        }
-                                        else if (currentType === 'tag') {
-                                            return <SearchTagItem key={index} tag={item} />
-                                        }
+                                        else
+                                            return <SearchItem key={index} item={item} type={currentType} setShowSearch={setShowSearch} />
                                     })
 
                                 }

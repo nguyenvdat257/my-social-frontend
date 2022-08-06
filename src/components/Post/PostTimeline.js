@@ -13,7 +13,7 @@ const PostTimeline = React.memo((params) => {
   const inputRef = useRef(null);
   return (
     <Card className='post-timeline-card' style={{ backgroundColor: 'white', borderRadius: '0.5rem' }}>
-      <PostHeader post={post} isTimeline={true} />
+      <PostHeader post={post} isTimeline={true} type='postTimeline'/>
       {
         post.images.length === 1 &&
         <img className='post-image' src={myConfig.hostName + post.images[0].image}
@@ -32,9 +32,9 @@ const PostTimeline = React.memo((params) => {
           }
         </Carousel>
       }
-      <PostDetail post={post} isTimeline={true} inputRef={inputRef} />
+      <PostDetail post={post} isTimeline={true} inputRef={inputRef} type='postTimeline' />
       {showPostMain &&
-        < PostMain post={post} />}
+        < PostMain post={post} type='postTimeline' />}
     </Card>
   )
 })

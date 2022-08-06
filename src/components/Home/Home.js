@@ -4,12 +4,13 @@ import StoryBoard from '../Story/StoryBoard'
 import { callGetNextData, postTimelineActions } from '../../store/post-timeline-slice'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
-import MyProfile from './MyProfile'
 import { callGetSuggestProfile } from '../../store/profile-suggest-slice'
-import ProfileItem from './ProfileItem'
+import SuggestedProfileList from './SuggestedProfileList'
+import ProfileAvatar from '../Common/ProfileAvatar'
 
 const Home = React.memo(() => {
   const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
   const nextUrl = useSelector(state => state.postTimeline.nextUrl);
   const usedNextUrl = useSelector(state => state.postTimeline.usedNextUrl);
   const profileSuggestLoaded = useSelector(state => state.profileSuggest.profileSuggestLoaded);
@@ -22,7 +23,7 @@ const Home = React.memo(() => {
       if (scrollTop + clientHeight - scrollHeight > -600) {
         if (nextUrl && !usedNextUrl.includes(nextUrl)) {
           dispatch(postTimelineActions.appendUsedNextUrl(nextUrl));
-          dispatch(callGetNextData(nextUrl));
+          dispatch(callGetNextData('postTimeline', nextUrl));
         }
       }
     }
@@ -39,15 +40,8 @@ const Home = React.memo(() => {
           <PostTimelineList />
         </div>
         <div style={{ marginLeft: '2rem', marginTop: '1rem', height: '100%', width: '20rem' }}>
-          <MyProfile />
-          <div className='fade-text-medium bold-text' style={{ marginTop: '1rem' }}>Suggestions For You</div>
-          <div style={{ marginTop: '1rem', paddingRight: '1rem' }}>
-            {profileSuggestLoaded &&
-              profileSuggests.slice(0, 5).map((profile, index) => (
-                <ProfileItem key={index} profile={profile} />
-              ))
-            }
-          </div>
+          <ProfileAvatar profile={user} avatarSize='large' isShowDetail={true} margin='1rem' />
+          <SuggestedProfileList profileSuggests={profileSuggests} profileSuggestLoaded={profileSuggestLoaded} />
         </div>
       </div>
     </>

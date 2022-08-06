@@ -21,7 +21,7 @@ const Main = () => {
             <Route path="" element={<Home />} />
             <Route path='direct/inbox' element={<Chat />} />
             <Route path="explore" element={<Explore />} />
-            {/* <Route path="/:username" element={<Profile />} />  */}
+            <Route path="profiles/:username" element={<Profile />} /> 
             <Route path="accounts/*" element={<Settings />} />
           </Route>
         </Routes>

@@ -18,6 +18,28 @@ html, body, #root, #root>div {
   min-height: 60px;
 }
 
+.center-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-item-vertical {
+  display: flex;
+  align-items: center;
+}
+
+.center-item-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.center-item-horizontal {
+  display: flex;
+  justify-content: center;
+}
+
 .flex-align-left {
   display: flex;
   align-items: center;
@@ -121,6 +143,16 @@ html, body, #root, #root>div {
   margin-left: 5px;
 }
 
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  padding-top: 5.5rem;
+  /* height: fit-content; */
+  /* height: 100%; */
+  overflow-y: auto;
+}
+
 .avatar {
   display: inline-block;
   border-radius: 50%;
@@ -142,8 +174,8 @@ html, body, #root, #root>div {
 }
 
 .avatar-larger {
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 8.5rem;
+  height: 8.5rem;
 }
 
 .header-menu {
@@ -323,13 +355,13 @@ html, body, #root, #root>div {
 }
 
 .story-board-outline {
-  outline: 2px rgb(205, 202, 202);
+  outline: 3px rgb(205, 202, 202);
   outline-style: solid;
   outline-offset: 2px;
 }
 
 .story-board-outline-unseen {
-  outline: 2px rgb(57, 201, 49);
+  outline: 3px rgb(239, 127, 8);
   outline-style: solid;
   outline-offset: 2px;
 
@@ -556,12 +588,6 @@ html, body, #root, #root>div {
   outline-offset: 2px;
 }
 
-.story-board-outline-unseen {
-  outline: 2px rgb(57, 201, 49);
-  outline-style: solid;
-  outline-offset: 2px;
-
-}
 
 .story-contain {
   width: 100%;
@@ -893,7 +919,49 @@ html, body, #root, #root>div {
   margin-bottom: 1rem;
 }
 
-.search-item:hover{
+.search-item:hover {
   /* background-color: #fefefe; */
   background-color: #fafafa;
+}
+
+.my-button {
+  display: flex;
+  width: 4.3rem;
+  height: 1.7rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 2px ridge;
+}
+
+.my-button-blue {
+  background-color: dodgerblue;
+  color: white;
+  border: 0px;
+}
+
+.profile-bio {
+  white-space: pre-line;
+}
+
+.profile-option-selected {
+  box-shadow: 0 -1px 0 #000;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.9;
+  padding-top: 1rem;
+}
+
+.profile-option-not-selected {
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.4;
+  padding-top: 1rem;
+}
+
+.post-grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 1.5rem
 }

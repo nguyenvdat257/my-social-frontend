@@ -12,12 +12,12 @@ export const getAvatarSrc = (profile, type) => {
         return profile.avatar.thumbnail_larger ? myConfig.hostName + profile.avatar.thumbnail_larger : myConfig.defaultAvatar
 }
 
-export const unfollowModal = (profile, dispatch) => {
+export const unfollowModal = (profile, dispatch, name) => {
     dispatch(confirmActions.setProps({
         titleAvatar: getAvatarSrc(profile, 'large'),
         titleDesc: `Unfollow @${profile.username}?`,
         text: 'Unfollow',
         handleProps: { username: profile.username },
     }));
-    dispatch(confirmActions.setName('unfollow'));
+    dispatch(confirmActions.setName(name));
 }

@@ -37,7 +37,7 @@ const ProfileListModal = ({title, showModal, setShowModal, getData }) => {
             <div className='modal-custom-body' onScroll={() => onScroll()} ref={listInnerRef}>
                 {!gettingData &&
                     profiles.map((profile, index) => (
-                        <ProfileListItem key={index} profile={profile} />
+                        <ProfileListItem key={index} profile={profile}/>
                     ))
                 }
                 {gettingData && <MySpinner />}

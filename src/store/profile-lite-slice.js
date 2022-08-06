@@ -4,15 +4,22 @@ import { callApi } from './actions';
 import { postActions } from './post-timeline-slice';
 import { toastActions } from './toast-slice';
 
-const profileSlice = createSlice({
-    name: 'profileSlice',
+const profileLiteSlice = createSlice({
+    name: 'profileLiteSlice',
     initialState: {
         profile: null,
+        posts: [],
+        profileLoaded: false,
+        postsLoaded: false
     },
     reducers: {
         setProfile(state, action) {
             state.profile = action.payload;
             state.profileLoaded = true;
+        },
+        setPosts(state, action) {
+            state.posts = action.payload.results.slice(0, 3);
+            state.postsLoaded = true;
         },
         setFollowData(state, action) {
             const isFollow = action.payload.data.type === 'follow' ? true : false;
@@ -22,13 +29,13 @@ const profileSlice = createSlice({
 })
 
 
-export const profileActions = profileSlice.actions;
+export const profileLiteActions = profileLiteSlice.actions;
 
-export const callGetProfile = (username) => {
+export const callGetProfileLite = (username) => {
     const url = myConfig.hostName + `/profiles/username/${username}/`;
     const method = 'GET';
     const formData = null
-    const successHandler = (data) => profileActions.setProfile(data);
+    const successHandler = (data) => profileLiteActions.setProfile(data);
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
     const before = null;
@@ -37,11 +44,11 @@ export const callGetProfile = (username) => {
     return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
-export const callGetPosts = (username) => {
+export const callGetPostsLite = (username) => {
     const url = myConfig.hostName + `/posts/username/${username}/`;
     const method = 'GET';
     const formData = null
-    const successHandler = (data) => postActions.setData(data);
+    const successHandler = (data) => profileLiteActions.setPosts(data);
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
     const before = null;
@@ -50,4 +57,4 @@ export const callGetPosts = (username) => {
     return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
-export default profileSlice;
+export default profileLiteSlice

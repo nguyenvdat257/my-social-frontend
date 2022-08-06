@@ -3,7 +3,7 @@ import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai'
 import { FiSend } from 'react-icons/fi'
 import { BsBookmark, BsBookmarkFill, BsEmojiSmile } from 'react-icons/bs'
 import moment from 'moment'
-import { callPostLike, callPostSave, postTimelineActions, callSendMessage, callSendReply } from '../../store/post-timeline-slice'
+import { callPostLike, callPostSave, postTimelineActions, callSendMessage, callSendReply, postActions } from '../../store/post-timeline-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import ProfileListModal from '../Profile/ProfileListModal'
 import { callLikePostProfile } from '../../store/profile-actions'
@@ -12,11 +12,12 @@ import Picker from 'emoji-picker-react';
 import PostComments from './PostComments'
 
 
-const PostDetail = ({ post, isTimeline, inputRef, commentListRef }) => {
+const PostDetail = ({ post, isTimeline, inputRef, commentListRef, type }) => {
     const dispatch = useDispatch();
+    const actions = type === 'postTimeline' ? postTimelineActions : postActions
     const user = useSelector(state => state.auth.user)
-    const replyTo = useSelector(state => state.postTimeline.replyTo)
-    const message = useSelector(state => state.postTimeline.postProps[post.code].message)
+    const replyTo = useSelector(state => state[type].replyTo)
+    const message = useSelector(state => state[type].postProps[post.code].message)
     const [showBody, setShowBody] = useState(false);
     const [showLikeProfile, setShowLikeProfile] = useState(false);
     const [showEmoji, setShowEmoji] = useState(false);
@@ -25,7 +26,7 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef }) => {
     const handleClickEmoji = (event, emojiObject) => {
         const cursor = inputRef.current.selectionStart;
         const text = message.slice(0, cursor) + emojiObject.emoji + message.slice(cursor);
-        dispatch(postTimelineActions.setMessage({postCode: post.code, value: text}));
+        dispatch(actions.setMessage({postCode: post.code, value: text}));
         const newCursor = cursor + emojiObject.emoji.length
         setTimeout(() => {
             inputRef.current.setSelectionRange(newCursor, newCursor);
@@ -42,21 +43,21 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef }) => {
         setShowBody(true);
     };
     const handleClickMessage = e => {
-        dispatch(postTimelineActions.setShowPostMain({postCode: post.code, value:true}));
+        dispatch(actions.setShowPostMain({postCode: post.code, value:true}));
     };
     const handleClickLike = e => {
-        dispatch(postTimelineActions.flipLike({ 'code': post.code }))
-        dispatch(callPostLike(post.code));
+        dispatch(actions.flipLike({ 'code': post.code }))
+        dispatch(callPostLike(type, post.code));
     };
     const handleClickSave = e => {
-        dispatch(postTimelineActions.flipSave({ 'code': post.code }))
-        dispatch(callPostSave(post.code));
+        dispatch(actions.flipSave({ 'code': post.code }))
+        dispatch(callPostSave(type, post.code));
     };
     const handleClickLikeProfile = e => {
         setShowLikeProfile(true);
     };
     const handleChangeMessage = e => {
-        dispatch(postTimelineActions.setMessage({postCode: post.code, value: e.target.value}));
+        dispatch(actions.setMessage({postCode: post.code, value: e.target.value}));
     };
     const handleKeyDown = e => {
         e.target.style.height = 'inherit';
@@ -80,18 +81,18 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef }) => {
         if (!message) {
             return;
         }
-        dispatch(postTimelineActions.setMessage({postCode: post.code, value: ''}));
+        dispatch(actions.setMessage({postCode: post.code, value: ''}));
         inputRef.current.focus();
         if (replyTo === null) {
-            dispatch(postTimelineActions.updateTemporaryNewComment({ code: post.code, message: message, user: user }));
-            dispatch(callSendMessage(message, post.code));
+            dispatch(actions.updateTemporaryNewComment({ code: post.code, message: message, user: user }));
+            dispatch(callSendMessage(type, message, post.code));
             commentListRef?.current.scrollTo(0, 0)
         }
         else {
-            dispatch(postTimelineActions.updateTemporaryNewReply({ code: post.code, commentId: replyTo, message: message, user: user }));
-            dispatch(callSendReply(message, post.code, replyTo));
+            dispatch(actions.updateTemporaryNewReply({ code: post.code, commentId: replyTo, message: message, user: user }));
+            dispatch(callSendReply(type, message, post.code, replyTo));
         }
-        dispatch(postTimelineActions.setReplyTo(null));
+        dispatch(actions.setReplyTo(null));
         // inputRef.current.style.height = 'inherit';
     };
     const isLongText = (text) => {
@@ -154,7 +155,7 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef }) => {
                 }
             </div>
             {isTimeline &&
-                <PostComments post={post} isTimeline={isTimeline} />
+                <PostComments post={post} isTimeline={isTimeline} type={type} />
             }
             {/* ago text */}
             <div className='post-row fade-text-extra-small'>

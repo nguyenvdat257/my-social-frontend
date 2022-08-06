@@ -4,12 +4,17 @@ import PostComment from './PostComment'
 import { useSelector, useDispatch } from 'react-redux'
 import { postTimelineActions } from '../../store/post-timeline-slice'
 
-const PostComments = ({ post, isTimeline, inputRef}) => {
+const PostComments = ({ post, isTimeline, inputRef, type }) => {
   const dispatch = useDispatch();
-  const gettingComment = useSelector(state => state.postTimeline.gettingComment);
-  const commentLoaded = useSelector(state => state.postTimeline.commentLoaded);
+  const gettingComment = useSelector(state => state[type].gettingComment);
+  const commentLoaded = useSelector(state => state[type].commentLoaded);
   const handleClickViewComment = e => {
-    dispatch(postTimelineActions.setShowPostMain({postCode: post.code, value: true}));
+    if (type === 'postTimeline') {
+      dispatch(postTimelineActions.setShowPostMain({ postCode: post.code, value: true }));
+
+    } else {
+      console.log('TODO');
+    }
   };
   return (
     <>
@@ -24,7 +29,7 @@ const PostComments = ({ post, isTimeline, inputRef}) => {
         <div className='post-row post-content'>
           {
             post.comments.slice(0, 2).map((comment, index) => (
-              <PostComment key={index} post={post} comment={comment} isTimeline={isTimeline} />
+              <PostComment key={index} post={post} comment={comment} isTimeline={isTimeline} type={type}/>
             ))
           }
         </div>
@@ -32,10 +37,10 @@ const PostComments = ({ post, isTimeline, inputRef}) => {
       {// Display comments main
         !isTimeline && commentLoaded &&
         <div className='post-row-main post-content' >
-          <PostComment key={'body'} post={post} isTimeline={isTimeline} isOriginalComment={true}/>
+          <PostComment key={'body'} post={post} isTimeline={isTimeline} isOriginalComment={true} type={type}/>
           {
             post.comments.map((comment, index) => (
-              <PostComment key={index} post={post} comment={comment} isTimeline={isTimeline} inputRef={inputRef} />
+              <PostComment key={index} post={post} comment={comment} isTimeline={isTimeline} inputRef={inputRef} type={type}/>
             ))
           }
         </div>

@@ -10,6 +10,7 @@ import { postEditActions } from '../../store/post-edit-slice';
 import { getAvatarSrc } from '../../utils/CommonFunction';
 import { callFollow } from '../../store/profile-actions';
 import { profileSuggestActions } from '../../store/profile-suggest-slice';
+import { profileActions } from '../../store/profile-slice';
 
 const SharedModals = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,12 @@ const SharedModals = () => {
           dispatch(optionActions.setName(''));
         }}
         currentName='unfollow' />
+      <ConfirmModal
+        handleFn={(props) => {
+          dispatch(callFollow({...props, updateFn: profileActions.setFollowData }))
+          dispatch(optionActions.setName(''));
+        }}
+        currentName='profile-unfollow' />
       {/* My post option */}
       <OptionModal options={[
         {
@@ -60,7 +67,7 @@ const SharedModals = () => {
               titleMain: 'Delete post?',
               titleDesc: 'Are you sure you want to delete this post?',
               text: 'Delete',
-              handleProps: {postCode: props.post.code}
+              handleProps: {type: props.type, postCode: props.post.code}
             }));
             dispatch(confirmActions.setName('post-delete'));
           }
@@ -71,6 +78,7 @@ const SharedModals = () => {
           handleFn: (props) => {
             dispatch(postEditActions.setName('post-edit'));
             dispatch(postEditActions.setProps({
+              type: props.type,
               post: props.post
             }));
           }
@@ -79,7 +87,7 @@ const SharedModals = () => {
       {/* Confirm delete */}
       <ConfirmModal
         handleFn={(props) => {
-          dispatch(callDeletePost(props.postCode));
+          dispatch(callDeletePost(props.type, props.postCode));
           dispatch(optionActions.setName(''));
         }}
         currentName='post-delete' />
@@ -89,13 +97,13 @@ const SharedModals = () => {
           text: 'Delete',
           type: 'danger',
           handleFn: (props) => {
-            dispatch(callDeleteComment(props.postCode, props.commentId, props.replyId));
+            dispatch(callDeleteComment(props.type, props.postCode, props.commentId, props.replyId));
             dispatch(optionActions.setName(''));
           }
         },
       ]}
         currentName='comment-my' />
-      <PostEdit currentName='post-edit' />
+      <PostEdit currentName='post-edit'/>
     </>
   )
 }

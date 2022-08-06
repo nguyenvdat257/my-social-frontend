@@ -5,11 +5,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { callFollow } from '../../store/profile-actions';
 import { profileModalActions } from '../../store/profile-modal-slice';
-import { AiFillHeart } from 'react-icons/ai'
+import ProfileAvatar from '../Common/ProfileAvatar';
 
 
 
-const ProfileListItem = ({ profile }) => {
+const ProfileListItem = ({ profile, setShowModal }) => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.auth.user)
     const [gettingData, setGettingData] = useState(false);
@@ -22,20 +22,7 @@ const ProfileListItem = ({ profile }) => {
     };
     return (
         <div className='modal-item'>
-            <div style={{ display: 'flex' }}>
-                <div style={{ position: 'relative' }}>
-                    <img className='avatar avatar-medium' src={profile.avatar.thumbnail ? myConfig.hostName + profile.avatar.thumbnail : myConfig.defaultAvatar} />
-                    {profile.is_like_story &&
-                        <div style={{ position:'absolute', bottom: '0%', right: '0%' }}>
-                            <AiFillHeart size={15} style={{color: 'red'}}/>
-                        </div>
-                    }
-                </div>
-                <div className='name-avatar-margin-small'>
-                    <div className='bold-text-small'>{profile.username}</div>
-                    <div className='fade-text-medium'>{profile.name}</div>
-                </div>
-            </div>
+            <ProfileAvatar profile={profile} avatarSize='medium' isShowDetail={true} margin='0.5rem' />
             {profile.is_follow &&
                 <div>
                     <Button className='btn btn-primary btn-block modal-item-button' onClick={handleClickFollow}>

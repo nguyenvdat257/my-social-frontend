@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./auth-slice";
 import signupSlice from "./signup-slice";
-import profileSlice from "./profile-slice"
 import privacySlice from "./privacy-slice"; 
 import toastSlice from "./toast-slice";
 import storyBoardSlice from "./story-board-slice";
@@ -17,6 +16,11 @@ import postEditSlice from "./post-edit-slice";
 import profileSuggestSlice from "./profile-suggest-slice";
 import storySlice from "./story-slice";
 import searchSlice from "./search-slice";
+import clickSlice from "./click-slice";
+import profileEditSlice from "./profile-edit-slice";
+import profileSlice from "./profile-slice";
+import postSlice from "./post-slice";
+import profileLiteSlice from "./profile-lite-slice";
 
 
 const persistConfig = {
@@ -28,19 +32,23 @@ const persistConfig = {
 const reducers = combineReducers({
     auth: authSlice.reducer,
     signup: signupSlice.reducer,
-    profile: profileSlice.reducer,
+    profileEdit: profileEditSlice.reducer,
     privacy: privacySlice.reducer,
     toast: toastSlice.reducer,
     storyBoard: storyBoardSlice.reducer,
     story: storySlice.reducer,
     postTimeline: postTimeLineSlice.reducer,
+    postEdit: postEditSlice.reducer,
+    post: postSlice.reducer,
     profileModal: profileModalSlice.reducer,
     postAdd: postAddSlice.reducer,
     confirm: confirmSlice.reducer,
     option: optionSlice.reducer,
-    postEdit: postEditSlice.reducer,
     profileSuggest: profileSuggestSlice.reducer,
     search: searchSlice.reducer,
+    click: clickSlice.reducer,
+    profile: profileSlice.reducer,
+    profileLite: profileLiteSlice.reducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);

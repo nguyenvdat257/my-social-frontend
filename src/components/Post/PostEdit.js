@@ -7,7 +7,7 @@ import { postEditActions } from '../../store/post-edit-slice';
 import { callEditPost } from '../../store/post-timeline-slice';
 import { optionActions } from '../../store/option-modal-slice';
 
-const PostEdit = ({ currentName }) => {
+const PostEdit = ({ currentName}) => {
     const dispatch = useDispatch();
     const name = useSelector(state => state.postEdit.name);
     const props = useSelector(state => state.postEdit.props);
@@ -21,7 +21,7 @@ const PostEdit = ({ currentName }) => {
         e.preventDefault()
         let formData = new FormData();
         formData.append('body', message);
-        dispatch(callEditPost(formData, props.post.code));
+        dispatch(callEditPost(props.type, formData, props.post.code));
         dispatch(postEditActions.setName(''));
         dispatch(optionActions.setName(''));
     };

@@ -2,25 +2,25 @@ import React, { useEffect } from 'react'
 import { Form, Row, Col, Card, Modal, Button, Spinner } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { useState, useRef } from 'react'
-import { profileActions, getData, submitData } from '../../store/profile-slice'
+import { profileEditActions, getData, submitData } from '../../store/profile-edit-slice'
 import MySpinner from '../Common/Spinner'
 
 const EditProfile = () => {
   const dispatch = useDispatch()
-  const avatarUrl = useSelector(state => state.profile.avatarUrl)
+  const avatarUrl = useSelector(state => state.profileEdit.avatarUrl)
   const [uploadedAvatar, setUploadedAvatar] = useState(null);
-  const username = useSelector(state => state.profile.username);
-  const displayUsername = useSelector(state => state.profile.displayUsername);
-  const name = useSelector(state => state.profile.name);
-  const website = useSelector(state => state.profile.website);
-  const bio = useSelector(state => state.profile.bio);
-  const gender = useSelector(state => state.profile.gender);
+  const username = useSelector(state => state.profileEdit.username);
+  const displayUsername = useSelector(state => state.profileEdit.displayUsername);
+  const name = useSelector(state => state.profileEdit.name);
+  const website = useSelector(state => state.profileEdit.website);
+  const bio = useSelector(state => state.profileEdit.bio);
+  const gender = useSelector(state => state.profileEdit.gender);
   const [showGender, setShowGender] = useState(false);
   const uploadAvatarRef = useRef(null);
-  const sendingData = useSelector(state => state.profile.sendingData);
-  const gettingData = useSelector(state => state.profile.gettingData);
-  const editError = useSelector(state => state.profile.editError);
-  const editSuccess = useSelector(state => state.profile.editSuccess);
+  const sendingData = useSelector(state => state.profileEdit.sendingData);
+  const gettingData = useSelector(state => state.profileEdit.gettingData);
+  const editError = useSelector(state => state.profileEdit.editError);
+  const editSuccess = useSelector(state => state.profileEdit.editSuccess);
   const handleFileChange = e => {
     const fileObj = e.target.files && e.target.files[0];
     if (!fileObj) {
@@ -29,11 +29,11 @@ const EditProfile = () => {
     setUploadedAvatar(fileObj)
   };
   const handleUploadClick = () => uploadAvatarRef.current.click()
-  const handleChangeUsername = e => dispatch(profileActions.setUsername(e.target.value));
-  const handleChangeName = e => dispatch(profileActions.setName(e.target.value));
-  const handleChangeWebsite = e => dispatch(profileActions.setWebsite(e.target.value));
-  const handleChangeBio = e => dispatch(profileActions.setBio(e.target.value));
-  const handleChangeGender = e => dispatch(profileActions.setGender(e.target.value));
+  const handleChangeUsername = e => dispatch(profileEditActions.setUsername(e.target.value));
+  const handleChangeName = e => dispatch(profileEditActions.setName(e.target.value));
+  const handleChangeWebsite = e => dispatch(profileEditActions.setWebsite(e.target.value));
+  const handleChangeBio = e => dispatch(profileEditActions.setBio(e.target.value));
+  const handleChangeGender = e => dispatch(profileEditActions.setGender(e.target.value));
   const genders_radio = [
     { name: "Male", value: "M" },
     { name: "Female", value: "F" },
@@ -65,11 +65,11 @@ const EditProfile = () => {
   useEffect(() => {
     if (uploadedAvatar) {
       const avatarUrl = URL.createObjectURL(uploadedAvatar)
-      dispatch(profileActions.setAvatarUrl(avatarUrl))
+      dispatch(profileEditActions.setAvatarUrl(avatarUrl))
     }
     return () => {
       URL.revokeObjectURL(avatarUrl)
-      dispatch(profileActions.resetData())
+      dispatch(profileEditActions.resetData())
     };
   }, [uploadedAvatar]);
   if (gettingData)
@@ -90,12 +90,12 @@ const EditProfile = () => {
                 <Row className="mb-3 form-group">
                   <Col md={2} className='offset-1 text-end'>
                     <img src={avatarUrl} alt="Avatar"
-                      className='avatar avatar-medium'
+                      className='avatar avatar-medium pointer-cursor'
                       onClick={handleUploadClick}></img>
                   </Col>
                   <Col md={6} className='text-start'>
                     <div className='edit-profile-username'>{displayUsername}</div>
-                    <div style={{ color: 'dodgerblue', fontSize: 'smaller', fontWeight: 'bold' }} onClick={handleUploadClick}>Change profile photo</div>
+                    <div className='pointer-cursor' style={{ color: 'dodgerblue', fontSize: 'smaller', fontWeight: 'bold' }} onClick={handleUploadClick}>Change profile photo</div>
                     <Form.Control ref={uploadAvatarRef} onChange={handleFileChange} type="file" style={{ display: 'none' }} />
                   </Col>
                 </Row>

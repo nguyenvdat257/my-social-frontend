@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
-import { postTimelineActions, callCommentLike, callGetReplyComments } from '../../store/post-timeline-slice'
+import { postTimelineActions, callCommentLike, callGetReplyComments, postActions } from '../../store/post-timeline-slice'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Row, Col } from 'react-bootstrap'
 import MySpinner from '../Common/Spinner'
@@ -28,21 +28,22 @@ const formatDate = (date) => {
     }
 };
 
-const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef }) => {
+const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef, type }) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user);
-    const showReply = useSelector(state => state.postTimeline.commentProps[comment?.id]?.showReply)
-    const gettingReplyComment = useSelector(state => state.postTimeline.commentProps[comment?.id]?.gettingReplyComment)
+    const showReply = useSelector(state => state[type].commentProps[comment?.id]?.showReply)
+    const gettingReplyComment = useSelector(state => state[type].commentProps[comment?.id]?.gettingReplyComment)
     const [showLikeProfile, setShowLikeProfile] = useState(false);
     const [shownReply, setShownReply] = useState(false);
     const [isHover, setIsHover] = useState(false);
+    const actions = type === 'postTimeline' ? postTimelineActions : postActions
     const handleClickReply = e => {
         inputRef.current.focus();
-        dispatch(postTimelineActions.setMessage({ postCode: post.code, value: '@' + comment.username + ' ' }));
+        dispatch(actions.setMessage({ postCode: post.code, value: '@' + comment.username + ' ' }));
         if (comment.reply_to === null)
-            dispatch(postTimelineActions.setReplyTo(comment.id));
+            dispatch(actions.setReplyTo(comment.id));
         else
-            dispatch(postTimelineActions.setReplyTo(comment.reply_to));
+            dispatch(actions.setReplyTo(comment.reply_to));
     }
     const handleClickLikeComment = comment => e => {
         const obj = {
@@ -50,16 +51,16 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef })
             commentId: comment.reply_to ? comment.reply_to : comment.id,
             replyId: comment.reply_to ? comment.id : null,
         }
-        dispatch(postTimelineActions.flipLikeComment(obj))
-        dispatch(callCommentLike(obj));
+        dispatch(actions.flipLikeComment(obj))
+        dispatch(callCommentLike(type, obj));
     };
     const handleClickViewLike = e => {
         setShowLikeProfile(true);
     };
     const handleViewReply = commentId => e => {
-        dispatch(postTimelineActions.setShowReply({ id: commentId, value: !showReply }));
+        dispatch(actions.setShowReply({ id: commentId, value: !showReply }));
         if (!shownReply) {
-            dispatch(callGetReplyComments(post.code, commentId));
+            dispatch(callGetReplyComments(type, post.code, commentId));
             setShownReply(true);
         }
     };
@@ -72,6 +73,7 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef })
     const handleClickThreeDot = e => {
         dispatch(optionActions.setName('comment-my'));
         dispatch(optionActions.setProps({
+            type: type,
             postCode: post.code,
             commentId: comment.reply_to ? comment.reply_to : comment.id,
             replyId: comment.reply_to ? comment.id : null,
@@ -145,7 +147,7 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef })
                         </div>
                         {showReply &&
                             comment.reply_comments?.map((replyComment, index) => (
-                                <PostComment key={index} post={post} comment={replyComment} isTimeline={isTimeline} />
+                                <PostComment key={index} post={post} comment={replyComment} isTimeline={isTimeline} type={type} />
                             ))
                         }
 
