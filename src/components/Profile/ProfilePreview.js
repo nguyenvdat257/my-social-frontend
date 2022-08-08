@@ -1,57 +1,93 @@
-import React, { useEffect } from 'react'
-import { Card } from 'react-bootstrap'
-import { callGetPostsLite, callGetProfileLite } from '../../store/profile-lite-slice';
+import React, { useEffect, useState } from 'react'
+import { Card, Button } from 'react-bootstrap'
+import { callGetPostsPreview, callGetProfilePreview, profilePreviewActions } from '../../store/profile-preview-slice';
 import ProfileAvatar from '../Common/ProfileAvatar';
 import { useSelector, useDispatch } from 'react-redux';
 import MySpinner from '../Common/Spinner';
 import { myConfig } from '../../config';
+import { callFollow } from '../../store/profile-actions';
+import { unfollowModal } from '../../utils/CommonFunction';
 
 const ProfilePreview = ({ username }) => {
     const dispatch = useDispatch();
-    const profile = useSelector(state => state.profileLite.profile);
-    const posts = useSelector(state => state.profileLite.posts);
-    const profileLoaded = useSelector(state => state.profileLite.profileLoaded);
-    const postsLoaded = useSelector(state => state.profileLite.postsLoaded);
+    const profile = useSelector(state => state.profilePreview.profile);
+    const posts = useSelector(state => state.profilePreview.posts);
+    const profileLoaded = useSelector(state => state.profilePreview.profileLoaded);
+    const postsLoaded = useSelector(state => state.profilePreview.postsLoaded);
+    const [followSending, setFollowSending] = useState(false);
+    const handleClickFollow = e => {
+        e.preventDefault();
+        dispatch(callFollow({
+            username: username,
+            updateFn: profilePreviewActions.setFollowData,
+            setGettingData: setFollowSending
+        }));
+    };
+    const handleClickUnfollow = e => {
+        e.preventDefault();
+        unfollowModal(profile, dispatch, 'profilePreview');
+    };
     useEffect(() => {
-        dispatch(callGetProfileLite(username));
-        dispatch(callGetPostsLite(username));
+        dispatch(callGetProfilePreview(username));
+        dispatch(callGetPostsPreview(username));
     }, [])
     return (
-        <div style={{ position: 'absolute', left: '-2.5rem', top: '3rem', zIndex: 99 }}>
-            <Card style={{ position: 'relative', width: '24rem', height: 'fit-content' }}>
-                {!profileLoaded || !postsLoaded &&
-                    <MySpinner />
-                }
-                {profileLoaded && postsLoaded &&
-                    <>
-                        <div className='border-bottom' style={{ padding: '1rem' }}>
-                            <ProfileAvatar profile={profile} avatarSize='large' isShowDetail={true} margin='1rem' isEnableHover={false} />
-                        </div>
+        <div style={{ position: 'absolute', left: '-2.5rem', top: '2.5rem', zIndex: 999 }}>
+            <div style={{position: 'fixed'}}>
+                <Card style={{ position: 'relative', width: '24rem', height: '24rem' }}>
+                    {!profileLoaded || !postsLoaded &&
+                        <MySpinner />
+                    }
+                    {profileLoaded && postsLoaded &&
+                        <>
+                            <div className='border-bottom' style={{ padding: '1rem' }}>
+                                <ProfileAvatar profile={profile} avatarSize='large' isShowDetail={true} margin='1rem' isEnableHover={false} />
+                            </div>
 
-                        <div className='center-item' style={{ display: 'flex',  padding: '1rem' }}>
-                            <div className='center-item-column'>
-                                <div className='bold-text-small'> {profile.num_posts} </div>
-                                <div className='fade-text-small'>{`${profile.num_posts > 1 ? 'posts' : 'post'}`}</div>
+                            <div className='center-item' style={{ display: 'flex', padding: '1rem' }}>
+                                <div className='center-item-column'>
+                                    <div className='bold-text-small'> {profile.num_posts} </div>
+                                    <div className='fade-text-small'>{`${profile.num_posts > 1 ? 'posts' : 'post'}`}</div>
+                                </div>
+                                <div className='center-item-column' style={{ marginLeft: '4.5rem' }} >
+                                    <div className='bold-text-small'> {profile.num_followers} </div>
+                                    <div className='fade-text-small'>{`${profile.num_followers > 1 ? 'followers' : 'follower'}`}</div>
+                                </div>
+                                <div className='center-item-column' style={{ marginLeft: '4.5rem' }} >
+                                    <div className='bold-text-small'> {profile.num_followings} </div>
+                                    <div className='fade-text-small'>following</div>
+                                </div>
                             </div>
-                            <div className='center-item-column' style={{ marginLeft: '4.5rem' }} >
-                                <div className='bold-text-small'> {profile.num_followers} </div>
-                                <div className='fade-text-small'>{`${profile.num_followers > 1 ? 'followers' : 'follower'}`}</div>
+                            <div style={{ display: 'flex' }}>
+                                {
+                                    posts.map((post, index) => {
+                                        if (post.image) {
+                                            return <img style={{ width: '8rem', height: '8rem' }} src={myConfig.hostName + post.image.image} />;
+                                        }
+                                        if (post.images)
+                                            return <img style={{ width: '8rem', height: '8rem' }} src={myConfig.hostName + post.images[0].image} />
+                                    })
+                                }
                             </div>
-                            <div className='center-item-column' style={{ marginLeft: '4.5rem' }} >
-                                <div className='bold-text-small'> {profile.num_followings} </div>
-                                <div className='fade-text-small'>following</div>
-                            </div>
-                        </div>
-                        <div style={{display:'flex'}}>
-                            {
-                                posts.map((post, index) => (
-                                    <img style={{ width: '8rem', height: '8rem' }} src={post.image ? myConfig.hostName + post.image.image : myConfig.hostName + post.images[0].image} />
-                                ))
+                            {!profile.is_follow &&
+                                <div style={{ padding: '1rem' }}>
+                                    <div className='my-button my-button-blue' style={{ position: 'relative', width: '100%' }} onClick={handleClickFollow}>
+                                        {followSending && <MySpinner type='small' />}
+                                        {!followSending && <div>Follow</div>}
+                                    </div>
+                                </div>
                             }
-                        </div>
-                    </>
-                }
-            </Card>
+                            {profile.is_follow &&
+                                <div style={{ padding: '1rem', display: 'flex', justifyContent: 'space-between' }}>
+                                    <div className='my-button' style={{ width: '45%' }}>Message</div>
+                                    <div className='my-button' style={{ width: '50%' }} onClick={handleClickUnfollow}>Following</div>
+                                </div>
+                            }
+                        </>
+                    }
+                </Card>
+
+            </div>
         </div>
     )
 }

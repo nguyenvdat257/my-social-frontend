@@ -2,13 +2,17 @@ import React, { useState } from 'react'
 import { BsThreeDots } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { optionActions } from '../../store/option-modal-slice';
-import { postTimelineActions } from '../../store/post-timeline-slice';
+import { postTimelineActions, postActions, postSuggestActions } from '../../store/post-timeline-slice';
 import { getAvatarSrc } from '../../utils/CommonFunction';
 import { confirmActions } from '../../store/confirm-modal-slice';
 import { callFollow } from '../../store/profile-actions';
+const postAction = postActions;
+const postTimelineAction = postTimelineActions;
+const postSuggestAction = postSuggestActions;
 
 const PostHeader = ({ post, isTimeline, type }) => {
     const dispatch = useDispatch();
+    const actions = eval(type + 'Action');
     const user = useSelector(state => state.auth.user);
     const handleClickThreeDot = e => {
         if (post.profile_info.username === user.username) {
@@ -29,7 +33,7 @@ const PostHeader = ({ post, isTimeline, type }) => {
         dispatch(callFollow({
             username: post.profile_info.username,
             props: { postCode: post.code },
-            updateFn: postTimelineActions.setFollowData
+            updateFn: actions.setFollowData
         }));
     };
 
@@ -39,11 +43,12 @@ const PostHeader = ({ post, isTimeline, type }) => {
             titleDesc: `Unfollow @${post.profile_info.username}?`,
             text: 'Unfollow',
             handleProps: {
+                type: type,
                 username: post.profile_info.username,
                 props: { postCode: post.code }
             }
         }));
-        dispatch(confirmActions.setName('post-unfollow'));
+        dispatch(confirmActions.setName('unfollow'));
     }
     return (
         <>

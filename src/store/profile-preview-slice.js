@@ -4,8 +4,8 @@ import { callApi } from './actions';
 import { postActions } from './post-timeline-slice';
 import { toastActions } from './toast-slice';
 
-const profileLiteSlice = createSlice({
-    name: 'profileLiteSlice',
+const profilePreviewSlice = createSlice({
+    name: 'profilePreviewSlice',
     initialState: {
         profile: null,
         posts: [],
@@ -29,13 +29,13 @@ const profileLiteSlice = createSlice({
 })
 
 
-export const profileLiteActions = profileLiteSlice.actions;
+export const profilePreviewActions = profilePreviewSlice.actions;
 
-export const callGetProfileLite = (username) => {
+export const callGetProfilePreview = (username) => {
     const url = myConfig.hostName + `/profiles/username/${username}/`;
     const method = 'GET';
     const formData = null
-    const successHandler = (data) => profileLiteActions.setProfile(data);
+    const successHandler = (data) => profilePreviewActions.setProfile(data);
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
     const before = null;
@@ -44,11 +44,11 @@ export const callGetProfileLite = (username) => {
     return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
-export const callGetPostsLite = (username) => {
+export const callGetPostsPreview = (username) => {
     const url = myConfig.hostName + `/posts/username/${username}/`;
     const method = 'GET';
     const formData = null
-    const successHandler = (data) => profileLiteActions.setPosts(data);
+    const successHandler = (data) => profilePreviewActions.setPosts(data);
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
     const before = null;
@@ -57,4 +57,4 @@ export const callGetPostsLite = (username) => {
     return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
-export default profileLiteSlice
+export default profilePreviewSlice

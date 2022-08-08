@@ -3,12 +3,14 @@ import { callApi } from './actions';
 import { toastActions } from './toast-slice';
 import postSlice from './post-slice';
 import {createPostSlice} from './create-postslice-wrapper'
+import postSuggestSlice from './post-suggest-slice';
 
 const postTimeLineSlice = createPostSlice('postTimeline');
 
 
 export const postTimelineActions = postTimeLineSlice.actions;
 export const postActions = postSlice.actions;
+export const postSuggestActions = postSuggestSlice.actions;
 
 export const callGetData = (type) => {
     const url = myConfig.hostName + '/posts/current-user/';
@@ -253,6 +255,22 @@ export const callEditPost = (type, formData, postCode) => {
     const before = null;
     const afterConnected = null;
     const afterUnconnected = null;
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
+export const callGetPost = (type, postCode) => {
+    const url = myConfig.hostName + `/posts/code/${postCode}/`;
+    const method = 'GET';
+    const sendData = null;
+    const successHandler = (data) => eval(type + 'Actions.setPost(data)');
+
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+
+    const before = () => eval(type + 'Actions.setGettingData(true)');
+    const afterConnected = () => eval(type + 'Actions.setGettingData(false)');
+    const afterUnconnected = () => eval(type + 'Actions.setGettingData(false)');
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 export default postTimeLineSlice;

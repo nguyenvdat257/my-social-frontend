@@ -3,18 +3,21 @@ import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai'
 import { FiSend } from 'react-icons/fi'
 import { BsBookmark, BsBookmarkFill, BsEmojiSmile } from 'react-icons/bs'
 import moment from 'moment'
-import { callPostLike, callPostSave, postTimelineActions, callSendMessage, callSendReply, postActions } from '../../store/post-timeline-slice'
+import { callPostLike, callPostSave, postTimelineActions, callSendMessage, callSendReply, postActions, postSuggestActions } from '../../store/post-timeline-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import ProfileListModal from '../Profile/ProfileListModal'
 import { callLikePostProfile } from '../../store/profile-actions'
 import { Form } from 'react-bootstrap'
 import Picker from 'emoji-picker-react';
 import PostComments from './PostComments'
+const postAction = postActions;
+const postTimelineAction = postTimelineActions;
+const postSuggestAction = postSuggestActions;
 
 
 const PostDetail = ({ post, isTimeline, inputRef, commentListRef, type }) => {
     const dispatch = useDispatch();
-    const actions = type === 'postTimeline' ? postTimelineActions : postActions
+    const actions = eval(type + 'Action');
     const user = useSelector(state => state.auth.user)
     const replyTo = useSelector(state => state[type].replyTo)
     const message = useSelector(state => state[type].postProps[post.code].message)

@@ -52,7 +52,7 @@ const ProfileAvatar = ({ profile, avatarSize, isShowDetail, detail=profile.name,
                         <div className={'fade-text-medium pointer-cursor'}>{detail}</div>
                     </div>
                 }
-                {showProfileLite && isEnableHover &&
+                {showProfileLite && isEnableHover && !isMy &&
                     <ProfilePreview username={profile.username} />
                 }
             </div>

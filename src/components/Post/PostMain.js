@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from 'react-bootstrap';
-import { postTimelineActions, postActions } from '../../store/post-timeline-slice';
+import { postTimelineActions, postActions, postSuggestActions } from '../../store/post-timeline-slice';
 import PostMainSlide from './PostMainSlide';
 import PostMainInfo from './PostMainInfo';
+const postAction = postActions;
+const postTimelineAction = postTimelineActions;
+const postSuggestAction = postSuggestActions;
 
 const PostMain = ({ post, type }) => {
     const dispatch = useDispatch()
-    const actions = type === 'postTimeline' ? postTimelineActions : postActions
+    const actions = eval(type + 'Action');
     const showPostMain = useSelector(state => state[type].postProps[post.code].showPostMain);
     const handleCloseModal = e => {
         dispatch(actions.closePostModal({ postCode: post.code }));

@@ -926,10 +926,10 @@ html, body, #root, #root>div {
 
 .my-button {
   display: flex;
-  width: 4.3rem;
   height: 1.7rem;
   align-items: center;
   justify-content: center;
+  font-weight: 600;
   border-radius: 5px;
   cursor: pointer;
   border: 2px ridge;

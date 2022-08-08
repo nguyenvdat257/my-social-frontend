@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
-import { postTimelineActions, callCommentLike, callGetReplyComments, postActions } from '../../store/post-timeline-slice'
+import { postTimelineActions, callCommentLike, callGetReplyComments, postActions, postSuggestActions } from '../../store/post-timeline-slice'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Row, Col } from 'react-bootstrap'
 import MySpinner from '../Common/Spinner'
@@ -10,6 +10,9 @@ import ProfileListModal from '../Profile/ProfileListModal'
 import { getAvatarSrc } from '../../utils/CommonFunction'
 import { BsThreeDots } from 'react-icons/bs';
 import { optionActions } from '../../store/option-modal-slice'
+const postAction = postActions;
+const postTimelineAction = postTimelineActions;
+const postSuggestAction = postSuggestActions;
 
 const formatDate = (date) => {
     const parts = date.split(' ');
@@ -36,7 +39,7 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef, t
     const [showLikeProfile, setShowLikeProfile] = useState(false);
     const [shownReply, setShownReply] = useState(false);
     const [isHover, setIsHover] = useState(false);
-    const actions = type === 'postTimeline' ? postTimelineActions : postActions
+    const actions = eval(type + 'Action');
     const handleClickReply = e => {
         inputRef.current.focus();
         dispatch(actions.setMessage({ postCode: post.code, value: '@' + comment.username + ' ' }));

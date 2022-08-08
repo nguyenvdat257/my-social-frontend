@@ -1,13 +1,13 @@
 import React from 'react'
-import ProfilePostItem from './ProfilePostItem'
+import PostListItem from './PostListItem'
 
-const ProfilePosts = ({ posts }) => {
+const PostList = ({ posts, type }) => {
     return (
         <>
             <div className='post-grid center-item' style={{width: '70rem'}}>
                 {
                     posts.map((post, index) => (
-                        <ProfilePostItem key={index} post={post} />
+                        <PostListItem key={index} post={post} type={type} />
                     ))
                 }
             </div>
@@ -15,4 +15,4 @@ const ProfilePosts = ({ posts }) => {
     )
 }
 
-export default ProfilePosts
+export default PostList

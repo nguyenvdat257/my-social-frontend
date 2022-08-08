@@ -14,7 +14,7 @@ const ProfileItem = ({ profile }) => {
         dispatch(callFollow({ username: profile.username, updateFn: profileSuggestActions.setFollowData }));
     };
     const handleClickUnfollow = e => {
-        unfollowModal(profile, dispatch, 'unfollow');
+        unfollowModal(profile, dispatch, 'profileSuggest');
     };
     return (
         <div className='modal-item'>

@@ -19,10 +19,10 @@ const ProfileInfo = ({ profile }) => {
             setShowFollowing(true);
     }
     const handleClickFollow = e => {
-        dispatch(callFollow({ username: profile.username, updateFn: profileActions.setFollowData}));
+        dispatch(callFollow({ username: profile.username, updateFn: profileActions.setFollowData }));
     };
     const handleClickUnfollow = e => {
-        unfollowModal(profile, dispatch, 'profile-unfollow');
+        unfollowModal(profile, dispatch, 'profile');
     };
     useEffect(() => {
         setShowFollower(false);
@@ -32,14 +32,14 @@ const ProfileInfo = ({ profile }) => {
         <>
             <div className='center-item-vertical' style={{ marginBottom: '2rem' }}>
                 <div className='larger-text'>{profile.username}</div>
-                <div className='bold-text-small my-button' style={{ marginLeft: '2rem' }}>Message</div>
+                <div className='bold-text-small my-button' style={{ marginLeft: '2rem', width: '4.7rem' }}>Message</div>
                 {profile.is_follow &&
-                    <div className='bold-text-small my-button pointer-cursor' style={{ marginLeft: '1rem' }} onClick={handleClickUnfollow}>
+                    <div className='bold-text-small my-button pointer-cursor' style={{ marginLeft: '1rem', width: '4.7rem' }} onClick={handleClickUnfollow}>
                         <RiUserFollowFill size={18} />
                     </div>
                 }
                 {!profile.is_follow &&
-                    <div className='bold-text-small my-button my-button-blue pointer-cursor' style={{ marginLeft: '1rem' }} onClick={handleClickFollow}>
+                    <div className='bold-text-small my-button my-button-blue pointer-cursor' style={{ marginLeft: '1rem', width: '4.7rem' }} onClick={handleClickFollow}>
                         Follow
                     </div>
                 }

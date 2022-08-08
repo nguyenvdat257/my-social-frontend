@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
 import { myConfig } from '../../config'
 import { AiFillHeart, AiOutlineMessage } from 'react-icons/ai'
-import { callGetPost } from '../../store/post-slice';
+import { callGetPost, postActions, postSuggestActions } from '../../store/post-timeline-slice';
 import PostMain from '../Post/PostMain';
 import { useDispatch, useSelector } from 'react-redux';
-import { postActions } from '../../store/post-timeline-slice';
+const postAction = postActions;
+const postSuggestAction = postSuggestActions;
 
-const ProfilePostItem = ({ post }) => {
+const PostListItem = ({ post, type }) => {
     const dispatch = useDispatch();
+    const actions = eval(type + 'Action');
     const [showInfo, setShowInfo] = useState(false);
-    const showPostMain = useSelector(state => state.post.postProps[post.code]?.showPostMain);
-    const detailPost = useSelector(state => state.post.posts.filter(p => p.code === post.code)[0]);
+    const showPostMain = useSelector(state => state[type].postProps[post.code]?.showPostMain);
+    const detailPost = useSelector(state => state[type].posts.filter(p => p.code === post.code)[0]);
     const handleMouseOver = e => {
         setShowInfo(true);
     };
@@ -18,8 +20,8 @@ const ProfilePostItem = ({ post }) => {
         setShowInfo(false);
     };
     const handleClickImage = e => {
-        dispatch(callGetPost(post.code)).then(() =>
-            dispatch(postActions.setShowPostMain({ postCode: post.code, value: true }))
+        dispatch(callGetPost(type, post.code)).then(() =>
+            dispatch(actions.setShowPostMain({ postCode: post.code, value: true }))
         );
     };
     return (
@@ -45,10 +47,10 @@ const ProfilePostItem = ({ post }) => {
                     }
                 </div>
             }
-            {showPostMain && 
-                < PostMain post={detailPost} type='post' />}
+            {showPostMain &&
+                < PostMain post={detailPost} type={type} />}
         </>
     )
 }
 
-export default ProfilePostItem
+export default PostListItem

@@ -20,7 +20,8 @@ import clickSlice from "./click-slice";
 import profileEditSlice from "./profile-edit-slice";
 import profileSlice from "./profile-slice";
 import postSlice from "./post-slice";
-import profileLiteSlice from "./profile-lite-slice";
+import profilePreviewSlice from "./profile-preview-slice";
+import postSuggestSlice from "./post-suggest-slice";
 
 
 const persistConfig = {
@@ -48,7 +49,8 @@ const reducers = combineReducers({
     search: searchSlice.reducer,
     click: clickSlice.reducer,
     profile: profileSlice.reducer,
-    profileLite: profileLiteSlice.reducer,
+    profilePreview: profilePreviewSlice.reducer,
+    postSuggest: postSuggestSlice.reducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);

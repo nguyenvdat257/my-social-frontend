@@ -54,8 +54,9 @@ let params = {
             else {
                 state.posts = action.payload;
             }
-            for (const post of state.posts)
+            for (const post of state.posts) {
                 state.postProps[post.code] = { showPostMain: false, message: '' };
+            }
             state.gettingData = false;
             state.postLoaded = true;
         },
