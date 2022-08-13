@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { RiUserFollowFill } from 'react-icons/ri'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { callFollow, callGetFollower, callGetFollowing } from '../../store/profile-actions'
 import { unfollowModal } from '../../utils/CommonFunction'
 import ProfileListModal from './ProfileListModal'
+import { Link } from 'react-router-dom'
 import { profileActions } from '../../store/profile-slice'
 
 const ProfileInfo = ({ profile }) => {
     const dispatch = useDispatch()
+    const user = useSelector(state => state.auth.user);
     const [showFollower, setShowFollower] = useState(false);
     const [showFollowing, setShowFollowing] = useState(false);
     const handleShowFollower = e => {
@@ -32,16 +34,28 @@ const ProfileInfo = ({ profile }) => {
         <>
             <div className='center-item-vertical' style={{ marginBottom: '2rem' }}>
                 <div className='larger-text'>{profile.username}</div>
-                <div className='bold-text-small my-button' style={{ marginLeft: '2rem', width: '4.7rem' }}>Message</div>
-                {profile.is_follow &&
-                    <div className='bold-text-small my-button pointer-cursor' style={{ marginLeft: '1rem', width: '4.7rem' }} onClick={handleClickUnfollow}>
-                        <RiUserFollowFill size={18} />
-                    </div>
+                {user.username != profile.username &&
+                    <>
+                        <div className='bold-text-small my-button' style={{ marginLeft: '2rem', width: '4.7rem' }}>Message</div>
+                        {profile.is_follow &&
+                            <div className='bold-text-small my-button pointer-cursor' style={{ marginLeft: '1rem', width: '4.7rem' }} onClick={handleClickUnfollow}>
+                                <RiUserFollowFill size={18} />
+                            </div>
+                        }
+                        {!profile.is_follow &&
+                            <div className='bold-text-small my-button my-button-blue pointer-cursor' style={{ marginLeft: '1rem', width: '4.7rem' }} onClick={handleClickFollow}>
+                                Follow
+                            </div>
+                        }
+
+                    </>
                 }
-                {!profile.is_follow &&
-                    <div className='bold-text-small my-button my-button-blue pointer-cursor' style={{ marginLeft: '1rem', width: '4.7rem' }} onClick={handleClickFollow}>
-                        Follow
-                    </div>
+                {user.username === profile.username &&
+                    <Link to='/accounts/edit' style={{ color: 'inherit', textDecoration: 'none' }}>
+                        <div className='bold-text-small my-button' style={{ marginLeft: '2rem', width: '5.7rem' }}>
+                            Edit Profile
+                        </div>
+                    </Link>
                 }
             </div>
             <div style={{ display: 'flex', marginBottom: '1.5rem' }}>

@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./auth-slice";
 import signupSlice from "./signup-slice";
-import privacySlice from "./privacy-slice"; 
+import privacySlice from "./privacy-slice";
 import toastSlice from "./toast-slice";
 import storyBoardSlice from "./story-board-slice";
 import postTimeLineSlice from "./post-timeline-slice";
@@ -22,6 +22,7 @@ import profileSlice from "./profile-slice";
 import postSlice from "./post-slice";
 import profilePreviewSlice from "./profile-preview-slice";
 import postSuggestSlice from "./post-suggest-slice";
+import chatSlice from "./chat-slice";
 
 
 const persistConfig = {
@@ -51,6 +52,7 @@ const reducers = combineReducers({
     profile: profileSlice.reducer,
     profilePreview: profilePreviewSlice.reducer,
     postSuggest: postSuggestSlice.reducer,
+    chat: chatSlice.reducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);

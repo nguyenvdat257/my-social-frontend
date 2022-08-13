@@ -8,7 +8,7 @@ const SuggestedProfileList = ({ profileSuggests, profileSuggestLoaded }) => {
             <div style={{ marginTop: '0.5rem', paddingRight: '1rem' }}>
                 {profileSuggestLoaded &&
                     profileSuggests.slice(0, 5).map((profile, index) => (
-                        <ProfileItem index={index} profile={profile} />
+                        <ProfileItem key={index} profile={profile} />
                     ))
                 }
             </div>

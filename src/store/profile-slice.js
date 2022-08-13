@@ -50,4 +50,17 @@ export const callGetPosts = (username) => {
     return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
+export const callGetSavedPosts = () => {
+    const url = myConfig.hostName + '/posts/saved/';
+    const method = 'GET';
+    const formData = null
+    const successHandler = (data) => postActions.setData(data);
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+    const before = null;
+    const afterConnected = null;
+    const afterUnconnected = null;
+    return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
 export default profileSlice;

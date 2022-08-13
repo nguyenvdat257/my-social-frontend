@@ -61,16 +61,16 @@ const EditProfile = () => {
   };
   useEffect(() => {
     dispatch(getData())
+    return () => {
+      URL.revokeObjectURL(avatarUrl)
+      dispatch(profileEditActions.resetData())
+    };
   }, []);
   useEffect(() => {
     if (uploadedAvatar) {
       const avatarUrl = URL.createObjectURL(uploadedAvatar)
       dispatch(profileEditActions.setAvatarUrl(avatarUrl))
     }
-    return () => {
-      URL.revokeObjectURL(avatarUrl)
-      dispatch(profileEditActions.resetData())
-    };
   }, [uploadedAvatar]);
   if (gettingData)
     return (

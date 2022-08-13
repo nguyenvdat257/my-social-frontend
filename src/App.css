@@ -24,6 +24,12 @@ html, body, #root, #root>div {
   justify-content: center;
 }
 
+.center-item-spacing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .center-item-vertical {
   display: flex;
   align-items: center;
@@ -964,4 +970,34 @@ html, body, #root, #root>div {
   display: grid;
   grid-template-columns: auto auto auto;
   grid-gap: 1.5rem
+}
+
+.create-chat-username {
+  width: fit-content;
+  background-color: rgb(214, 232, 255);
+  color: dodgerblue;
+  border-radius: 3px;
+  margin-bottom: 0.5rem;
+  padding: 0.3rem;
+}
+
+.create-chat-choose {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: rgb(39, 144, 248);
+}
+
+.create-chat-unchoose {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: white;
+  outline: 2px black;
+  outline-style: solid;
+}
+
+.chat-suggest-item:hover {
+  /* background-color: #fefefe; */
+  background-color: #fafafa;
 }

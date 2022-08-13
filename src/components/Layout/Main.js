@@ -22,6 +22,7 @@ const Main = () => {
             <Route path='direct/inbox' element={<Chat />} />
             <Route path="explore" element={<Explore />} />
             <Route path="profiles/:username" element={<Profile />} /> 
+            <Route path="profiles/:username/saved" element={<Profile isSaved={true}/>} /> 
             <Route path="accounts/*" element={<Settings />} />
           </Route>
         </Routes>

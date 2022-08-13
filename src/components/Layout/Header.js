@@ -14,17 +14,19 @@ import PostAddModal from '../PostAdd/PostAddModal'
 import { postAddActions } from '../../store/post-add-slice'
 import MyAvatar from '../Common/MyAvatar'
 import Search from '../Search/Search'
+import { callGetCurrentProfile } from '../../store/profile-actions'
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showNoti, setShowNoti] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
-  const avatarSrc = useSelector(state => state.auth.user.avatar.thumbnail ?
+  const avatarSrc = useSelector(state => state.auth.user?.avatar.thumbnail ?
     myConfig.hostName + state.auth.user.avatar.thumbnail : myConfig.defaultAvatar);
   const targetMenu = useRef(null);
   const targetNoti = useRef(null);
   const targetAdd = useRef(null);
   const [page, setPage] = useState('home')
+  const user = useSelector(state => state.auth.user);
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -56,8 +58,9 @@ const Header = () => {
     let interval = setInterval(() => {
       if (isLoggedIn) dispatch(updateToken())
     }, fourMinutes)
+    dispatch(callGetCurrentProfile());
     return () => clearInterval(interval)
-  });
+  }, []);
   return (
     <>
       <div className='sticky-header' >
@@ -127,17 +130,19 @@ const Header = () => {
                   </Popover>
                 </Overlay>
                 <Overlay target={targetMenu.current} show={showMenu} placement='bottom' rootClose onHide={() => setShowMenu(false)}>
-                  <Popover className='header-menu' onClick={() => setShowMenu(false)} >
-                    <Link to='/' style={{ color: 'inherit', textDecoration: 'none' }}>
+                  <Popover className='header-menu' onClick={() => { setShowMenu(false); setPage(''); }} >
+                    <Link to={`/profiles/${user?.username}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                       <div className='header-menu-item'><CgProfile /><span> Profile</span> </div>
                     </Link>
-                    <div className='header-menu-item'><FiBookmark /><span> Saved</span> </div>
+                    <Link to={`/profiles/${user?.username}/saved`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                      <div className='header-menu-item'><FiBookmark /><span> Saved</span> </div>
+                    </Link>
                     <Link to='/accounts/edit' style={{ color: 'inherit', textDecoration: 'none' }}>
                       <div className='header-menu-item header-menu-last-item'><AiOutlineSetting />
                         <span> Settings</span>
                       </div>
                     </Link>
-                    <div className='header-menu-item' onClick={() => dispatch(logoutUser(navigate))}>
+                    <div className='header-menu-item pointer-cursor' onClick={() => dispatch(logoutUser(navigate))}>
                       <span> Logout</span>
                     </div>
                   </Popover>
