@@ -11,6 +11,7 @@ const Search = () => {
     const dispatch = useDispatch();
     const [keyword, setKeyword] = useState('');
     const [showSearch, setShowSearch] = useState(false);
+    const showSearchRef = useRef(null);
     const items = useSelector(state => {
         if (state.search.currentType === 'tag')
             return state.search.tags;
@@ -33,14 +34,17 @@ const Search = () => {
     }
     const handleClick = event => {
         const { target } = event
-        if (!ref.current?.contains(target)) {
+        if (!ref.current?.contains(target) && showSearchRef?.current) {
             setShowSearch(false);
             dispatch(clickActions.setIsClickable(true));
         }
     }
     const handleClickClearAll = e => {
         dispatch(callClearAllSearch());
-    }
+    };
+    useEffect(() => {
+        showSearchRef.current = showSearch;
+    }, [showSearch])
     useEffect(() => {
         if (keyword.length > 1 && keyword.slice(0, 1) === '#') {
             const idx = keyword.search(/[^#]/)

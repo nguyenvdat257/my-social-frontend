@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
-import { postTimelineActions, callCommentLike, callGetReplyComments, postActions, postSuggestActions } from '../../store/post-timeline-slice'
+import { postTimelineActions, callCommentLike, callGetReplyComments, postActions,
+     postSuggestActions, postUserActions } from '../../store/post-timeline-slice'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Row, Col } from 'react-bootstrap'
 import MySpinner from '../Common/Spinner'
@@ -13,6 +14,7 @@ import { optionActions } from '../../store/option-modal-slice'
 const postAction = postActions;
 const postTimelineAction = postTimelineActions;
 const postSuggestAction = postSuggestActions;
+const postUserAction = postUserActions;
 
 const formatDate = (date) => {
     const parts = date.split(' ');

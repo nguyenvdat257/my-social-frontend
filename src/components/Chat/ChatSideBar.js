@@ -21,11 +21,7 @@ const ChatSideBar = () => {
   };
   useEffect(() => {
     dispatch(callGetChatrooms(user.username));
-    // new WebSocket
   }, [])
-  // useEffect(() => {
-  //   alert('current chat room changes')
-  // }, [currentChatroom]);
   return (
     <>
       <Sidebar position="left" scrollable={false}>
@@ -60,19 +56,6 @@ const ChatSideBar = () => {
 
             ))
           }
-
-          {/* <Conversation name="Lilly" lastSenderName="Lilly" info="Yes i can do it for you">
-            <Avatar src={myConfig.defaultAvatar} name="Lilly" status="available" />
-          </Conversation>
-
-          <Conversation name="Joe" lastSenderName="Joe" info="Yes i can do it for you">
-            <Avatar src={myConfig.defaultAvatar} name="Joe" status="dnd" />
-          </Conversation>
-
-          <Conversation name="Emily" lastSenderName="Emily" info="Yes i can do it for you" unreadCnt={3}>
-            <Avatar src={myConfig.defaultAvatar} name="Emily" status="available" />
-          </Conversation> */}
-
         </ConversationList>
       </Sidebar>
       {showCreateChat && <CreateChatModal />}

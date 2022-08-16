@@ -36,7 +36,9 @@ const ProfileInfo = ({ profile }) => {
                 <div className='larger-text'>{profile.username}</div>
                 {user.username != profile.username &&
                     <>
-                        <div className='bold-text-small my-button' style={{ marginLeft: '2rem', width: '4.7rem' }}>Message</div>
+                        <div className='bold-text-small my-button' style={{ marginLeft: '2rem', width: '4.7rem' }}>
+                            Message
+                        </div>
                         {profile.is_follow &&
                             <div className='bold-text-small my-button pointer-cursor' style={{ marginLeft: '1rem', width: '4.7rem' }} onClick={handleClickUnfollow}>
                                 <RiUserFollowFill size={18} />

@@ -4,10 +4,12 @@ import PostHeader from './PostHeader';
 import PostDetail from './PostDetail';
 import PostComments from './PostComments';
 import PostTimelineList from './PostTimelineList';
-import { postTimelineActions, callGetComments, callGetNextComment, postActions, postSuggestActions } from '../../store/post-timeline-slice';
+import { postTimelineActions, callGetComments, callGetNextComment, 
+  postActions, postSuggestActions, postUserActions } from '../../store/post-timeline-slice';
 const postAction = postActions;
 const postTimelineAction = postTimelineActions;
 const postSuggestAction = postSuggestActions;
+const postUserAction = postUserActions;
 
 const PostMainInfo = ({ post, type }) => {
   const dispatch = useDispatch()
@@ -30,7 +32,7 @@ const PostMainInfo = ({ post, type }) => {
   };
   useEffect(() => {
     dispatch(callGetComments(type, post.code));
-  }, []);
+  }, [post.code]);
   // get next comments if loaded but not fill all screen
   useEffect(() => {
     if (commentLoaded) {

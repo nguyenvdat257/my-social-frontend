@@ -5,6 +5,7 @@ import { CloseButton } from 'react-bootstrap';
 import ProfileAvatar from '../Common/ProfileAvatar';
 import TagAvatar from '../Common/TagAvatar';
 import { useNavigate } from 'react-router-dom';
+import { clickActions } from '../../store/click-slice';
 
 
 const SearchItem = ({ item, searchId, type, setShowSearch }) => {
@@ -22,6 +23,7 @@ const SearchItem = ({ item, searchId, type, setShowSearch }) => {
             const search_type = type === 'tag' ? 'search_hashtag' : 'search_profile';
             data[search_type] = item.id
             dispatch(callUpdateSearch(data));
+            dispatch(clickActions.setIsClickable(true));
             setShowSearch(false);
             if (!avatarRef.current || !avatarRef.current.contains(e.target)) {
                 if (type === 'profile') {

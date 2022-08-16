@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { myConfig } from '../../config'
 import { AiFillHeart, AiOutlineMessage } from 'react-icons/ai'
-import { callGetPost, postActions, postSuggestActions } from '../../store/post-timeline-slice';
+import { callGetPost, postActions, postSuggestActions, postUserActions } from '../../store/post-timeline-slice';
 import PostMain from '../Post/PostMain';
 import { useDispatch, useSelector } from 'react-redux';
 const postAction = postActions;
 const postSuggestAction = postSuggestActions;
+const postUserAction = postUserActions;
 
-const PostListItem = ({ post, type }) => {
+const PostListItem = ({ post, type, isClickOpenModal = true }) => {
     const dispatch = useDispatch();
     const actions = eval(type + 'Action');
     const [showInfo, setShowInfo] = useState(false);
@@ -20,9 +21,16 @@ const PostListItem = ({ post, type }) => {
         setShowInfo(false);
     };
     const handleClickImage = e => {
-        dispatch(callGetPost(type, post.code)).then(() =>
-            dispatch(actions.setShowPostMain({ postCode: post.code, value: true }))
-        );
+        if (isClickOpenModal) {
+            dispatch(callGetPost(type, post.code)).then(() =>
+                dispatch(actions.setShowPostMain({ postCode: post.code, value: true }))
+            );
+        } else {
+            dispatch(callGetPost(type, post.code)).then(() => {
+                window.scrollTo(0, 0);
+                dispatch(actions.swapPostWithTop({postCode: post.code}));
+            });
+        }
     };
     return (
         <>

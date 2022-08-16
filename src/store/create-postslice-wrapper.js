@@ -264,6 +264,13 @@ let params = {
         setEditPost(state, action) {
             const postIndex = state.posts.findIndex((post => post.code === action.payload.postCode));
             state.posts[postIndex].body = action.payload.data.body;
+        },
+        swapPostWithTop(state, action) {
+            const postIndex = state.posts.findIndex((post => post.code === action.payload.postCode));
+            // const post = state.posts[0];
+            // state.posts[0] = state.posts[postIndex];
+            // state.posts[postIndex] = post;
+            [state.posts[0], state.posts[postIndex]] = [state.posts[postIndex], state.posts[0]]
         }
     }
 }

@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import { BsThreeDots } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { optionActions } from '../../store/option-modal-slice';
-import { postTimelineActions, postActions, postSuggestActions } from '../../store/post-timeline-slice';
+import { postTimelineActions, postActions, postSuggestActions, postUserActions } from '../../store/post-timeline-slice';
 import { getAvatarSrc } from '../../utils/CommonFunction';
 import { confirmActions } from '../../store/confirm-modal-slice';
 import { callFollow } from '../../store/profile-actions';
 const postAction = postActions;
 const postTimelineAction = postTimelineActions;
 const postSuggestAction = postSuggestActions;
+const postUserAction = postUserActions;
 
 const PostHeader = ({ post, isTimeline, type }) => {
     const dispatch = useDispatch();

@@ -4,6 +4,7 @@ import { toastActions } from './toast-slice';
 import postSlice from './post-slice';
 import {createPostSlice} from './create-postslice-wrapper'
 import postSuggestSlice from './post-suggest-slice';
+import postUserSlice from './postuser-slice';
 
 const postTimeLineSlice = createPostSlice('postTimeline');
 
@@ -11,6 +12,7 @@ const postTimeLineSlice = createPostSlice('postTimeline');
 export const postTimelineActions = postTimeLineSlice.actions;
 export const postActions = postSlice.actions;
 export const postSuggestActions = postSuggestSlice.actions;
+export const postUserActions = postUserSlice.actions;
 
 export const callGetData = (type) => {
     const url = myConfig.hostName + '/posts/current-user/';

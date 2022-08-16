@@ -13,10 +13,9 @@ import { useUserSocket, SocketContext } from './hooks/UserSocketHook';
 import { useChatSocket } from './hooks/ChatSocketHooks';
 
 function App() {
-  const dispatch = useDispatch();
   const isClickable = useSelector(state => state.click.isClickable);
-  const wsUser = useUserSocket();
   const wsChat = useChatSocket();
+  const wsUser = useUserSocket();
   // useEffect(() => {
   //   dispatch(callGetCurrentProfile());
   // }, [])

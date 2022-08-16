@@ -2,8 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 import { postTimelineActions, postActions, postSuggestActions } from '../../store/post-timeline-slice';
-import PostMainSlide from './PostMainSlide';
-import PostMainInfo from './PostMainInfo';
+import PostMainBody from './PostMainBody';
 const postAction = postActions;
 const postTimelineAction = postTimelineActions;
 const postSuggestAction = postSuggestActions;
@@ -17,12 +16,7 @@ const PostMain = ({ post, type }) => {
     };
     return (
         <Modal centered show={showPostMain} onHide={handleCloseModal} dialogClassName='modal-custom-post'>
-            <div style={{ display: 'flex', height: '100%', alignItems: 'center', backgroundColor: 'black' }}>
-                <div className='post-main-slide'>
-                    <PostMainSlide post={post} />
-                </div>
-                <PostMainInfo post={post} type={type} />
-            </div>
+            <PostMainBody post={post} type={type} />
         </Modal>
     )
 }

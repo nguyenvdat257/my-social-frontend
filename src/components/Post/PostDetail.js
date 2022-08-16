@@ -3,7 +3,10 @@ import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai'
 import { FiSend } from 'react-icons/fi'
 import { BsBookmark, BsBookmarkFill, BsEmojiSmile } from 'react-icons/bs'
 import moment from 'moment'
-import { callPostLike, callPostSave, postTimelineActions, callSendMessage, callSendReply, postActions, postSuggestActions } from '../../store/post-timeline-slice'
+import {
+    callPostLike, callPostSave, postTimelineActions, callSendMessage,
+    callSendReply, postActions, postSuggestActions, postUserActions
+} from '../../store/post-timeline-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import ProfileListModal from '../Profile/ProfileListModal'
 import { callLikePostProfile } from '../../store/profile-actions'
@@ -13,6 +16,7 @@ import PostComments from './PostComments'
 const postAction = postActions;
 const postTimelineAction = postTimelineActions;
 const postSuggestAction = postSuggestActions;
+const postUserAction = postUserActions;
 
 
 const PostDetail = ({ post, isTimeline, inputRef, commentListRef, type }) => {
@@ -29,7 +33,7 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef, type }) => {
     const handleClickEmoji = (event, emojiObject) => {
         const cursor = inputRef.current.selectionStart;
         const text = message.slice(0, cursor) + emojiObject.emoji + message.slice(cursor);
-        dispatch(actions.setMessage({postCode: post.code, value: text}));
+        dispatch(actions.setMessage({ postCode: post.code, value: text }));
         const newCursor = cursor + emojiObject.emoji.length
         setTimeout(() => {
             inputRef.current.setSelectionRange(newCursor, newCursor);
@@ -46,7 +50,7 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef, type }) => {
         setShowBody(true);
     };
     const handleClickMessage = e => {
-        dispatch(actions.setShowPostMain({postCode: post.code, value:true}));
+        dispatch(actions.setShowPostMain({ postCode: post.code, value: true }));
     };
     const handleClickLike = e => {
         dispatch(actions.flipLike({ 'code': post.code }))
@@ -60,7 +64,7 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef, type }) => {
         setShowLikeProfile(true);
     };
     const handleChangeMessage = e => {
-        dispatch(actions.setMessage({postCode: post.code, value: e.target.value}));
+        dispatch(actions.setMessage({ postCode: post.code, value: e.target.value }));
     };
     const handleKeyDown = e => {
         e.target.style.height = 'inherit';
@@ -84,7 +88,7 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef, type }) => {
         if (!message) {
             return;
         }
-        dispatch(actions.setMessage({postCode: post.code, value: ''}));
+        dispatch(actions.setMessage({ postCode: post.code, value: '' }));
         inputRef.current.focus();
         if (replyTo === null) {
             dispatch(actions.updateTemporaryNewComment({ code: post.code, message: message, user: user }));
@@ -185,7 +189,7 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef, type }) => {
 
                 {showLikeProfile &&
                     <ProfileListModal title='Likes' showModal={showLikeProfile} setShowModal={setShowLikeProfile}
-                        getData={callLikePostProfile(post.code)}/>}
+                        getData={callLikePostProfile(post.code)} />}
             </div>
         </>
     )

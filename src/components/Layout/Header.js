@@ -14,16 +14,17 @@ import PostAddModal from '../PostAdd/PostAddModal'
 import { postAddActions } from '../../store/post-add-slice'
 import MyAvatar from '../Common/MyAvatar'
 import Search from '../Search/Search'
+import Notification from '../Notification/Notification'
+import { notificationActions } from '../../store/notification-slice'
 import { callGetCurrentProfile } from '../../store/profile-actions'
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const [showNoti, setShowNoti] = useState(false);
+  const showNoti = useSelector(state => state.notification.showNoti);
   const [showAdd, setShowAdd] = useState(false);
   const avatarSrc = useSelector(state => state.auth.user?.avatar.thumbnail ?
     myConfig.hostName + state.auth.user.avatar.thumbnail : myConfig.defaultAvatar);
   const targetMenu = useRef(null);
-  const targetNoti = useRef(null);
   const targetAdd = useRef(null);
   const [page, setPage] = useState('home')
   const user = useSelector(state => state.auth.user);
@@ -51,7 +52,6 @@ const Header = () => {
     dispatch(postAddActions.setType('story'));
     dispatch(postAddActions.setShowMainModal(true));
   };
-
 
   useEffect(() => {
     let fourMinutes = 1000 * 60 * 4
@@ -108,9 +108,11 @@ const Header = () => {
                   </Link>
                 </div>
                 {/* noti */}
-                <div className='col-2' ref={targetNoti} onClick={() => setShowNoti(!showNoti)} >
-                  {showNoti && <AiFillHeart size={26} className='header-item pointer-cursor' />}
-                  {!showNoti && <AiOutlineHeart size={26} className='header-item pointer-cursor' />}
+                <div className='col-2' style={{ position: 'relative' }}>
+                  {/* {showNoti && <AiFillHeart size={26} className='header-item pointer-cursor' />} */}
+                  {/* {!showNoti && <AiOutlineHeart size={26} className='header-item pointer-cursor' />} */}
+                  {/* {showNoti && <Notification />} */}
+                  <Notification />
                 </div>
                 {/* avatar */}
                 <div className='col-2'>
@@ -124,11 +126,11 @@ const Header = () => {
                     <div className='header-menu-item pointer-cursor' onClick={handleClickAddStory}> Add Story </div>
                   </Popover>
                 </Overlay>
-                <Overlay target={targetNoti.current} show={showNoti} placement='bottom' rootClose onHide={() => setShowNoti(false)}>
+                {/* <Overlay target={targetNoti.current} show={showNoti} placement='bottom' rootClose onHide={() => setShowNoti(false)}>
                   <Popover className='header-menu'>
                     <div className='header-menu-item'> Notification </div>
                   </Popover>
-                </Overlay>
+                </Overlay> */}
                 <Overlay target={targetMenu.current} show={showMenu} placement='bottom' rootClose onHide={() => setShowMenu(false)}>
                   <Popover className='header-menu' onClick={() => { setShowMenu(false); setPage(''); }} >
                     <Link to={`/profiles/${user?.username}`} style={{ color: 'inherit', textDecoration: 'none' }}>

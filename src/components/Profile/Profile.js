@@ -55,6 +55,9 @@ const Profile = ({ isSaved }) => {
       setPostPage('all-post')
     }
   }, [username, isSaved]);
+  useEffect(() => {
+    return () => dispatch(postActions.resetState())
+  }, [])
   return (
     <>
       {profileLoaded &&

@@ -17,7 +17,13 @@ const ChatConversation = () => {
   const navigate = useNavigate();
   const ws = useContext(SocketContext);
   const user = useSelector(state => state.auth.user);
-  const chatroom = useSelector(state => state.chat.chatrooms.filter(chatroom => chatroom.id === state.chat.currentChatroomId)[0]);
+  const chatroom = useSelector(state => {
+    const chatroomFilter = state.chat.chatrooms.filter(chatroom => chatroom.id === state.chat.currentChatroomId)
+    if (chatroomFilter.length === 1) {
+      return chatroomFilter[0];
+    }
+    return null
+  });
   const gettingChat = useSelector(state => state.chat.gettingChat);
   const nextUrl = useSelector(state => state.chat.chatroomProps[chatroom?.id]?.nextUrl);
   const [messageInputValue, setMessageInputValue] = useState('');
@@ -78,7 +84,7 @@ const ChatConversation = () => {
   }, [chatroom]);
   useEffect(() => {
     if (chatroom) {
-      dispatch(chatActions.updateIsHaveNewChat({ chatroomId: chatroom.id, value: false}));
+      dispatch(chatActions.updateIsHaveNewChat({ chatroomId: chatroom.id, value: false }));
     }
     if (chatroom?.chats.length > 0 && chatroom.chats[chatroom.chats.length - 1].profile.username != user.username) {
       ws.send(JSON.stringify({

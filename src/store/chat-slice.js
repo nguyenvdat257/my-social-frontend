@@ -226,7 +226,7 @@ export const callGetChatrooms = (username) => {
 export const callCreateChatroom = (formData) => {
     const url = myConfig.hostName + '/chatroom/';
     const method = 'POST';
-    const successHandler = null;
+    const successHandler = (data) => chatActions.setCurrentChatroomId(data.id);
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
     const before = () => chatActions.setCreatingChatrooms(true);
