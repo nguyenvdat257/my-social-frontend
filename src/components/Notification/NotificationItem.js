@@ -26,7 +26,7 @@ const NotificationItem = ({ item }) => {
     };
     return (
         <div className='modal-item search-item pointer-cursor' style={{ paddingBottom: '1rem' }} onClick={handleClickItem}>
-            <div style={{ display: 'flex', alignItems: 'top', maxWidth: '85%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', maxWidth: '85%' }}>
                 <div ref={avatarRef} style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <ProfileAvatar profile={item.sender_profile} avatarSize='medium' isShowDetail={false} margin='0rem' isEnableHover={false} />
                 </div>
@@ -49,7 +49,7 @@ const NotificationItem = ({ item }) => {
                     }
                 </div>
             </div>
-            {item.type !== 'following' &&
+            {item.type !== 'following' && item.post.image &&
                 <img src={myConfig.hostName + item.post.image.image} style={{ width: '2rem', height: '2rem' }} alt='post' />
             }
         </div>

@@ -65,7 +65,7 @@ const Profile = ({ isSaved }) => {
           <div style={{ height: '100%', overflowY: 'auto' }} ref={ref} onScroll={onScroll} >
             <div className='main-container'>
               <div className='center-item' style={{ width: '20rem', 'paddingBottom': '3rem', borderBottom: '2px ridge' }}>
-                <ProfileAvatar profile={profile} avatarSize='larger' isShowDetail={false} />
+                <ProfileAvatar profile={profile} avatarSize='larger' isShowDetail={false} isEnableHover={false} isEnableClick={false} />
               </div>
               <div style={{ width: '40rem', 'paddingBottom': '3rem', borderBottom: '2px ridge' }}>
                 <ProfileInfo profile={profile} />

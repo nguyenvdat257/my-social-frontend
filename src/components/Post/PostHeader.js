@@ -6,6 +6,7 @@ import { postTimelineActions, postActions, postSuggestActions, postUserActions }
 import { getAvatarSrc } from '../../utils/CommonFunction';
 import { confirmActions } from '../../store/confirm-modal-slice';
 import { callFollow } from '../../store/profile-actions';
+import ProfileAvatar from '../Common/ProfileAvatar';
 const postAction = postActions;
 const postTimelineAction = postTimelineActions;
 const postSuggestAction = postSuggestActions;
@@ -55,10 +56,7 @@ const PostHeader = ({ post, isTimeline, type }) => {
         <>
             <div className={`${isTimeline ? 'post-header' : 'post-header-main'}`}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img className='avatar avatar-small' src={getAvatarSrc(post.profile_info, 'small')} />
-                    <div className={`${isTimeline ? 'name-avatar-margin-small' : 'name-avatar-margin-medium'} bold-text-small`}>
-                        {post.profile_info.username}
-                    </div>
+                    <ProfileAvatar profile={post.profile_info} isFix={false} detail='' avatarSize='small' margin={isTimeline ? '0.5rem' : '1rem'} />
                     {
                         !post.profile_info.is_follow && post.profile_info.username != user.username &&
                         <div>

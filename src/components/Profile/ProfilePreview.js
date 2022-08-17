@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { callGetPostsPreview, callGetProfilePreview, profilePreviewActions } from '../../store/profile-preview-slice';
 import ProfileAvatar from '../Common/ProfileAvatar';
@@ -7,14 +7,21 @@ import MySpinner from '../Common/Spinner';
 import { myConfig } from '../../config';
 import { callFollow } from '../../store/profile-actions';
 import { unfollowModal } from '../../utils/CommonFunction';
+import { callCreateChatroom } from '../../store/chat-slice';
+import { headerActions } from '../../store/header-slice';
+import { useNavigate } from 'react-router-dom';
 
-const ProfilePreview = ({ username }) => {
+const ProfilePreview = ({ username, isFix = true }) => {
     const dispatch = useDispatch();
     const profile = useSelector(state => state.profilePreview.profile);
+    const user = useSelector(state => state.auth.user);
     const posts = useSelector(state => state.profilePreview.posts);
     const profileLoaded = useSelector(state => state.profilePreview.profileLoaded);
     const postsLoaded = useSelector(state => state.profilePreview.postsLoaded);
+    const creatingChatroom = useSelector(state => state.chat.creatingChatroom);
+    const prevCreatingChatroom = useRef(null);
     const [followSending, setFollowSending] = useState(false);
+    const navigate = useNavigate();
     const handleClickFollow = e => {
         e.preventDefault();
         dispatch(callFollow({
@@ -27,13 +34,25 @@ const ProfilePreview = ({ username }) => {
         e.preventDefault();
         unfollowModal(profile, dispatch, 'profilePreview');
     };
+    const handleClickMessage = e => {
+        dispatch(callCreateChatroom(JSON.stringify({ usernames: [user.username, username] })));
+        // dispatch(chatActions.resetCreateChatroom());
+    }
     useEffect(() => {
         dispatch(callGetProfilePreview(username));
         dispatch(callGetPostsPreview(username));
     }, [])
+    useEffect(() => {
+        // trigger after creating chatroom
+        if (prevCreatingChatroom.current === true && creatingChatroom === false) {
+            dispatch(headerActions.setPage('chat'));
+            navigate('/direct/inbox');
+        }
+        prevCreatingChatroom.current = creatingChatroom;
+    }, [creatingChatroom])
     return (
-        <div style={{ position: 'absolute', left: '-2.5rem', top: '2.5rem', zIndex: 999 }}>
-            <div style={{position: 'fixed'}}>
+        <div style={{ position: 'absolute', left: '-2.5rem', top: '2rem', zIndex: 999 }}>
+            <div style={isFix ? { position: 'fixed' } : {}}>
                 <Card style={{ position: 'relative', width: '24rem', height: '24rem' }}>
                     {!profileLoaded || !postsLoaded &&
                         <MySpinner />
@@ -79,7 +98,10 @@ const ProfilePreview = ({ username }) => {
                             }
                             {profile.is_follow &&
                                 <div style={{ padding: '1rem', display: 'flex', justifyContent: 'space-between' }}>
-                                    <div className='my-button' style={{ width: '45%' }}>Message</div>
+                                    <div className='my-button' style={{ width: '45%' }} onClick={handleClickMessage}>
+                                        {!creatingChatroom && <div>Message</div>}
+                                        {creatingChatroom && <MySpinner type='small' />}
+                                    </div>
                                     <div className='my-button' style={{ width: '50%' }} onClick={handleClickUnfollow}>Following</div>
                                 </div>
                             }

@@ -11,6 +11,7 @@ const Notification = () => {
     const dispatch = useDispatch();
     const notifications = useSelector(state => state.notification.notifications);
     const showNoti = useSelector(state => state.notification.showNoti);
+    const isSeen = useSelector(state => state.notification.isSeen);
     const { todayPos, earlierPos } = useSelector(state => state.notification.separatorPos);
     const showNotiRef = useRef(null);
     const gettingData = useSelector(state => state.notification.gettingData);
@@ -60,8 +61,13 @@ const Notification = () => {
     }, [showNoti])
     return (
         <div ref={ref} style={{ pointerEvents: 'auto' }}>
-            <AiOutlineHeart size={26} className='header-item pointer-cursor' style={{ display: !showNoti ? 'initial' : 'none' }} onClick={handleClickNoti} />
-            <AiFillHeart size={26} className='header-item pointer-cursor' style={{ display: showNoti ? 'initial' : 'none' }} onClick={handleClickNoti} />
+            <div style={{ position: 'relative', height: 'fit-content', width: 'fit-content' }} >
+                <AiOutlineHeart size={26} className='header-item pointer-cursor' style={{ display: !showNoti ? 'initial' : 'none' }} onClick={handleClickNoti} />
+                <AiFillHeart size={26} className='header-item pointer-cursor' style={{ display: showNoti ? 'initial' : 'none' }} onClick={handleClickNoti} />
+                {!isSeen &&
+                    <div className='indicator' style={{ position: 'absolute', bottom: '0%', left: '50%' }}></div>
+                }
+            </div>
             {showNoti &&
                 <>
                     <div style={{ position: 'absolute', right: '-0rem', top: '3rem' }} >

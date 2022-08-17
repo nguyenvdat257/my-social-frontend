@@ -1001,3 +1001,10 @@ html, body, #root, #root>div {
   /* background-color: #fefefe; */
   background-color: #fafafa;
 }
+
+.indicator {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background-color: red;
+}

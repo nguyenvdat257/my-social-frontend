@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Main from './components/Layout/Main';
@@ -5,20 +6,16 @@ import Login from './components/Auth/Login';
 import Signup from './components/Auth/Signup'
 import Story from './components/Story/Story';
 import MyToast from './components/Common/MyToast';
-import { useEffect } from 'react';
-import { callGetCurrentProfile } from './store/profile-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import SharedModals from './components/Post/SharedModals';
-import { useUserSocket, SocketContext } from './hooks/UserSocketHook';
+import { useUserSocket } from './hooks/UserSocketHook';
 import { useChatSocket } from './hooks/ChatSocketHooks';
 
+export const SocketContext = React.createContext();
 function App() {
   const isClickable = useSelector(state => state.click.isClickable);
   const wsChat = useChatSocket();
   const wsUser = useUserSocket();
-  // useEffect(() => {
-  //   dispatch(callGetCurrentProfile());
-  // }, [])
   return (
     <>
       <SocketContext.Provider value={wsChat}>

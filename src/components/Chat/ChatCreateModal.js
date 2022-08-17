@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal, CloseButton, Form } from 'react-bootstrap'
-import { callChatSearchProfile, callCreateChatroom, callGetChatSuggestProfiles, chatActions } from '../../store/chat-slice';
+import { callChatSearchProfile, callCreateChatroom, callGetChatSuggestProfiles, callSharePost, chatActions } from '../../store/chat-slice';
 import SuggestUsernameItem from './SuggestUsernameItem';
 
-const ChatCreateModal = () => {
+const ChatCreateModal = ({ type = 'create', post = null, setShow = null }) => {
   const dispatch = useDispatch();
   const showCreateChat = useSelector(state => state.chat.showCreateChat);
   const usernames = useSelector(state => state.chat.createUsernames);
@@ -18,7 +18,18 @@ const ChatCreateModal = () => {
     dispatch(chatActions.resetCreateChatroom());
   }
   const handleClickNext = e => {
-    dispatch(callCreateChatroom(JSON.stringify({ usernames: usernames })));
+    if (type === 'create') {
+      dispatch(callCreateChatroom(JSON.stringify({ usernames: usernames })));
+    } else {
+      const formData = JSON.stringify({
+        usernames: usernames,
+        message: '',
+        share_post_img: post.images[0].image,
+        share_post_code: post.code,
+      })
+      dispatch(callSharePost(formData));
+      setShow(false);
+    }
     dispatch(chatActions.resetCreateChatroom());
   };
   const handleChangeSearchText = e => {
@@ -48,17 +59,17 @@ const ChatCreateModal = () => {
     <Modal centered show={showCreateChat} onHide={handleCloseModal} dialogClassName='modal-custom-post-add'>
       <div className='modal-custom-header'>
         <div className='pointer-cursor' onClick={handleCloseModal} style={{ paddingLeft: '0.5rem' }}><CloseButton /></div>
-        <div className='bold-text-medium'>New message</div>
+        <div className='bold-text-medium'>{type === 'create' ? 'New message' : 'Share'}</div>
         <div className='pointer-cursor' style={{ paddingRight: '1rem', color: 'dodgerblue' }} onClick={handleClickNext}>Next</div>
       </div>
-      <div style={{display:'flex', flexDirection: 'column', padding: '0.7rem', width: '25rem', height: '27rem' }}>
-        <div className='center-item-horizontal border-bottom' style={{ maxHeight: '50%',  overflowY: 'auto', paddingBottom: '1rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', padding: '0.7rem', width: '25rem', height: '27rem' }}>
+        <div className='center-item-horizontal border-bottom' style={{ maxHeight: '50%', overflowY: 'auto', paddingBottom: '1rem' }}>
           <div className='bold-text-small' style={{ width: '10%' }}>To:</div>
           <div style={{ width: '90%' }}>
-            <div style={{display: 'flex', flexWrap: 'wrap'}}>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               {
                 usernames.map((username, index) => (
-                  <div className='create-chat-username smaller-text center-item-spacing' style={{marginRight: '0.5rem'}}>
+                  <div className='create-chat-username smaller-text center-item-spacing' style={{ marginRight: '0.5rem' }}>
                     <div>{username}</div>
                     <div className='pointer-cursor' style={{ marginLeft: '0.5rem' }} onClick={handleClickRemoveUsername(username)}>✕</div>
                   </div>

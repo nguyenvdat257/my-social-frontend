@@ -6,6 +6,7 @@ import PostHeader from './PostHeader';
 import PostDetail from './PostDetail';
 import PostMain from './PostMain';
 import { useSelector } from 'react-redux';
+import ChatCreateModal from '../Chat/ChatCreateModal';
 
 const PostTimeline = React.memo((params) => {
   const post = params.post;
@@ -13,7 +14,7 @@ const PostTimeline = React.memo((params) => {
   const inputRef = useRef(null);
   return (
     <Card className='post-timeline-card' style={{ backgroundColor: 'white', borderRadius: '0.5rem' }}>
-      <PostHeader post={post} isTimeline={true} type='postTimeline'/>
+      <PostHeader post={post} isTimeline={true} type='postTimeline' />
       {
         post.images.length === 1 &&
         <img className='post-image' src={myConfig.hostName + post.images[0].image}

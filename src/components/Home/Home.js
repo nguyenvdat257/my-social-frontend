@@ -7,6 +7,7 @@ import { useEffect } from 'react'
 import { callGetSuggestProfile } from '../../store/profile-suggest-slice'
 import SuggestedProfileList from './SuggestedProfileList'
 import ProfileAvatar from '../Common/ProfileAvatar'
+import { headerActions } from '../../store/header-slice'
 
 const Home = React.memo(() => {
   const dispatch = useDispatch();
@@ -29,8 +30,9 @@ const Home = React.memo(() => {
     }
   };
   useEffect(() => {
+    dispatch(headerActions.setPage('home'))
     dispatch(callGetSuggestProfile());
-    return () => dispatch(postTimelineActions.resetState());
+    // return () => dispatch(postTimelineActions.resetState());
   }, [])
   return (
     <>

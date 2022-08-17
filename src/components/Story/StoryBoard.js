@@ -25,21 +25,26 @@ const StoryBoard = () => {
     );
   else
     return (
-      <Card className='story-board' style={{ borderRadius: '0.5rem' }}>
-        <div className='d-flex flex-row' style={{ overflowX: 'auto' }}>
-          {
-            unSeenProfiles.concat(seenProfiles).map((profile, index) => (
-              <div className='d-flex flex-column story-board-item' key={profile.username}>
-                <Link to={'/stories/profiles/' + index} state={{ profileIdx: index }}>
-                  <img className={`avatar avatar-large${index < unSeenProfiles.length ? ' story-board-outline-unseen' : ''} `}
-                    src={getAvatarSrc(profile, 'large')} />
-                </Link>
-                <div className='story-board-text fade-text-small'>{profile.username}</div>
-              </div>
-            ))
-          }
-        </div>
-      </Card>
+      <>
+        {(unSeenProfiles.length > 0 || seenProfiles.length > 0 ) &&
+          <Card className='story-board' style={{ borderRadius: '0.5rem' }}>
+            <div className='d-flex flex-row' style={{ overflowX: 'auto' }}>
+              {
+                unSeenProfiles.concat(seenProfiles).map((profile, index) => (
+                  <div className='d-flex flex-column story-board-item' key={profile.username}>
+                    <Link to={'/stories/profiles/' + index} state={{ profileIdx: index }}>
+                      <img className={`avatar avatar-large${index < unSeenProfiles.length ? ' story-board-outline-unseen' : ''} `}
+                        src={getAvatarSrc(profile, 'large')} />
+                    </Link>
+                    <div className='story-board-text fade-text-small'>{profile.username}</div>
+                  </div>
+                ))
+              }
+            </div>
+          </Card>
+
+        }
+      </>
     );
 }
 

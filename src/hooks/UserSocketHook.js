@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { myConfig } from '../config';
 import { callGetChatrooms, chatActions } from '../store/chat-slice';
+import { notificationActions } from '../store/notification-slice';
 
 export const useUserSocket = () => {
     const dispatch = useDispatch()
@@ -27,13 +28,9 @@ export const useUserSocket = () => {
                     case 'status_offline':
                         dispatch(chatActions.updateUserStatus({ status: false, username: data.username }));
                         break;
-                    case 'chatroom_added':
-                        dispatch(callGetChatrooms(data.username))
-                        wsClient.send(JSON.stringify({
-                            type: 'chatroom_added',
-                            chatroom_id: data.chatroom_id,
-                        }))
-                        break
+                    case 'noti_alarm':
+                        dispatch(notificationActions.setIsSeen(false));
+                        break;
                 }
             };
             wsClient.onclose = e => {
@@ -47,5 +44,3 @@ export const useUserSocket = () => {
     }, [token]);
     return ws;
 }
-
-export const SocketContext = React.createContext();

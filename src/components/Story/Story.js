@@ -9,13 +9,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getData } from '../../store/story-board-slice'
 import MySpinner from '../Common/Spinner'
-import { storyActions, callStoryLike, callStorySeen, callGetStoryViewProfile } from '../../store/story-slice'
+import { storyActions, callStoryLike, callStorySeen, callGetStoryViewProfile, callStorySendReply } from '../../store/story-slice'
 import ProfileListModal from '../Profile/ProfileListModal'
 
 const Story = ({ type }) => {
     const dispatch = useDispatch()
     const [isFocusInput, setIsFocusInput] = useState(false);
-    const { reply, setReply } = useState('');
+    const [ reply, setReply ] = useState('');
     const { idx } = useParams();
     const origStoriesList = useSelector(state => state.storyBoard.profilesStoriesList);
     const origMyStoriesList = useSelector(state => state.storyBoard.myStories);
@@ -40,7 +40,13 @@ const Story = ({ type }) => {
         dispatch(storyActions.setIsPause(!isPause));
     }
     const onFormSubmit = e => {
-        e.preventDefault();
+        const formData = {
+            usernames: [profile.username],
+            message: reply,
+            reply_story_img: story['images'][0]['image'],
+        }
+        setReply('');
+        dispatch(callStorySendReply(JSON.stringify(formData)));
     };
     const handleOnFocusInput = e => {
         setIsFocusInput(true);
@@ -159,9 +165,19 @@ const Story = ({ type }) => {
                         <div className='story-reaction'>
                             <div className='story-form'>
                                 <Form onSubmit={onFormSubmit} >
-                                    <Form.Control as="textarea" className='shadow-none' rows='1' name='reply' style={{ borderRadius: '1.5rem', resize: 'none' }} onChange={handleChangeReply} onFocus={handleOnFocusInput} onBlur={handleOnBlurInput} placeholder="Reply to " />
+                                    <Form.Control
+                                        as="textarea"
+                                        value={reply} 
+                                        className='shadow-none' 
+                                        rows='1' 
+                                        name='reply' 
+                                        style={{ borderRadius: '1.5rem', resize: 'none' }} 
+                                        onChange={handleChangeReply} 
+                                        onFocus={handleOnFocusInput} 
+                                        onBlur={handleOnBlurInput} 
+                                        placeholder="Reply to " />
                                 </Form>
-                                {isFocusInput && <div class='story-send'>Send</div>}
+                                {true && <div class='story-send' onClick={onFormSubmit}>Send</div>}
                             </div>
                             {story['is_like'] && <AiFillHeart className='pointer-cursor' size='1.6rem' style={{ color: 'red' }} onClick={handleLike} />}
                             {!story['is_like'] && <AiOutlineHeart className='pointer-cursor' size='1.6rem' onClick={handleLike} />}

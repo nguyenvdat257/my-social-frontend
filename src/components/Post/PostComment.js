@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
-import { postTimelineActions, callCommentLike, callGetReplyComments, postActions,
-     postSuggestActions, postUserActions } from '../../store/post-timeline-slice'
+import {
+    postTimelineActions, callCommentLike, callGetReplyComments, postActions,
+    postSuggestActions, postUserActions
+} from '../../store/post-timeline-slice'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Row, Col } from 'react-bootstrap'
 import MySpinner from '../Common/Spinner'
@@ -11,6 +13,7 @@ import ProfileListModal from '../Profile/ProfileListModal'
 import { getAvatarSrc } from '../../utils/CommonFunction'
 import { BsThreeDots } from 'react-icons/bs';
 import { optionActions } from '../../store/option-modal-slice'
+import { Link } from 'react-router-dom'
 const postAction = postActions;
 const postTimelineAction = postTimelineActions;
 const postSuggestAction = postSuggestActions;
@@ -102,7 +105,9 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef, t
             {
                 !isTimeline && !isOriginalComment &&
                 <div className='post-row-comment' style={{ display: 'flex' }} >
-                    <img className='avatar avatar-small' src={getAvatarSrc(comment, 'small')} />
+                    <Link to={`profiles/${comment.username}`}>
+                        <img className='avatar avatar-small' src={getAvatarSrc(comment, 'small')} />
+                    </Link>
                     <div className='name-avatar-margin-medium' style={{ width: '85%' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div style={{ maxWidth: '90%' }}>
@@ -166,8 +171,10 @@ const PostComment = ({ post, comment, isTimeline, isOriginalComment, inputRef, t
             {
                 isOriginalComment &&
                 <div className='post-row-comment' style={{ display: 'flex', marginTop: '1rem' }}>
-                    <img className='avatar avatar-small' style={{ marginRight: '1.0rem' }}
-                        src={getAvatarSrc(post.profile_info, 'small')} />
+                    <Link to={`profiles/${post.profile_info.username}`}>
+                        <img className='avatar avatar-small' style={{ marginRight: '1.0rem' }}
+                            src={getAvatarSrc(post.profile_info, 'small')} />
+                    </Link>
                     <div style={{ width: '85%' }}>
                         <div className='post-row-comment'>
                             <span className='bold-text-small'>{post.profile_info.username} </span>

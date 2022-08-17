@@ -25,6 +25,7 @@ import postSuggestSlice from "./post-suggest-slice";
 import chatSlice from "./chat-slice";
 import notificationSlice from "./notification-slice";
 import postUserSlice from "./postuser-slice";
+import headerSlice from "./header-slice";
 
 
 const persistConfig = {
@@ -57,6 +58,7 @@ const reducers = combineReducers({
     chat: chatSlice.reducer,
     notification: notificationSlice.reducer,
     postUser: postUserSlice.reducer,
+    header: headerSlice.reducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);

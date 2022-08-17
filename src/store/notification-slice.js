@@ -8,6 +8,7 @@ const notificationSlice = createSlice({
     name: 'notfication',
     initialState: {
         notifications: [],
+        isSeen: true,
         separatorPos: {},
         nextUrl: null,
         usedNextUrl: [],
@@ -32,6 +33,9 @@ const notificationSlice = createSlice({
                     foundEarlierPos = true;
                 }
             }
+        },
+        setIsSeen(state, action) {
+            state.isSeen = action.payload;
         },
         setShowNoti(state, action) {
             state.showNoti = action.payload;
@@ -64,7 +68,10 @@ export const callGetNotifications = () => {
     const url = myConfig.hostName + '/notification/';
     const method = 'GET';
     const formData = null;
-    const successHandler = (data) => notificationActions.setNotfication(data);
+    const successHandler = (data) => (dispatch) => {
+        dispatch(notificationActions.setNotfication(data));
+        dispatch(callNotificationSeen());
+    } 
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
     const before = () => notificationActions.setGettingData(true);
@@ -83,6 +90,32 @@ export const callGetNextNotifications = (nextUrl) => {
     const before = () => notificationActions.setGettingNextData(true);
     const afterConnected = () => notificationActions.setGettingNextData(false);
     const afterUnconnected = () => notificationActions.setGettingNextData(false);
+    return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
+export const callNotificationSeen = () => {
+    const url = myConfig.hostName + '/notification/seen/';
+    const method = 'PUT';
+    const formData = null;
+    const successHandler = (data) => notificationActions.setIsSeen(true);
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+    const before = () => notificationActions.setGettingData(true);
+    const afterConnected = () => notificationActions.setGettingData(false);
+    const afterUnconnected = () => notificationActions.setGettingData(false);
+    return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
+export const callGetNotificationSeen = () => {
+    const url = myConfig.hostName + '/notification/seen/';
+    const method = 'GET';
+    const formData = null;
+    const successHandler = (data) => notificationActions.setIsSeen(data.type === 'seen');
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+    const before = null;
+    const afterConnected = null;
+    const afterUnconnected = null;
     return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 export default notificationSlice;

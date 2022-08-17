@@ -15,8 +15,10 @@ import { postAddActions } from '../../store/post-add-slice'
 import MyAvatar from '../Common/MyAvatar'
 import Search from '../Search/Search'
 import Notification from '../Notification/Notification'
-import { notificationActions } from '../../store/notification-slice'
+import { callGetNotificationSeen, notificationActions } from '../../store/notification-slice'
 import { callGetCurrentProfile } from '../../store/profile-actions'
+import { headerActions } from '../../store/header-slice'
+import { callGetChatSeen } from '../../store/chat-slice'
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -26,17 +28,18 @@ const Header = () => {
     myConfig.hostName + state.auth.user.avatar.thumbnail : myConfig.defaultAvatar);
   const targetMenu = useRef(null);
   const targetAdd = useRef(null);
-  const [page, setPage] = useState('home')
+  const page = useSelector(state => state.header.page);
   const user = useSelector(state => state.auth.user);
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const isChatSeen = useSelector(state => state.chat.isSeen);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleClickHome = e => {
     navigate('/');
   }
-  // const setPage = (page) => {
-  //   dispatch(pageActions.setPage({ page }));
-  // };
+  const setPage = (page) => {
+    dispatch(headerActions.setPage(page));
+  };
   const handleClickAdd = e => {
     setShowAdd(!showAdd);
   };
@@ -59,6 +62,8 @@ const Header = () => {
       if (isLoggedIn) dispatch(updateToken())
     }, fourMinutes)
     dispatch(callGetCurrentProfile());
+    dispatch(callGetNotificationSeen());
+    dispatch(callGetChatSeen());
     return () => clearInterval(interval)
   }, []);
   return (
@@ -76,7 +81,7 @@ const Header = () => {
             <div className='col-2 offset-1'>
               <div className='row'>
                 {/* home */}
-                <div className='col-2' onClick={() => setPage('home')} >
+                <div className='col-2' >
                   <Link to='/' className='link'>
                     {page === 'home' && !showMenu && !showAdd && !showNoti ?
                       (<RiHomeFill size={24} className='header-item' />) :
@@ -85,12 +90,17 @@ const Header = () => {
                   </Link>
                 </div>
                 {/* chat */}
-                <div className='col-2' onClick={() => setPage('chat')} >
+                <div className='col-2' >
                   <Link to='/direct/inbox' className='link'>
-                    {page === 'chat' && !showMenu && !showAdd && !showNoti ?
-                      (<RiMessengerFill size={26} className='header-item pointer-cursor' />) :
-                      (<RiMessengerLine size={26} className='header-item pointer-cursor' />)
-                    }
+                    <div style={{ position: 'relative', height: 'fit-content', width: 'fit-content' }} >
+                      {page === 'chat' && !showMenu && !showAdd && !showNoti ?
+                        (<RiMessengerFill size={26} className='header-item pointer-cursor' />) :
+                        (<RiMessengerLine size={26} className='header-item pointer-cursor' />)
+                      }
+                      {!isChatSeen &&
+                        <div className='indicator' style={{ position: 'absolute', bottom: '0%', left: '50%' }}></div>
+                      }
+                    </div>
                   </Link>
                 </div>
                 {/* add */}
@@ -99,7 +109,7 @@ const Header = () => {
                   {!showAdd && <BsPlusSquare size={24} className='header-item pointer-cursor' />}
                 </div>
                 {/* explore */}
-                <div className='col-2' onClick={() => setPage('explore')} >
+                <div className='col-2'>
                   <Link to='/explore' className='link'>
                     {page === 'explore' && !showMenu && !showAdd && !showNoti ?
                       (<AiFillCompass size={26} className='header-item pointer-cursor' />) :
@@ -109,9 +119,6 @@ const Header = () => {
                 </div>
                 {/* noti */}
                 <div className='col-2' style={{ position: 'relative' }}>
-                  {/* {showNoti && <AiFillHeart size={26} className='header-item pointer-cursor' />} */}
-                  {/* {!showNoti && <AiOutlineHeart size={26} className='header-item pointer-cursor' />} */}
-                  {/* {showNoti && <Notification />} */}
                   <Notification />
                 </div>
                 {/* avatar */}

@@ -9,7 +9,8 @@ import {
 import { myConfig } from '../../config';
 import { getAvatarSrc } from '../../utils/CommonFunction';
 import { useNavigate } from 'react-router-dom';
-import { SocketContext } from '../../hooks/UserSocketHook';
+import { SocketContext } from '../../App';
+import { Link } from 'react-router-dom';
 import moment from 'moment'
 
 const ChatConversation = () => {
@@ -81,7 +82,7 @@ const ChatConversation = () => {
     if (chatroom && chatroom.chats.length === 0) {
       dispatch(callGetChat(chatroom.id));
     }
-  }, [chatroom]);
+  }, [chatroom?.id]);
   useEffect(() => {
     if (chatroom) {
       dispatch(chatActions.updateIsHaveNewChat({ chatroomId: chatroom.id, value: false }));
@@ -135,13 +136,33 @@ const ChatConversation = () => {
                 <MessageSeparator content={moment(chat.created).format('MMMM D YYYY, h:mm a')} />
               }
               <Message key={index} model={{
-                message: chat.body,
+                message: chat.body ? chat.body : '',
                 sentTime: moment(chat.created).fromNow(),
                 sender: chat.profile.username,
                 direction: chat.profile.username === user.username ? "outgoing" : "incoming",
                 position: chat.position === 'last' ? 'single' : chat.position
               }} avatarSpacer={chat.profile.username != user.username &&
                 (chat.position === 'first' || chat.position === 'normal')}>
+
+                {chat.type === 'S' &&
+                  <Message.CustomContent>
+                    <Link to={`/posts/${chat.share_post_code}`}>
+                      <img src={myConfig.hostName + chat.share_post_img} alt="post image" width={200} />
+                    </Link>
+                  </Message.CustomContent>
+                }
+                {chat.type === 'R' &&
+                  <Message.CustomContent>
+                    {chat.profile.username === user.username ?
+                      <div className='fade-text-small'>You replied on story</div> :
+                      <div className='fade-text-small'>{`${chat.profile.username} replied on your story`}</div>
+                    }
+
+                    <img src={myConfig.hostName + chat.reply_story_img} alt="story image" width={200} />
+                    <div>{chat.body}</div>
+                  </Message.CustomContent>
+                }
+
 
                 {(chat.profile.username != user.username && (chat.position === 'last' || chat.position === 'single')) &&
                   <Avatar className='pointer-cursor' size='sm' src={getAvatarSrc(chat.profile, 'small')} name={chat.profile.username}

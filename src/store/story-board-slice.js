@@ -28,11 +28,12 @@ const storyBoardSlice = createSlice({
             state.profilesStoriesList = unSeenProfilesStories.concat(seenProfilesStories);
             state.profilesStoriesList = state.profilesStoriesList.map(item => [item[1][0]['profile_info'], item[1]]);
             state.myStories = action.payload.self_stories;
-            state.myStories = state.myStories.map(item => [item[1][0]['profile_info'], item[1]]);
-            state.isMyStorySeen = state.myStories.filter(item => {
-                return item[1].filter(story => story['is_seen'] === true).length > 0;
-            }).length > 0;
-
+            if (state.myStories[0][1].length > 0) {
+                state.myStories = state.myStories.map(item => [item[1][0]['profile_info'], item[1]]);
+                state.isMyStorySeen = state.myStories.filter(item => {
+                    return item[1].filter(story => story['is_seen'] === true).length > 0;
+                }).length > 0;
+            }
             state.isDataFetched = true;
         },
         setGettingData(state, action) {

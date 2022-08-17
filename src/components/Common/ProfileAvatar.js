@@ -5,7 +5,7 @@ import { AiFillHeart } from 'react-icons/ai'
 import { getAvatarSrc } from '../../utils/CommonFunction';
 import ProfilePreview from '../Profile/ProfilePreview';
 
-const ProfileAvatar = ({ profile, avatarSize = 'medium', isShowDetail = true, detail = profile?.name, margin = '0.5rem', isEnableHover = true, isEnableClick = true }) => {
+const ProfileAvatar = ({ profile, isFix = true, avatarSize = 'medium', isShowDetail = true, detail = profile?.name, margin = '0.5rem', isEnableHover = true, isEnableClick = true }) => {
     const user = useSelector(state => state.auth.user);
     const isMy = user?.username === profile?.username;
     const stories = useSelector(state => state.storyBoard.myStories);
@@ -37,8 +37,8 @@ const ProfileAvatar = ({ profile, avatarSize = 'medium', isShowDetail = true, de
         return (
             <>
                 <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-                    <div style={{ position: 'relative' }}>
-                        <img className={`avatar ${'avatar-' + avatarSize} pointer-cursor ${profile.is_has_story ?
+                    <div style={{ position: 'relative' }} >
+                        <img className={`avatar ${'avatar-' + avatarSize} ${isEnableClick ? 'pointer-cursor' : ''} ${profile.is_has_story ?
                             (profile.is_story_seen ? 'story-board-outline' : 'story-board-outline-unseen') : ''}`}
                             src={getAvatarSrc(profile, avatarSize === 'large' || avatarSize === 'larger' ? 'large' : 'small')}
                             onClick={handleClickAvatar} />
@@ -49,13 +49,15 @@ const ProfileAvatar = ({ profile, avatarSize = 'medium', isShowDetail = true, de
                         }
                     </div>
                     {isShowDetail &&
-                        <div style={{ marginLeft: margin }} onClick={handleClickDetail}>
-                            <div className={'bold-text-small pointer-cursor'} >{profile.username}</div>
-                            <div className={'fade-text-medium pointer-cursor'}>{detail}</div>
+                        <div style={{ marginLeft: margin }} onClick={handleClickDetail} >
+                            <div className={`bold-text-small ${isEnableClick ? 'pointer-cursor' : ''}`} >{profile.username}</div>
+                            {detail.length > 0 &&
+                                <div className={`fade-text-medium ${isEnableClick ? 'pointer-cursor' : ''}`}>{detail}</div>
+                            }
                         </div>
                     }
                     {showProfileLite && isEnableHover && !isMy &&
-                        <ProfilePreview username={profile.username} />
+                        <ProfilePreview username={profile.username} isFix={isFix} />
                     }
                 </div>
             </>

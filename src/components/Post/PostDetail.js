@@ -13,6 +13,8 @@ import { callLikePostProfile } from '../../store/profile-actions'
 import { Form } from 'react-bootstrap'
 import Picker from 'emoji-picker-react';
 import PostComments from './PostComments'
+import { chatActions } from '../../store/chat-slice'
+import ChatCreateModal from '../Chat/ChatCreateModal'
 const postAction = postActions;
 const postTimelineAction = postTimelineActions;
 const postSuggestAction = postSuggestActions;
@@ -27,6 +29,7 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef, type }) => {
     const message = useSelector(state => state[type].postProps[post.code].message)
     const [showBody, setShowBody] = useState(false);
     const [showLikeProfile, setShowLikeProfile] = useState(false);
+    const [showShare, setShowShare] = useState(false);
     const [showEmoji, setShowEmoji] = useState(false);
     const emojiRef = useRef(null);
     const smileFaceRef = useRef(null);
@@ -51,6 +54,10 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef, type }) => {
     };
     const handleClickMessage = e => {
         dispatch(actions.setShowPostMain({ postCode: post.code, value: true }));
+    };
+    const handleClickShare = e => {
+        dispatch(chatActions.setShowCreateChat(true));
+        dispatch(setShowShare(true));
     };
     const handleClickLike = e => {
         dispatch(actions.flipLike({ 'code': post.code }))
@@ -125,7 +132,7 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef, type }) => {
                         <AiOutlineHeart size='25px' className='post-button pointer-cursor' onClick={handleClickLike} />
                     }
                     <AiOutlineMessage size='24px' className='post-button post-comment-button pointer-cursor' onClick={handleClickMessage} />
-                    <FiSend size='22px' className='post-button post-send-button' />
+                    <FiSend size='22px' className='post-button post-send-button pointer-cursor' onClick={handleClickShare}/>
                 </div>
                 {post.is_saved && <BsBookmarkFill size='22px' className='post-button pointer-cursor' onClick={handleClickSave} />}
                 {!post.is_saved && <BsBookmark size='22px' className='post-button pointer-cursor' onClick={handleClickSave} />}
@@ -190,6 +197,9 @@ const PostDetail = ({ post, isTimeline, inputRef, commentListRef, type }) => {
                 {showLikeProfile &&
                     <ProfileListModal title='Likes' showModal={showLikeProfile} setShowModal={setShowLikeProfile}
                         getData={callLikePostProfile(post.code)} />}
+                {showShare &&
+                    <ChatCreateModal type='share-post' post={post} setShow={setShowShare} />
+                }
             </div>
         </>
     )

@@ -9,6 +9,7 @@ const chatSlice = createSlice({
     initialState: {
         chatrooms: [],
         chatroomProps: {},
+        isSeen: true,
         currentChatroomId: null,
         gettingChatrooms: false,
         gettingChat: false,
@@ -38,15 +39,13 @@ const chatSlice = createSlice({
                 if (chatroom.last_active) {
                     chatroom.last_active = 'Active ' + moment(chatroom.last_active).fromNow()
                 }
-                if (chatroom.is_have_new_chat) {
-                    chatroom.info = chatroom.last_message;
-                } else if (chatroom.is_online && chatroom.last_message) {
-                    chatroom.info = chatroom.last_message;
-                } else if (!chatroom.is_online && chatroom.last_active) {
-                    chatroom.info = chatroom.last_active;
-                } else {
-                    chatroom.info = '';
-                }
+
+                if (chatroom.is_have_new_chat) chatroom.info = chatroom.last_message;
+                else if (chatroom.is_online) chatroom.info = 'Online now';
+                else if (chatroom.last_active) chatroom.info = chatroom.last_active;
+                else if (chatroom.last_message) chatroom.info = chatroom.last_message;
+                else chatroom.info = '';
+
                 chatroom.chats = [];
                 chatroom.typing = [];
             }
@@ -66,6 +65,9 @@ const chatSlice = createSlice({
                     chatroom.is_online = chatroom.otherProfiles.filter(profile => profile.is_online).length > 0;
                 }
             }
+        },
+        setIsSeen(state, action) {
+            state.isSeen = action.payload;
         },
         updateNewChat(state, action) {
             const username = action.payload.chat.profile.username;
@@ -92,7 +94,8 @@ const chatSlice = createSlice({
             let chat = action.payload.chat;
             chat.position = position;
             chatroom.info = chat.body;
-            chatroom.is_have_new_chat = state.currentChatroomId === action.payload.chat.chatroom ? false : true
+            chatroom.is_have_new_chat = state.currentChatroomId === chat.chatroom ||
+                username === action.payload.currentUsername ? false : true
             chatroom.chats.push(chat);
             state.chatrooms = state.chatrooms.filter(chatroom => chatroom.id != action.payload.chat.chatroom);
             state.chatrooms.unshift(chatroom);
@@ -100,6 +103,7 @@ const chatSlice = createSlice({
         updateIsHaveNewChat(state, action) {
             const chatroom = state.chatrooms.filter(chatroom => chatroom.id === action.payload.chatroomId)[0];
             chatroom.is_have_new_chat = action.payload.value;
+            state.isSeen = state.chatrooms.filter(chatroom => chatroom.is_have_new_chat).length === 0;
         },
         updateTyping(state, action) {
             const chatroom = state.chatrooms.filter(chatroom => chatroom.id === action.payload.chatroom_id)[0];
@@ -287,5 +291,31 @@ export const callGetMoreChat = (chatroomId, nextUrl) => {
     const afterConnected = () => () => chatActions.setGettingChat(false);
     const afterUnconnected = () => () => chatActions.setGettingChat(false);
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+
+export const callSharePost = (formData) => {
+    const url = myConfig.hostName + `/chatroom/share/`;
+    const method = 'POST';
+    const sendData = formData;
+    const successHandler = (data) => toastActions.setIsShow(myConfig.sent);
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+
+    const before = () => () => chatActions.setCreatingChatrooms(true);
+    const afterConnected = () => () => chatActions.setCreatingChatrooms(false);
+    const afterUnconnected = () => () => chatActions.setCreatingChatrooms(false);
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
+export const callGetChatSeen = () => {
+    const url = myConfig.hostName + '/chatroom/seen/';
+    const method = 'GET';
+    const formData = null;
+    const successHandler = (data) => chatActions.setIsSeen(data.type === 'seen');
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+    const before = null;
+    const afterConnected = null;
+    const afterUnconnected = null;
+    return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 export default chatSlice;

@@ -140,4 +140,19 @@ export const callGetStoryViewProfile = storyId => setGettingData => {
     const afterUnconnected = () => () => setGettingData(false);
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
+
+export const callStorySendReply = formData => {
+    const url = myConfig.hostName + `/stories/reply/`;
+    const method = 'POST';
+    const sendData = formData;
+
+    const successHandler = (data) => toastActions.setIsShow(myConfig.sent);
+    const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
+    const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
+
+    const before = null;
+    const afterConnected = null;
+    const afterUnconnected = null;
+    return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
+}
 export default storySlice;

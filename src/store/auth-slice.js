@@ -25,6 +25,7 @@ const authSlice = createSlice({
             state.loginError = { 'error': false, 'message': '' };
             state.sendingForm = false;
             localStorage.removeItem('token');
+            localStorage.removeItem('persist:root');
         },
         setLoginError(state, action) {
             state.loginError = action.payload;
@@ -70,8 +71,9 @@ export const loginUser = (username, password, navigate) => async (dispatch) => {
 }
 
 export const logoutUser = (navigate) => async (dispatch) => {
-    dispatch(authActions.logout())
-    navigate('/login')
+    dispatch(authActions.logout());
+    // navigate('/login');
+    navigate(0);
 }
 
 
