@@ -1,9 +1,10 @@
 export const myConfig = { 
-    // hostName:'https://social-net-216.herokuapp.com/'
-    hostName:'http://127.0.0.1:8000',
-    socketHostName:'ws://127.0.0.1:8000',
-    defaultAvatar: 'http://localhost:3000/default_avatar.jpg',
-    defaultHashtag: 'http://localhost:3000/default_hashtag.png',
+    // hostName:'http://127.0.0.1:8000',
+    hostName:'https://social-net-216.herokuapp.com/',
+    // socketHostName:'ws://127.0.0.1:8000',
+    socketHostName:'ws://social-net-216.herokuapp.com/',
+    defaultAvatar: 'http://social-net-188.herokuapp.com/default_avatar.jpg',
+    defaultHashtag: 'http://social-net-188.herokuapp.com/default_hashtag.png',
     getError: 'Cannot get data from server.',
     sendError: 'Cannot send data to server.',
     serverError: 'Cannot connect to server.',
@@ -11,4 +12,4 @@ export const myConfig = {
     deletedPost: 'Post deleted.',
     editedPost: 'Post edited.',
     sent: 'Sent.'
-};
+}
