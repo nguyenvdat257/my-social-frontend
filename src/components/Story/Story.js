@@ -150,7 +150,7 @@ const Story = ({ type }) => {
                         </div>
                         <div className='story-info'>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <img className='avatar avatar-large' src={profile.avatar.thumbnail_larger ? myConfig.hostName + profile.avatar.thumbnail_larger : myConfig.defaultAvatar} />
+                                <img className='avatar avatar-large' src={profile.avatar.thumbnail_larger ? myConfig.mediaHost + profile.avatar.thumbnail_larger : myConfig.defaultAvatar} />
                                 <div className='story-info-name'>{profile.username}</div>
                                 <div className='story-info-ago fade-text'>{story['hour_ago']}h</div>
                             </div>
@@ -160,7 +160,7 @@ const Story = ({ type }) => {
                             </div>
                         </div>
                     </div>
-                    <img className='story-image' src={myConfig.hostName + story['images'][0]['image']} />
+                    <img className='story-image' src={myConfig.mediaHost + story['images'][0]['image']} />
                     {type === 'other' &&
                         <div className='story-reaction'>
                             <div className='story-form'>

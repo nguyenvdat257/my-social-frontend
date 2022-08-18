@@ -50,7 +50,7 @@ const NotificationItem = ({ item }) => {
                 </div>
             </div>
             {item.type !== 'following' && item.post.image &&
-                <img src={myConfig.hostName + item.post.image.image} style={{ width: '2rem', height: '2rem' }} alt='post' />
+                <img src={myConfig.mediaHost + item.post.image.image} style={{ width: '2rem', height: '2rem' }} alt='post' />
             }
         </div>
     )

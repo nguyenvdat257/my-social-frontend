@@ -31,7 +31,7 @@ const PostImage = ({ images, type }) => {
                 </>
             }
             <div style={{ position: 'relative', height: '30rem', width: '30rem' }}>
-                <img src={type==='blob' ? currentImg : myConfig.hostName + currentImg} style={{ width: '30rem', height: '30rem' }}></img>
+                <img src={type==='blob' ? currentImg : myConfig.mediaHost + currentImg} style={{ width: '30rem', height: '30rem' }}></img>
             </div>
 
         </div>

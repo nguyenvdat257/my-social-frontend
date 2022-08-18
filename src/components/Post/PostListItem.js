@@ -36,7 +36,7 @@ const PostListItem = ({ post, type, isClickOpenModal = true }) => {
         <>
             {(post && (post.image || post.images)) &&
                 <div className='pointer-cursor' style={{ position: 'relative' }} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} onClick={handleClickImage}>
-                    <img style={{ width: '19rem', height: '19rem' }} src={post.image ? myConfig.hostName + post.image.image : myConfig.hostName + post.images[0].image} />
+                    <img style={{ width: '19rem', height: '19rem' }} src={post.image ? myConfig.mediaHost + post.image.image : myConfig.mediaHost + post.images[0].image} />
                     {showInfo &&
                         <>
                             <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: 'black', opacity: 0.4 }}>

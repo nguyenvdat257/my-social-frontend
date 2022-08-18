@@ -81,10 +81,10 @@ const ProfilePreview = ({ username, isFix = true }) => {
                                 {
                                     posts.map((post, index) => {
                                         if (post.image) {
-                                            return <img key={index} style={{ width: '8rem', height: '8rem' }} src={myConfig.hostName + post.image.image} />;
+                                            return <img key={index} style={{ width: '8rem', height: '8rem' }} src={myConfig.mediaHost + post.image.image} />;
                                         }
                                         if (post.images)
-                                            return <img key={index} style={{ width: '8rem', height: '8rem' }} src={myConfig.hostName + post.images[0].image} />
+                                            return <img key={index} style={{ width: '8rem', height: '8rem' }} src={myConfig.mediaHost + post.images[0].image} />
                                     })
                                 }
                             </div>

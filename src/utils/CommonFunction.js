@@ -3,10 +3,10 @@ import { confirmActions } from "../store/confirm-modal-slice"
 
 export const getAvatarSrc = (profile, type) => {
     if (type === 'small') {
-        return profile.avatar.thumbnail ? myConfig.hostName + profile.avatar.thumbnail : myConfig.defaultAvatar
+        return profile.avatar.thumbnail ? myConfig.mediaHost + profile.avatar.thumbnail : myConfig.defaultAvatar
     }
     else
-        return profile.avatar.thumbnail_larger ? myConfig.hostName + profile.avatar.thumbnail_larger : myConfig.defaultAvatar
+        return profile.avatar.thumbnail_larger ? myConfig.mediaHost + profile.avatar.thumbnail_larger : myConfig.defaultAvatar
 }
 
 export const unfollowModal = (profile, dispatch, type) => {

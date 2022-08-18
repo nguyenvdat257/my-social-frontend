@@ -1,6 +1,8 @@
 export const myConfig = { 
     // hostName:'http://127.0.0.1:8000',
     hostName:'https://social-net-216.herokuapp.com',
+    mediaHost:'',
+    // mediaHost:'http://127.0.0.1:8000',
     // socketHostName:'ws://127.0.0.1:8000',
     socketHostName:'wss://social-net-216.herokuapp.com',
     defaultAvatar: 'https://social-net-188.herokuapp.com/default_avatar.jpg',

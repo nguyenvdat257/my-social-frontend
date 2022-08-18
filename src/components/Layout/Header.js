@@ -25,7 +25,7 @@ const Header = () => {
   const showNoti = useSelector(state => state.notification.showNoti);
   const [showAdd, setShowAdd] = useState(false);
   const avatarSrc = useSelector(state => state.auth.user?.avatar.thumbnail ?
-    myConfig.hostName + state.auth.user.avatar.thumbnail : myConfig.defaultAvatar);
+    myConfig.mediaHost + state.auth.user.avatar.thumbnail : myConfig.defaultAvatar);
   const targetMenu = useRef(null);
   const targetAdd = useRef(null);
   const page = useSelector(state => state.header.page);

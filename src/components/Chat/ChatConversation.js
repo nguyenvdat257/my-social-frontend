@@ -147,7 +147,7 @@ const ChatConversation = () => {
                 {chat.type === 'S' &&
                   <Message.CustomContent>
                     <Link to={`/posts/${chat.share_post_code}`}>
-                      <img src={myConfig.hostName + chat.share_post_img} alt="post image" width={200} />
+                      <img src={myConfig.mediaHost + chat.share_post_img} alt="post image" width={200} />
                     </Link>
                   </Message.CustomContent>
                 }
@@ -158,7 +158,7 @@ const ChatConversation = () => {
                       <div className='fade-text-small'>{`${chat.profile.username} replied on your story`}</div>
                     }
 
-                    <img src={myConfig.hostName + chat.reply_story_img} alt="story image" width={200} />
+                    <img src={myConfig.mediaHost + chat.reply_story_img} alt="story image" width={200} />
                     <div>{chat.body}</div>
                   </Message.CustomContent>
                 }
