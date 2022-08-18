@@ -11,5 +11,5 @@ export const myConfig = {
     settingSaved: 'Setting saved.',
     deletedPost: 'Post deleted.',
     editedPost: 'Post edited.',
-    sent: 'Sent.'
+    sent: 'Sent.',
 }
