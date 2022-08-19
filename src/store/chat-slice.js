@@ -99,6 +99,7 @@ const chatSlice = createSlice({
             chatroom.chats.push(chat);
             state.chatrooms = state.chatrooms.filter(chatroom => chatroom.id != action.payload.chat.chatroom);
             state.chatrooms.unshift(chatroom);
+            state.isSeen = state.chatrooms.filter(chatroom => chatroom.is_have_new_chat).length === 0;
         },
         updateIsHaveNewChat(state, action) {
             const chatroom = state.chatrooms.filter(chatroom => chatroom.id === action.payload.chatroomId)[0];

@@ -10,6 +10,7 @@ const Chat = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(headerActions.setPage('chat'))
+    document.title = 'Inbox • Chats'
   }, [])
   return <div className='center-item'>
     <div style={{

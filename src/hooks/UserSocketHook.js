@@ -38,9 +38,6 @@ export const useUserSocket = () => {
                 console.log('Connection close!');
             }
         }
-        return () => {
-            wsClient?.close();
-        }
     }, [token]);
     return ws;
 }

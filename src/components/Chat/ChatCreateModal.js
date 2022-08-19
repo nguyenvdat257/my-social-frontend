@@ -3,12 +3,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Modal, CloseButton, Form } from 'react-bootstrap'
 import { callChatSearchProfile, callCreateChatroom, callGetChatSuggestProfiles, callSharePost, chatActions } from '../../store/chat-slice';
 import SuggestUsernameItem from './SuggestUsernameItem';
+import MySpinner from '../Common/Spinner';
 
 const ChatCreateModal = ({ type = 'create', post = null, setShow = null }) => {
   const dispatch = useDispatch();
   const showCreateChat = useSelector(state => state.chat.showCreateChat);
   const usernames = useSelector(state => state.chat.createUsernames);
   const creatingChatroom = useSelector(state => state.chat.creatingChatroom);
+  const searchingProfile = useSelector(state => state.chat.searchingProfile);
   const [searchText, setSearchText] = useState('');
   const defaultSuggestProfiles = useSelector(state => state.chat.suggestProfiles);
   const profiles = useSelector(state => state.chat.searchType === 'default' ?
@@ -82,17 +84,24 @@ const ChatCreateModal = ({ type = 'create', post = null, setShow = null }) => {
             </Form>
           </div>
         </div>
-        <div style={{ overflowY: 'auto' }}>
-          <div className='bold-text-small' style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>Suggested</div>
-          <div>
-            {
-              profiles.map((profile, index) => (
-                <SuggestUsernameItem key={index} profile={profile} />
-              ))
-            }
-
+        {searchingProfile &&
+          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+            <MySpinner />
           </div>
-        </div>
+        }
+        {!searchingProfile &&
+          <div style={{ overflowY: 'auto' }}>
+            <div className='bold-text-small' style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>Suggested</div>
+            <div>
+              {
+                profiles.map((profile, index) => (
+                  <SuggestUsernameItem key={index} profile={profile} />
+                ))
+              }
+
+            </div>
+          </div>
+        }
       </div>
     </Modal>
   )

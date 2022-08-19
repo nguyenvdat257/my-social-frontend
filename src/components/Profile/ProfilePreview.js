@@ -41,6 +41,7 @@ const ProfilePreview = ({ username, isFix = true }) => {
     useEffect(() => {
         dispatch(callGetProfilePreview(username));
         dispatch(callGetPostsPreview(username));
+        return () => dispatch(profilePreviewActions.resetState());
     }, [])
     useEffect(() => {
         // trigger after creating chatroom

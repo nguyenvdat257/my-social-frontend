@@ -58,9 +58,6 @@ export const useChatSocket = () => {
                 console.log('Connection close!')
             }
         }
-        return () => {
-            wsClient?.close();
-        }
     }, [token]);
     return wsChat;
 }

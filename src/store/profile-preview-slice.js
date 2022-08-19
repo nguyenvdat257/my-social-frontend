@@ -24,7 +24,14 @@ const profilePreviewSlice = createSlice({
         setFollowData(state, action) {
             const isFollow = action.payload.data.type === 'follow' ? true : false;
             state.profile.is_follow = isFollow;
+        },
+        resetState(state, action) {
+            state.profile = null;
+            state.posts = [];
+            state.profileLoaded = false;
+            state.postsLoaded = false;
         }
+
     }
 })
 

@@ -61,9 +61,9 @@ export const callGetSavedSearch = () => {
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
 
-    const before = () => () => searchActions.setGettingData(true);
-    const afterConnected = () => () => searchActions.setGettingData(false);
-    const afterUnconnected = () => () => searchActions.setGettingData(false);
+    const before = () => searchActions.setGettingData(true);
+    const afterConnected = () => searchActions.setGettingData(false);
+    const afterUnconnected = () => searchActions.setGettingData(false);
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
@@ -75,9 +75,9 @@ export const callSearchProfile = (keyword) => {
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
 
-    const before = () => () => searchActions.setGettingData(true);
-    const afterConnected = () => () => searchActions.setGettingData(false);
-    const afterUnconnected = () => () => searchActions.setGettingData(false);
+    const before = () => searchActions.setGettingData(true);
+    const afterConnected = () => searchActions.setGettingData(false);
+    const afterUnconnected = () => searchActions.setGettingData(false);
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
@@ -89,9 +89,9 @@ export const callSearchTag = (keyword) => {
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
 
-    const before = () => () => searchActions.setGettingData(true);
-    const afterConnected = () => () => searchActions.setGettingData(false);
-    const afterUnconnected = () => () => searchActions.setGettingData(false);
+    const before = () => searchActions.setGettingData(true);
+    const afterConnected = () => searchActions.setGettingData(false);
+    const afterUnconnected = () => searchActions.setGettingData(false);
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 

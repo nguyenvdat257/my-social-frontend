@@ -10,12 +10,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import SharedModals from './components/Post/SharedModals';
 import { useUserSocket } from './hooks/UserSocketHook';
 import { useChatSocket } from './hooks/ChatSocketHooks';
+import { useEffect } from 'react';
 
 export const SocketContext = React.createContext();
 function App() {
   const isClickable = useSelector(state => state.click.isClickable);
   const wsChat = useChatSocket();
   const wsUser = useUserSocket();
+  // useEffect(() => {
+  //   return () => {
+  //     wsChat.close();
+  //     wsUser.close();
+  //   }
+  // }, []);
   return (
     <>
       <SocketContext.Provider value={wsChat}>

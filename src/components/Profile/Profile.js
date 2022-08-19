@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { callGetPosts, callGetProfile, callGetSavedPosts } from '../../store/profile-slice'
+import { callGetPosts, callGetProfile, callGetSavedPosts, profileActions } from '../../store/profile-slice'
 import ProfileInfo from './ProfileInfo'
 import { useParams, useNavigate } from 'react-router-dom'
 import ProfileAvatar from '../Common/ProfileAvatar'
@@ -56,10 +56,19 @@ const Profile = ({ isSaved }) => {
     }
   }, [username, isSaved]);
   useEffect(() => {
-    return () => dispatch(postActions.resetState())
+    document.title = username;
+    return () => {
+      dispatch(postActions.resetState());
+      dispatch(profileActions.resetState());
+    }
   }, [])
   return (
     <>
+      {!profileLoaded &&
+        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+          <MySpinner />
+        </div>
+      }
       {profileLoaded &&
         <>
           <div style={{ height: '100%', overflowY: 'auto' }} ref={ref} onScroll={onScroll} >

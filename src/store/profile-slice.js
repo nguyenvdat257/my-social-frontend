@@ -8,11 +8,16 @@ const profileSlice = createSlice({
     name: 'profileSlice',
     initialState: {
         profile: null,
+        profileLoaded: false,
     },
     reducers: {
         setProfile(state, action) {
             state.profile = action.payload;
             state.profileLoaded = true;
+        },
+        resetState(state, action) {
+            state.profile = null;
+            state.profileLoaded = false;
         },
         setFollowData(state, action) {
             const isFollow = action.payload.data.type === 'follow' ? true : false;
