@@ -5,12 +5,14 @@ import { MainContainer } from '@chatscope/chat-ui-kit-react';
 import ChatSideBar from './ChatSideBar';
 import ChatConversation from './ChatConversation';
 import { headerActions } from '../../store/header-slice';
+import { chatActions } from '../../store/chat-slice';
 
 const Chat = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(headerActions.setPage('chat'))
-    document.title = 'Inbox • Chats'
+    dispatch(headerActions.setPage('chat'));
+    document.title = 'Inbox • Chats';
+    return () => dispatch(chatActions.setCurrentChatroomId(null));
   }, [])
   return <div className='center-item'>
     <div style={{
