@@ -36,9 +36,9 @@ function App() {
               <Route exact path="/stories/my" element={<Story type='my' />} />
               <Route path="/*" element={<Main />} />
             </Routes>
+            <SharedModals />
           </BrowserRouter>
           <MyToast />
-          <SharedModals />
 
         </div>
 

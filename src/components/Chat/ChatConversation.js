@@ -26,6 +26,7 @@ const ChatConversation = () => {
     return null
   });
   const gettingChat = useSelector(state => state.chat.gettingChat);
+  const gettingMoreChat = useSelector(state => state.chat.gettingMoreChat);
   const nextUrl = useSelector(state => state.chat.chatroomProps[chatroom?.id]?.nextUrl);
   const [messageInputValue, setMessageInputValue] = useState('');
   const [typing, setTyping] = useState(false);
@@ -129,7 +130,7 @@ const ChatConversation = () => {
         </ConversationHeader>
         <MessageList
           typingIndicator={chatroom.typing.length > 0 ? <TypingIndicator content={chatroom.typing.join(', ') + ` ${chatroom.typing.length > 1 ? 'are' : 'is'} typing`}
-          /> : false} loadingMore={gettingChat} onYReachStart={onYReachStart} disableOnYReachWhenNoScroll={true} scrollBehavior='smooth' autoScrollToBottom={false} autoScrollToBottomOnMount={false}>
+          /> : false} loading={gettingChat} loadingMore={gettingMoreChat} onYReachStart={onYReachStart} disableOnYReachWhenNoScroll={true} scrollBehavior='smooth' autoScrollToBottom={false} autoScrollToBottomOnMount={false}>
           {chatroom.chats.map((chat, index) => (
             <>
               {(index === 0 || moment(chatroom.chats[index - 1].created).format('YYYY MM DD') != moment(chat.created).format('YYYY MM DD')) &&

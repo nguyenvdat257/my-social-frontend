@@ -4,6 +4,7 @@ import { BsEmojiSmile } from 'react-icons/bs'
 import Picker from 'emoji-picker-react';
 import { Form } from 'react-bootstrap'
 import MyAvatar from '../Common/MyAvatar';
+import ProfileAvatar from '../Common/ProfileAvatar';
 
 const PostForm = ({message, setMessage}) => {
     const user = useSelector(state => state.auth.user);
@@ -46,10 +47,7 @@ const PostForm = ({message, setMessage}) => {
         <>
             <div style={{ height: '30rem', width: '20rem', padding: '1rem' }}>
                 <div style={{ display: 'flex', marginBottom: '1rem' }}>
-                    <MyAvatar className='avatar avatar-small' />
-                    <div className='name-avatar-margin-small bold-text-small'>
-                        {user.username}
-                    </div>
+                    <ProfileAvatar profile={user} avatarSize='small' isEnableClick={false} isEnableHover={false}/>
                 </div>
                 <Form>
                     <Form.Control ref={inputRef} value={message} className='shadow-none' as="textarea" rows='9'

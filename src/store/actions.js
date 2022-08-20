@@ -15,13 +15,18 @@ export const callApi = (url, method, sendData, successHandler, failHandler, exce
         // if (sendData) fetchConfig['body'] = sendData;
         const fetchHandler = async () => {
             const res = await fetch(url, fetchConfig)
-            const fetchData = await res.json();
             const status = res.status;
+            let fetchData = null;
+            if (status === 200) {
+                fetchData = await res.json();
+            } else {
+                console.log('feiwoj')
+            }
             return [fetchData, status];
         }
-        try {
-            const [fetchData, status] = await fetchHandler();
-            if (status === 200) {
+        try {  
+            const [fetchData, status] = await fetchHandler();  
+            if (status === 200) {  
                 if (successHandler) dispatch(successHandler(fetchData));
             } else {
                 if (failHandler) dispatch(failHandler(fetchData));

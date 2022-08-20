@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { myConfig } from '../config';
+import { getAvatarSrc } from '../utils/CommonFunction';
 import { callApi } from './actions';
 import { toastActions } from './toast-slice';
 
@@ -38,7 +39,7 @@ const profileEditSlice = createSlice({
             state.gender = action.payload
         },
         setData(state, action) {
-            state.avatarUrl = myConfig.hostName + action.payload.avatar.thumbnail_larger;
+            state.avatarUrl = getAvatarSrc(action.payload, 'small');
             state.displayUsername = action.payload.username;
             state.username = action.payload.username;
             state.name = action.payload.name ? action.payload.name : '';

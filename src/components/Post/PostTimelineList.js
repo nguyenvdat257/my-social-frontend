@@ -9,7 +9,7 @@ const PostTimelineList = React.memo(() => {
     const posts = useSelector(state => state.postTimeline.posts);
     const gettingData = useSelector(state => state.postTimeline.gettingData);
     useEffect(() => {
-        // if (posts.length > 0) return;
+        if (posts.length > 0) return;
         dispatch(callGetData('postTimeline'));
     }, []);
     return (

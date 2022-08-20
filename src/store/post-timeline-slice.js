@@ -40,9 +40,9 @@ export const callGetNextData = (type, nextUrl) => {
 
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
 
-    const before = () => eval(type + 'Actions.setGettingData(true)');
-    const afterConnected = () => eval(type + 'Actions.setGettingData(false)');
-    const afterUnconnected = () => eval(type + 'Actions.setGettingData(false)');
+    const before = null;
+    const afterConnected = null;
+    const afterUnconnected = null;
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 

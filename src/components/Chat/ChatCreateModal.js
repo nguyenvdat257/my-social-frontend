@@ -57,6 +57,10 @@ const ChatCreateModal = ({ type = 'create', post = null, setShow = null }) => {
       dispatch(chatActions.setSearchType('default'));
     }
   }, [searchText]);
+  useEffect(() => {
+    dispatch(callGetChatSuggestProfiles());
+    dispatch(chatActions.setSearchType('default'));
+  }, []);
   return (
     <Modal centered show={showCreateChat} onHide={handleCloseModal} dialogClassName='modal-custom-post-add'>
       <div className='modal-custom-header'>

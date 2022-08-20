@@ -13,6 +13,7 @@ const chatSlice = createSlice({
         currentChatroomId: null,
         gettingChatrooms: false,
         gettingChat: false,
+        gettingMoreChat: false,
         creatingChatroom: false,
         showCreateChat: false,
         createUsernames: [],
@@ -171,6 +172,9 @@ const chatSlice = createSlice({
         setGettingChat(state, action) {
             state.gettingChat = action.payload;
         },
+        setGettingMoreChat(state, action) {
+            state.gettingMoreChat = action.payload;
+        },
         setGettingChatrooms(state, action) {
             state.gettingChatrooms = action.payload;
         },
@@ -247,9 +251,9 @@ export const callGetChatSuggestProfiles = () => {
     const successHandler = (data) => chatActions.setSuggestProfiles(data);
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
-    const before = null;
-    const afterConnected = null;
-    const afterUnconnected = null;
+    const before = () => chatActions.setSearchingProfile(true);
+    const afterConnected = () => chatActions.setSearchingProfile(false);
+    const afterUnconnected = () => chatActions.setSearchingProfile(false);
     return callApi(url, method, formData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
@@ -261,9 +265,9 @@ export const callChatSearchProfile = (keyword) => {
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
 
-    const before = () => () => chatActions.setSearchingProfile(true);
-    const afterConnected = () => () => chatActions.setSearchingProfile(false);
-    const afterUnconnected = () => () => chatActions.setSearchingProfile(false);
+    const before = () => chatActions.setSearchingProfile(true);
+    const afterConnected = () => chatActions.setSearchingProfile(false);
+    const afterUnconnected = () => chatActions.setSearchingProfile(false);
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 
@@ -275,9 +279,9 @@ export const callGetChat = (chatroomId) => {
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
 
-    const before = () => () => chatActions.setGettingChat(true);
-    const afterConnected = () => () => chatActions.setGettingChat(false);
-    const afterUnconnected = () => () => chatActions.setGettingChat(false);
+    const before = () => chatActions.setGettingChat(true);
+    const afterConnected = () => chatActions.setGettingChat(false);
+    const afterUnconnected = () => chatActions.setGettingChat(false);
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 export const callGetMoreChat = (chatroomId, nextUrl) => {
@@ -288,9 +292,9 @@ export const callGetMoreChat = (chatroomId, nextUrl) => {
     const failHandler = (data) => toastActions.setIsShow(myConfig.getError);
     const exceptHandler = () => toastActions.setIsShow(myConfig.serverError);
 
-    const before = () => () => chatActions.setGettingChat(true);
-    const afterConnected = () => () => chatActions.setGettingChat(false);
-    const afterUnconnected = () => () => chatActions.setGettingChat(false);
+    const before = () => chatActions.setGettingMoreChat(true);
+    const afterConnected = () => chatActions.setGettingMoreChat(false);
+    const afterUnconnected = () => chatActions.setGettingMoreChat(false);
     return callApi(url, method, sendData, successHandler, failHandler, exceptHandler, before, afterConnected, afterUnconnected);
 }
 

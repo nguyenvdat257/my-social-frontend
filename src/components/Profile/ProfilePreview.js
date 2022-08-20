@@ -55,7 +55,7 @@ const ProfilePreview = ({ username, isFix = true }) => {
         <div style={{ position: 'absolute', left: '-2.5rem', top: '2rem', zIndex: 999 }}>
             <div style={isFix ? { position: 'fixed' } : {}}>
                 <Card style={{ position: 'relative', width: '24rem', height: '24rem' }}>
-                    {!profileLoaded || !postsLoaded &&
+                    {(!profileLoaded || !postsLoaded) &&
                         <MySpinner />
                     }
                     {profileLoaded && postsLoaded &&
@@ -81,11 +81,9 @@ const ProfilePreview = ({ username, isFix = true }) => {
                             <div style={{ display: 'flex' }}>
                                 {
                                     posts.map((post, index) => {
-                                        if (post.image) {
-                                            return <img key={index} style={{ width: '8rem', height: '8rem' }} src={myConfig.mediaHost + post.image.image} />;
-                                        }
-                                        if (post.images)
+                                        if (post.images.length > 0) {
                                             return <img key={index} style={{ width: '8rem', height: '8rem' }} src={myConfig.mediaHost + post.images[0].image} />
+                                        }
                                     })
                                 }
                             </div>

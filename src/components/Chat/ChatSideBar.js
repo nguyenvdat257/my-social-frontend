@@ -12,6 +12,7 @@ const ChatSideBar = () => {
   const user = useSelector(state => state.auth.user);
   const showCreateChat = useSelector(state => state.chat.showCreateChat);
   const chatrooms = useSelector(state => state.chat.chatrooms);
+  const gettingChatrooms = useSelector(state => state.chat.gettingChatrooms);
   const currentChatroomId = useSelector(state => state.chat.currentChatroomId);
   const handleClickCreateChat = e => {
     dispatch(chatActions.setShowCreateChat(true));
@@ -20,7 +21,9 @@ const ChatSideBar = () => {
     dispatch(chatActions.setCurrentChatroomId(chatroom.id));
   };
   useEffect(() => {
-    dispatch(callGetChatrooms(user.username));
+    if (chatrooms.length === 0) {
+      dispatch(callGetChatrooms(user.username));
+    }
   }, [])
   return (
     <>
@@ -29,7 +32,7 @@ const ChatSideBar = () => {
           <Search placeholder="Search..." />
           <BsPencilSquare className='pointer-cursor' size={25} onClick={handleClickCreateChat} />
         </div>
-        <ConversationList>
+        <ConversationList loading={gettingChatrooms}>
           {
             chatrooms.map((chatroom, index) => (
               <Conversation key={index} name={chatroom.chatroom_name} info={chatroom.info} unreadCnt={chatroom.is_have_new_chat ? 1 : null}
