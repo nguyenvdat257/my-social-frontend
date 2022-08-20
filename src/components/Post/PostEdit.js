@@ -47,7 +47,7 @@ const PostEdit = ({ currentName}) => {
                     </div>
                 </div>
                 <div style={{ display: 'flex' }}>
-                    <PostImage images={props.post?.images.map(image => image.image)} />
+                    <PostImage images={props.post?.images.map(image => image.image.medium)} />
                     <PostForm message={message} setMessage={setMessage} />
                 </div>
             </Modal>

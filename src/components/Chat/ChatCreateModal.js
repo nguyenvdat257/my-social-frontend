@@ -26,7 +26,7 @@ const ChatCreateModal = ({ type = 'create', post = null, setShow = null }) => {
       const formData = JSON.stringify({
         usernames: usernames,
         message: '',
-        share_post_img: post.images[0].image,
+        share_post_img: post.images[0].image.medium,
         share_post_code: post.code,
       })
       dispatch(callSharePost(formData));

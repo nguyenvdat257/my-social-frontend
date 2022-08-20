@@ -17,7 +17,7 @@ const PostTimeline = React.memo((params) => {
       <PostHeader post={post} isTimeline={true} type='postTimeline' />
       {
         post.images.length === 1 &&
-        <img className='post-image' src={myConfig.mediaHost + post.images[0].image}
+        <img className='post-image' src={myConfig.mediaHost + post.images[0].image.medium}
           style={{ width: '30rem', height: '30rem' }} />
       }
       {
@@ -26,7 +26,7 @@ const PostTimeline = React.memo((params) => {
           {
             post.images.map((image, index) => (
               <Carousel.Item key={index}>
-                <img className='post-image' src={myConfig.mediaHost + image.image}
+                <img className='post-image' src={myConfig.mediaHost + image.image.medium}
                   style={{ width: '30rem', height: '30rem' }} />
               </Carousel.Item>
             ))

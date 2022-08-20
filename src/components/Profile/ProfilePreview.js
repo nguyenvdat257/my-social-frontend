@@ -82,7 +82,7 @@ const ProfilePreview = ({ username, isFix = true }) => {
                                 {
                                     posts.map((post, index) => {
                                         if (post.images.length > 0) {
-                                            return <img key={index} style={{ width: '8rem', height: '8rem' }} src={myConfig.mediaHost + post.images[0].image} />
+                                            return <img key={index} style={{ width: '8rem', height: '8rem' }} src={myConfig.mediaHost + post.images[0].image.small} />
                                         }
                                     })
                                 }

@@ -43,7 +43,7 @@ const Story = ({ type }) => {
         const formData = {
             usernames: [profile.username],
             message: reply,
-            reply_story_img: story['images'][0]['image'],
+            reply_story_img: story['images'][0].image.medium,
         }
         setReply('');
         dispatch(callStorySendReply(JSON.stringify(formData)));
@@ -160,7 +160,7 @@ const Story = ({ type }) => {
                             </div>
                         </div>
                     </div>
-                    <img className='story-image' src={myConfig.mediaHost + story['images'][0]['image']} />
+                    <img className='story-image' src={myConfig.mediaHost + story['images'][0].image.medium} />
                     {type === 'other' &&
                         <div className='story-reaction'>
                             <div className='story-form'>
