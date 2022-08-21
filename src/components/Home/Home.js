@@ -38,8 +38,8 @@ const Home = React.memo(() => {
   }, [])
   return (
     <>
-      <div ref={postListRef} onScroll={onScroll} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '5.5rem', height: '100%', overflowY: 'auto' }}>
-        <div style={{ height: '100%', width: '30rem', padding: 0 }} >
+      <div ref={postListRef} onScroll={onScroll} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '5.5rem',  height: '100%', overflowY: 'auto' }}>
+        <div style={{ height: '100%', width: '30rem' }} >
           <StoryBoard key='story' />
           <PostTimelineList />
         </div>

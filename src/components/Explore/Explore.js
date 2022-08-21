@@ -28,7 +28,7 @@ const Explore = () => {
   };
   useEffect(() => {
     dispatch(headerActions.setPage('explore'));
-    dispatch(postSuggestActions.resetState());
+    // dispatch(postSuggestActions.resetState());
     document.title = myConfig.appName;
     if (!postsLoaded) {
       dispatch(callGetPostSuggest());

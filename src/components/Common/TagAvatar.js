@@ -10,8 +10,7 @@ const TagAvatar = ({ tag, avatarSize, margin }) => {
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
             <img className={`avatar ${'avatar-' + avatarSize} pointer-cursor`}
-                src={myConfig.defaultHashtag}
-                onClick={handleClickAvatar} />
+                src={myConfig.defaultHashtag}/>
             <div style={{ marginLeft: margin }}>
                 <div className={'bold-text-small pointer-cursor'} onClick={handleClickAvatar}>{tag.body}</div>
                 <div className={'fade-text-medium'}>{`${tag.post_count} ${tag.post_count > 1 ? 'posts' : 'post'}`}</div>

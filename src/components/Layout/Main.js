@@ -10,6 +10,7 @@ import Profile from '../Profile/Profile'
 import PrivateRoute from '../../utils/PrivateRoute'
 import { useSelector } from 'react-redux'
 import PostUser from '../Post/PostUser'
+import PostTag from '../Post/PostTag'
 
 const Main = () => {
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
@@ -24,6 +25,7 @@ const Main = () => {
             <Route path="explore" element={<Explore />} />
             <Route path="profiles/:username" element={<Profile />} /> 
             <Route path="posts/:postCode" element={<PostUser />} /> 
+            <Route path="posts/tag/:tag" element={<PostTag />} /> 
             <Route path="profiles/:username/saved" element={<Profile isSaved={true}/>} /> 
             <Route path="accounts/*" element={<Settings />} />
           </Route>

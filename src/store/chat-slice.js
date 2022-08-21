@@ -64,6 +64,7 @@ const chatSlice = createSlice({
                     let user = users[0];
                     user.is_online = status;
                     chatroom.is_online = chatroom.otherProfiles.filter(profile => profile.is_online).length > 0;
+                    chatroom.info = 'Oneline now'
                 }
             }
         },

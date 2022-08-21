@@ -25,12 +25,13 @@ const SearchItem = ({ item, searchId, type, setShowSearch }) => {
             dispatch(callUpdateSearch(data));
             dispatch(clickActions.setIsClickable(true));
             setShowSearch(false);
-            if (!avatarRef.current || !avatarRef.current.contains(e.target)) {
-                if (type === 'profile') {
+            if (type === 'profile') {
+                if (!avatarRef.current || !avatarRef.current.contains(e.target)) {
                     navigate(`/profiles/${item.username}`);
-                } else {
-                    navigate(`/tags/${item.body}`);
                 }
+            }
+            if (type === 'tag') {
+                navigate(`/posts/tag/${item.body}`);
             }
         }
     };
