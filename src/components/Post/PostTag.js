@@ -12,7 +12,7 @@ const PostTag = () => {
   const dispatch = useDispatch();
   const { tag } = useParams();
   const posts = useSelector(state => state.post.posts);
-  const postsLoaded = useSelector(state => state.post.postLoaded);
+  const gettingData = useSelector(state => state.post.gettingData);
   const nextUrl = useSelector(state => state.post.nextUrl);
   const usedNextUrl = useSelector(state => state.post.usedNextUrl);
   const ref = useRef(null);
@@ -39,12 +39,12 @@ const PostTag = () => {
   }, []);
   return (
     <div style={{ height: '100%', overflowY: 'auto', paddingTop: '5.5rem' }} ref={ref} onScroll={onScroll} >
-      {!postsLoaded &&
+      {gettingData &&
         <div style={{ position: 'relative', width: '100%', height: '100%' }}>
           <MySpinner />
         </div>
       }
-      {postsLoaded && posts.length > 0 &&
+      {!gettingData && posts.length > 0 &&
         <div className='center-item'>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', marginLeft: '5rem' }}>
